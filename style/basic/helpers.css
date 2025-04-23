@@ -1,0 +1,25 @@
+
+/* Flex Helper */
+.flex {
+    display: flex;
+}
+
+.justify-content {
+    justify-content: center;
+}
+
+.space-between {
+    justify-content: space-between;
+}
+
+.align-items {
+    align-items: center;
+}
+
+/* List Helpers */
+
+.clean-list{
+    padding: 0;
+
+    list-style-type: none;
+}
