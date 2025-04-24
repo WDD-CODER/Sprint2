@@ -1,1 +1,6 @@
-
+.main-layout {
+    display: grid;
+    grid-template-columns: 1fr minmax(20vw, 80vw) 1fr;
+    gap: 1em;
+    background-color: var(--clr-back-primary);
+}

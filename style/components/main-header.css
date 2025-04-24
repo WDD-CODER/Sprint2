@@ -1,5 +1,8 @@
 
 .main-header{
+    grid-row: 1;
+    grid-column: 1 / -1;
     padding: 1em;
     border-bottom: 1px black solid;
+    background-color: var(--clr-back-primary-1);
 }

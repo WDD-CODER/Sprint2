@@ -1,4 +1,6 @@
-.gallery-pics{
-    width: 80%;
-    /* border: 1px black solid; */
+.gallery-pics {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    background-color: var( --clr-white-primary);
 }

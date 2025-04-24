@@ -10,8 +10,9 @@
 
 /* COMPONENTS */
 @import url('components/main-header.css');
-@import url('components/main-gallery.css');
+@import url('components/main-gallery-container.css');
 @import url('components/gallery-pics.css');
+@import url('components/footer.css');
 
 /* MQ */
 @import url('setup/mq.css');
