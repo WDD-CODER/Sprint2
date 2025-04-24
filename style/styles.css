@@ -1,17 +1,17 @@
 /* SETUP */
-@import url('//style/setup.css/vars.css');
-@import url('/style/setup.css/typography.css');
+@import url('style/setup/vars.css');
+@import url('style/setup/typography.css');
 
 
 /* BASICS */
-@import url('/style/basic/base.css');
-@import url('/style/basic/helpers.css');
-@import url('/style/basic/layout.css');
+@import url('style/basic/base.css');
+@import url('style/basic/helpers.css');
+@import url('style/basic/layout.css');
 
 /* COMPONENTS */
-@import url('/style/components/main-header.css');
-@import url('/style/components/main-gallery.css');
-@import url('/style/components/gallery-pics.css');
+@import url('style/components/main-header.css');
+@import url('style/components/main-gallery.css');
+@import url('style/components/gallery-pics.css');
 
 /* MQ */
-@import url('/style/setup.css/mq.css');
+@import url('style/setup/mq.css');
