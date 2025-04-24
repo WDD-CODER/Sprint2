@@ -17,14 +17,16 @@
             </ul>
         </nav>
     </header>
-    <main class="main-gallery-container ">
-        <section class="gallery-pics">
-            <figure>
-                <figcaption onclick="editImg()" class="img-name"></figcaption>
-                <img id="" src="style/assets/img/2.jpg" alt="img">
-            </figure>
-            <figure>
-                <figcaption class="img-name"></figcaption>
+    <main class="main-content">
+        <section class="main-gallery container">
+            <h2 class="gallery-header">Main picture gallery</h2>
+            <section class="gallery-pics">
+                <figure onclick="onChooseImg(this)">
+                    <figcaption  class="img-name"></figcaption>
+                    <img id="" src="style/assets/img/2.jpg" alt="img">
+                </figure>
+                <figure>
+                    <figcaption class="img-name"></figcaption>
                 <img id="" src="style/assets/img/4.jpg" alt="img">
             </figure>
             <figure>
@@ -32,13 +34,14 @@
                 <img id="" src="style/assets/img/4.jpg" alt="img">
             </figure>
         </section>
-    </main>
-    <main class="meme-editor">
-        <div>
-        <main hidden class="meme-editor-container">
+        </section>
+        
+        <section class="meme-editor container hidden">
+            <h2 class="gallery-header">Meme added window</h2>
             <canvas class="edit-canvas"></canvas>
+            <button onclick="onChooseImg(this)" class="">ccccc</button>
             <section class="edit-options"></section>
-            </main class="meme-editor-container">
+        </section> 
     </main>
     <footer class="coffe-rights flex justify-content align-items">Made By DanDan</footer>
     <script src="./js/services/storege-service.js"></script>

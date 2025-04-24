@@ -23,3 +23,9 @@
 
     list-style-type: none;
 }
+
+/* General Helpers */
+
+.hidden{
+    display: none !important;
+}
