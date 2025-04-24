@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style/styles.css">
     <title>Document</title>
 </head>
-<body class="main-layout" onload="onInit()" >
+
+<body class="main-layout" onload="onInit()">
     <header class="main-header flex align-items space-between">
         <article class="logo">MemeMe!!!</article>
         <nav class="main-nav">
@@ -19,41 +21,75 @@
     </header>
     <main class="main-content">
         <button onclick="switchBetweenMainContainers()">switch</button>
-        <section class="main-gallery container ">
+        <section class="main-gallery container">
             <h2 class="gallery-header">Main picture gallery</h2>
             <section class="gallery-pics">
-            
-                <figure >
-                    <figcaption  class="img-name"></figcaption>
+
+                <figure>
+                    <figcaption class="img-name"></figcaption>
                     <img onclick="onChooseImg(this)" id="" src="style/assets/img/2.jpg" alt="img">
                 </figure>
                 <figure>
                     <figcaption class="img-name"></figcaption>
-                <img onclick="onChooseImg(this)" id="" src="style/assets/img/4.jpg" alt="img">
-            </figure>
-            <figure>
-                <figcaption class="img-name"></figcaption>
-                <img onclick="onChooseImg(this)" id="" src="style/assets/img/4.jpg" alt="img">
-            </figure>
+                    <img onclick="onChooseImg(this)" id="" src="style/assets/img/4.jpg" alt="img">
+                </figure>
+                <figure>
+                    <figcaption class="img-name"></figcaption>
+                    <img onclick="onChooseImg(this)" id="" src="style/assets/img/4.jpg" alt="img">
+                </figure>
+            </section>
         </section>
-        </section>
-        
-        <section class="meme-editor container  hidden justify-content align-items">
+
+        <section class="meme-editor container justify-content align-items hidden">
             <h2 class="gallery-header">Meme added window</h2>
             <div class="canvas-container" onresize="renderCanvas()">
                 <canvas></canvas>
             </div>
             <section class="edit-options">
-                <button>1</button>
-                <button>2</button>
-                <button>3</button>
-                <button onclick="onChooseImg(this)" class="">ccccc</button>
+                <input class="inner-text" type="text" placeholder="Start writing something"
+                    onkeyup="addTextToMeme(this)">
+                <div class="line-options">
+                    <button class="move-up-line">Move up line</button>
+                    <button class="move-down-line">Move down line</button>
+                    <button class="add-line" onclick="addLineToMeme(event)">Add line</button>
+                    <button class="delete-line">Delete line</button>
+
+                </div>
+                <br>
+                <div class="text-options">
+                    <input type="number" class="increase-font" placeholder="Increase-font">
+                    <input type="number" class="decrease-font" placeholder="Decrease-font">
+                    <button class="align-line-left">line-left</button>
+                    <button class="align-line-center">line-center</button>
+                    <button class="align-line-right">line-right</button>
+                    <input type="color" class="text-color">
+                    <button class="text-underline" onchange="changeTextDecoration()">text-underline</button>
+                    <input type="text" list="font-family" placeholder="Choose fond family">
+                </div>
+                <br>
+                <div class="links">
+                    <a href="#" download="your-pic.jpg" onclick="onDownloadImg(this)">Download</a>
+                    <button class="save-Pic" onclick="onSavePicture()">Save Picture</button>
+
+                    <form method="POST" enctype="multipart/form-data" onsubmit="onShareImg(event)">
+                        <button class="btn" type="submit">Share img to facebook:</button>
+                    </form>
+                </div>
+
+                <datalist id="font-family">
+                    <option value="impact">impact</option>
+                    <option value="arial">arial</option>
+                </datalist>
+
             </section>
-        </section> 
+        </section>
     </main>
     <footer class="coffe-rights flex justify-content align-items">Made By DanDan</footer>
     <script src="./js/services/storege-service.js"></script>
-    <script src="./js/services/upload-service.js"></script>
+    <!-- <script src="./js/services"></script> -->
+    <script src="./js/services/canvas-service.js"></script>
+    <script src="./js/services/links-service.js"></script>
     <script src="./js/main.js"></script>
 </body>
+
 </html>
