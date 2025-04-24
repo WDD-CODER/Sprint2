@@ -1,6 +1,15 @@
 .meme-editor {
-    /* display: block; */
-    width: 80vw;
-    height: 200px;
+    display: grid;
+    grid-template-columns: 50% 50%;
+
+    /* width: 80vw; */
+    padding: 1em;
+
+    gap: 1em;
+
     background-color: aqua;
+}
+
+.gallery-header{
+    grid-column: 1/-1;
 }

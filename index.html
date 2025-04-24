@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style/styles.css">
     <title>Document</title>
 </head>
-<body class="main-layout">
+<body class="main-layout" onload="onInit()">
     <header class="main-header flex align-items space-between">
         <article class="logo">MemeMe!!!</article>
         <nav class="main-nav">
@@ -18,7 +18,7 @@
         </nav>
     </header>
     <main class="main-content">
-        <section class="main-gallery container">
+        <section class="main-gallery container hidden">
             <h2 class="gallery-header">Main picture gallery</h2>
             <section class="gallery-pics">
                 <figure onclick="onChooseImg(this)">
@@ -36,11 +36,17 @@
         </section>
         </section>
         
-        <section class="meme-editor container hidden">
+        <section class="meme-editor container ">
             <h2 class="gallery-header">Meme added window</h2>
-            <canvas class="edit-canvas"></canvas>
+            <div class="canvas-container">
+                <canvas></canvas>
+            </div>
+            <section class="edit-options">
+                <button>1</button>
+                <button>2</button>
+                <button>3</button>
+            </section>
             <button onclick="onChooseImg(this)" class="">ccccc</button>
-            <section class="edit-options"></section>
         </section> 
     </main>
     <footer class="coffe-rights flex justify-content align-items">Made By DanDan</footer>
