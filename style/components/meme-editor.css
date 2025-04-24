@@ -1,13 +1,15 @@
 .meme-editor {
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: minmax(40%, 1fr) minmax(auto-fit, 1fr);
 
     /* width: 80vw; */
     padding: 1em;
 
     gap: 1em;
 
-    background-color: aqua;
+border-radius: var(--border-radios-base);
+border: 1px black dotted;
+    background-color: white;
 }
 
 .gallery-header{

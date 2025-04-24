@@ -1,5 +1,6 @@
 .main-gallery{
+    display: block;
     grid-column: 2;
-    width: 80vw;
+    /* width: 80vw; */
 }
 

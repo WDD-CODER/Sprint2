@@ -23,6 +23,12 @@
     --color-hover-header: rgba(87.99795, 201.0012, 57.999750000000006, 1);
     --color-hover-social: rgba(80.73151677846909, 111.14007666707039, 173.00000488758087, 1); */
     
+
+
+ /* Specific component styling */
+
+ --border-radios-base: 1em
+
     /* Break Pointes */
 
     /* --L: 1000px;

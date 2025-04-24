@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style/styles.css">
     <title>Document</title>
 </head>
-<body class="main-layout" onload="onInit()">
+<body class="main-layout" onload="onInit()" >
     <header class="main-header flex align-items space-between">
         <article class="logo">MemeMe!!!</article>
         <nav class="main-nav">
@@ -18,39 +18,42 @@
         </nav>
     </header>
     <main class="main-content">
-        <section class="main-gallery container hidden">
+        <button onclick="switchBetweenMainContainers()">switch</button>
+        <section class="main-gallery container ">
             <h2 class="gallery-header">Main picture gallery</h2>
             <section class="gallery-pics">
-                <figure onclick="onChooseImg(this)">
+            
+                <figure >
                     <figcaption  class="img-name"></figcaption>
-                    <img id="" src="style/assets/img/2.jpg" alt="img">
+                    <img onclick="onChooseImg(this)" id="" src="style/assets/img/2.jpg" alt="img">
                 </figure>
                 <figure>
                     <figcaption class="img-name"></figcaption>
-                <img id="" src="style/assets/img/4.jpg" alt="img">
+                <img onclick="onChooseImg(this)" id="" src="style/assets/img/4.jpg" alt="img">
             </figure>
             <figure>
                 <figcaption class="img-name"></figcaption>
-                <img id="" src="style/assets/img/4.jpg" alt="img">
+                <img onclick="onChooseImg(this)" id="" src="style/assets/img/4.jpg" alt="img">
             </figure>
         </section>
         </section>
         
-        <section class="meme-editor container ">
+        <section class="meme-editor container  hidden justify-content align-items">
             <h2 class="gallery-header">Meme added window</h2>
-            <div class="canvas-container">
+            <div class="canvas-container" onresize="renderCanvas()">
                 <canvas></canvas>
             </div>
             <section class="edit-options">
                 <button>1</button>
                 <button>2</button>
                 <button>3</button>
+                <button onclick="onChooseImg(this)" class="">ccccc</button>
             </section>
-            <button onclick="onChooseImg(this)" class="">ccccc</button>
         </section> 
     </main>
     <footer class="coffe-rights flex justify-content align-items">Made By DanDan</footer>
     <script src="./js/services/storege-service.js"></script>
+    <script src="./js/services/upload-service.js"></script>
     <script src="./js/main.js"></script>
 </body>
 </html>
