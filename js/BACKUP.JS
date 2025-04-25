@@ -2,25 +2,51 @@
 
 var gElCanvas
 var gCtx
-// var gImg
+var gImg
 var gPos = {}
 
 
 //  Lists 
-changeTextDecoration()
 
 function onInit() {
     gElCanvas = document.querySelector('canvas');
     gCtx = gElCanvas.getContext('2d')
 }
 
+
+// function renderCanvas() {
+//     gCtx.fillStyle = "white"
+//     gCtx.fillRect(0, 0, gElCanvas.width, gElCanvas.height)
+//     reSizeCanvas()
+//     renderImgToCanvas()
+//     renderLines()
+//     renderText()
+// }
+
 function renderCanvas() {
+const gImgs = getGImg()
+console.log("🚀 ~ renderCanvas ~ gImgs:", gImgs)
+
     reSizeCanvas() // Resize first; this clears canvas internally
+
     gCtx.fillStyle = "white"
     gCtx.fillRect(0, 0, gElCanvas.width, gElCanvas.height)
-    renderImg()
+
+    renderImg(gImgs[0])
     renderLines()
     renderText()
+
+    // loadImageToCanvas(gImg, onImageReady)
+}
+
+// function onImageReady(img) {
+//     renderImg(img)
+//     renderLines()
+//     renderText()
+// }
+
+function renderImgToCanvas() {
+    if (gImg) loadImageToCanvas(gImg, renderImg)
 }
 
 function reSizeCanvasContainer(width, height) {
@@ -36,14 +62,13 @@ function reSizeCanvas() {
 }
 
 function onChooseImg(el) {
-    saveImgObject(el)
+    loadImageToCanvas(el.src, onImageReady)
+    // gImg = el.src
     switchBetweenMainContainers()
     renderCanvas()
 }
 
-function renderImg() {
-    const img = getGImg()
-    if (!img) return
+function renderImg(img) {
     gElCanvas.height = (img.naturalHeight / img.naturalWidth) * gElCanvas.width
     gCtx.drawImage(img, 0, 0, gElCanvas.width - 2, gElCanvas.height - 2)
     reSizeCanvasContainer(gElCanvas.width, gElCanvas.height)
@@ -55,7 +80,7 @@ function loadImageToCanvas(imgSrc, onImageReady) {
     img.onload = () => {
         onImageReady(img)
     }
-    return img.src = imgSrc
+    img.src = imgSrc
 }
 
 function renderLines() {
@@ -80,6 +105,7 @@ function onAddText(el) {
         alert('First must add a line')
         return
     }
+    // const curLineIdx = getLineIdx(el.id)
     const curLineIdx = 0
     const textWidth = measureTextWidthBypX(el.value)
     saveLineText(curLineIdx, el.value)
@@ -112,6 +138,23 @@ function drawRoundRect(startPointX, startPointY, lineHeight, color = '#000000') 
     gCtx.strokeStyle = color
     gCtx.stroke()
 }
+
+
+// function getTextPosition(lineNum = 0) {
+//     const posX = gLine[lineNum].startPointX + 10
+//     const posY = gLine[lineNum].startPointY + 10
+//     // const lineHeight = gLine[lineNum].lineHeight
+
+//     drawText(posX, posY, 25,'Arial','#000000', gLine[lineNum].text)
+//     // gCtx.font = '25px Arial'
+//     // gCtx.fillStyle = 'black'
+//     // gCtx.textBaseline = 'top'
+//     // gCtx.fillText(, posX, posY)
+
+// }
+
+
+
 
 // Read
 
