@@ -59,12 +59,19 @@ function loadImageToCanvas(imgSrc, onImageReady) {
     img.src = imgSrc
 }
 
-function drawExistingLine() {
-    if (!gLine.length) return
-    gLine.forEach(line => {
-        document.querySelector('.class');
-        drawRoundRect(line.startPointX, line.startPointY, line.lineHeight)
-        drawText()
+function renderLines() {
+    const gLines = getGLines()
+    if (!gLines.length) return
+    gLines.forEach(line => {
+        drawRoundRect(line.lineStartPointX, line.lineStartPointy, line.lineHeight)
+    })
+}
+
+function renderText() {
+    const gLines = getGLines()
+    if (!gLines.length) return
+    gLines.forEach(line => {
+        drawText(line.text, line.textPositionX, line.textPositionY, 25, 'Arial')
     })
 }
 
@@ -82,23 +89,12 @@ function addLineToMeme(ev) {
     gLine.push(line)
 }
 
-function drawText(lineNum = 0) {
-    const posX = gLine[lineNum].startPointX + 10
-    const posY = gLine[lineNum].startPointY + 10
-    const lineHeight = gLine[lineNum].lineHeight
-
-    gCtx.font = '25px Arial'
-    gCtx.fillStyle = 'black'
+function drawText(str, textPositionX, textPositionY, textSize = 25, fontFamily = 'Arial', color = 'black') {
+    gCtx.font = `${textSize}px ${fontFamily}`
+    gCtx.fillStyle = color
     gCtx.textBaseline = 'top'
-    gCtx.fillText(gLine[lineNum].text, posX, posY)
-
+    gCtx.fillText(str, textPositionX, textPositionY)
 }
-
-function addTextToMeme(el) {
-    gLine[0].text = el.value
-    renderCanvas()
-}
-
 
 function drawRoundRect(startPointX, startPointY, lineHeight, ev) {
     // const pos = getEvPos(ev)
@@ -109,8 +105,29 @@ function drawRoundRect(startPointX, startPointY, lineHeight, ev) {
     gCtx.stroke()
 }
 
+
+// function getTextPosition(lineNum = 0) {
+//     const posX = gLine[lineNum].startPointX + 10
+//     const posY = gLine[lineNum].startPointY + 10
+//     // const lineHeight = gLine[lineNum].lineHeight
+
+//     drawText(posX, posY, 25,'Arial','#000000', gLine[lineNum].text)
+//     // gCtx.font = '25px Arial'
+//     // gCtx.fillStyle = 'black'
+//     // gCtx.textBaseline = 'top'
+//     // gCtx.fillText(, posX, posY)
+
+// }
+
+
+
+
 // Read
 
+function measureTextWidthBypX(str) {
+    const textWidth = gCtx.measureText(str).width
+    return textWidth
+}
 
 
 // Update
