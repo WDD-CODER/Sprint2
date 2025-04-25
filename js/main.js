@@ -7,7 +7,6 @@ var gPos = {}
 
 
 //  Lists 
-changeTextDecoration()
 
 function onInit() {
     gElCanvas = document.querySelector('canvas');
@@ -50,14 +49,6 @@ function renderImg() {
 
 }
 
-function loadImageToCanvas(imgSrc, onImageReady) {
-    const img = new Image()
-    img.onload = () => {
-        onImageReady(img)
-    }
-    return img.src = imgSrc
-}
-
 function renderLines() {
     const gLines = getGLines()
     if (!gLines.length) return
@@ -70,7 +61,7 @@ function renderText() {
     const gLines = getGLines()
     if (!gLines.length) return
     gLines.forEach(line => {
-        drawText(line.text, line.textPositionX, line.textPositionY, 25, 'Arial')
+        drawText(line.text, line.textPositionX, line.textPositionY, 25, 'Arial', line.color)
     })
 }
 
@@ -98,7 +89,7 @@ function onAddLine(ev) {
     renderLines(lineStartPointX, lineStartPointy, lineHeight)
 }
 
-function drawText(str, textPositionX, textPositionY, textSize = 25, fontFamily = 'Arial', color = 'black') {
+function drawText(str, textPositionX, textPositionY, textSize = 25, fontFamily = 'Arial', color = '#000000') {
     gCtx.font = `${textSize}px ${fontFamily}`
     gCtx.fillStyle = color
     gCtx.textBaseline = 'top'
@@ -127,6 +118,13 @@ function switchBetweenMainContainers() {
         if (el.classList.contains('hidden')) el.classList.remove('hidden')
         else el.classList.add('hidden')
     })
+
+}
+
+function onChangeTextColor(el){
+    saveTextColor(el.value)
+    renderCanvas()
+// const color = el.value
 
 }
 
