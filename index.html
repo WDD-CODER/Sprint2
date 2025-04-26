@@ -33,19 +33,18 @@
                 <canvas></canvas>
             </div>
             <section class="edit-options">
-                <input class="inner-text" type="text" placeholder="Start writing something"
-                    onkeyup="onAddText(this)">
+                <input class="line-text" type="text" placeholder="Start writing something" onkeyup="onTextInput(this)">
                 <div class="line-options">
                     <button class="move-up-line">Move up line</button>
                     <button class="move-down-line">Move down line</button>
-                    <button class="add-line" onclick="onAddLine(event)">Add line</button>
+                    <button class="add-line" onclick="onAddLine()">Add line</button>
                     <button class="delete-line">Delete line</button>
 
                 </div>
                 <br>
                 <div class="text-options">
-                    <input type="number" class="increase-font" placeholder="Increase-font">
-                    <input type="number" class="decrease-font" placeholder="Decrease-font">
+                    <button type="button" class="font-size increase" onclick="onsetFontSize(this)">+</button>
+                    <button type="button" class="font-size decrease" onclick="onsetFontSize(this)">-</button>
                     <button class="align-line-left">line-left</button>
                     <button class="align-line-center">line-center</button>
                     <button class="align-line-right">line-right</button>
@@ -74,7 +73,6 @@
     <footer class="coffe-rights flex justify-content align-items">Made By DanDan</footer>
     <script src="./js/services/meme-service.js"></script>
     <script src="./js/services/storege-service.js"></script>
-    <!-- <script src="./js/services/lines-service.js"></script> -->
     <script src="./js/services/canvas-service.js"></script>
     <script src="./js/services/links-service.js"></script>
     <script src="./js/gallery-controoler.js"></script>

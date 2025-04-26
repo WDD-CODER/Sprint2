@@ -8,14 +8,14 @@ var gPos = {}
 //  Lists 
 
 
-function renderMeme() {    
+function renderMeme() {
     // if (!getGMeme()) return
     const curMeme = getGMeme()
     const curMemeGImg = getImgById(curMeme.selectedImgId)
     reSizeCanvas() // Resize first; this clears canvas internally
     clearCanvas()
     renderImgOnCanvas(curMemeGImg.img)
-    renderLines()
+    renderBorderLine()
     renderText()
 
 }
@@ -45,50 +45,31 @@ function renderImgOnCanvas(img) {
     reSizeCanvasContainer(gElCanvas.width, gElCanvas.height)
 }
 
-function renderLines() {
-    const gMeme = getGMeme()
-    const CurMemeLInes = gMeme.lines
-    if (!CurMemeLInes.length) return
-    CurMemeLInes.forEach(line => {
-        const lineStartPointX = 30
-        const lineStartPointy = 20
-        const lineHeight = 40
-        drawRoundRect(lineStartPointX, lineStartPointy, lineHeight)
+function renderBorderLine() {
+    getGMeme().lines.forEach(line => {
+        drawRoundRect(line.textPositionX - 10, line.textPositionY - 5, line.lineHeight)
         // drawRoundRect(line.lineStartPointX, line.lineStartPointy, line.lineHeight)
     })
 }
 
 function renderText() {
-    const gMeme = getGMeme()
-    const CurMemeText = gMeme.lines
-    if (!CurMemeText.length) return
-    CurMemeText.forEach(line => {
-        // const lineStartPointX = 30
-        // const lineStartPointy = 20
-        // const lineHeight = 40
-        // drawRoundRect(lineStartPointX, lineStartPointy, lineHeight)
-        const lineTextPositionX = 35
-        const lineTextPositionY = 30
-
-        drawText(line.txt, line.Size, line.color, lineTextPositionX, lineTextPositionY, 'Arial')
+    getGMeme().lines.forEach(line => {
+        drawText(line.txt, line.size, line.color, line.textPositionX, line.textPositionY)
     })
 }
 
 
 // Create
-function onAddText(el) {
+
+function onTextInput(el) {
     setLineTxt(el.value)
     renderMeme()
 }
 
-function onAddLine(ev) {
-    // For now by hand 
-    const lineStartPointX = 30
-    const lineStartPointy = 20
-    const lineHeight = 40
-
-    saveNewLine(lineStartPointX, lineStartPointy, lineHeight, ev)
-    renderLines(lineStartPointX, lineStartPointy, lineHeight)
+function onAddLine() {
+    clearTextInput()
+    createNewLine()
+    renderBorderLine()
 }
 
 function drawText(str, textSize = 25, color = '#000000', textPositionX, textPositionY, fontFamily = 'Arial') {
@@ -116,11 +97,24 @@ function measureTextWidthBypX(str) {
 
 
 // Update
+function onsetFontSize(el) {
+    var changeToFontSize = 2
+    if (el.classList.contains('decrease')) changeToFontSize = -2
+    setFontSize(changeToFontSize)
+    setLineHeight(changeToFontSize)
+    renderMeme()
+}
 
 function onChangeTextColor(el) {
     saveTextColor(el.value)
     renderMeme()
 }
 
+function saveTextTOLine() {
 
+}
 // Delete
+
+function clearTextInput(){
+    document.querySelector('.line-text').value = '';
+}

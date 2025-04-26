@@ -51,7 +51,8 @@ function _createNewGMeme() {
         selectedLineIdx: 0,
         lines: [
             {
-                txt: '', size: 20, color: 'black'
+                txt: '', size: 20, color: 'black', textPositionX: 35, textPositionY: 30, lineHeight: 30,
+
             }
         ]
     }
@@ -64,16 +65,26 @@ function setImg(el) {
     _createMemeImg(el)
 }
 
+function setLineHeight(setSize) {
+    return gMeme.lines[gMeme.lines.length - 1].lineHeight += +setSize
+}
+
+function setFontSize(setSize) {
+    return gMeme.lines[gMeme.lines.length - 1].size += +setSize
+}
 
 function setLineTxt(txt) {
-    const curLine = gMeme.lines[gMeme.lines.length - 1]
-    return curLine.txt = txt
+    return gMeme.lines[gMeme.lines.length - 1].txt = txt
 }
 
 
-function saveNewLine(lineStartPointX = 30, lineStartPointy = 20, lineHeight = 40, ev) {
-    const line = { lineStartPointX, lineStartPointy, lineHeight }
-    gLines.push(line)
+function createNewLine() {
+    let lastLine = gMeme.lines[gMeme.lines.length - 1]
+    // const  {txt , size , color , textPositionX , textPositionY, lineHeight} = curLine    
+    const newLine = {...lastLine}
+    if (gMeme.lines.length > 0) newLine.textPositionY += gMeme.lines.length + 50
+    gMeme.lines.push(newLine)
+    console.log("🚀 ~ createNewLine ~  gMeme.lines:",  gMeme.lines)
 }
 
 function saveLineText(lineIdx, value) {
