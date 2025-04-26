@@ -1,32 +1,75 @@
 'use strict';
-var gImg 
+var gImgs = []
+// { id: 1, url: 'img/1.jpg', keywords: ['funny', 'cat'] }
+var gMeme
+var gKeywordSearchCountMap = { 'funny': 12, 'cat': 16, 'baby': 2 }
+
+// var gImgs =[]
+
 var gLines = []
 
 
 // Lists
 
-function getGImg(){
-    return gImg;
+function getImgById(id) {
+    const curImgIdx = gImgs.findIndex(img => img.id === id)
+    return gImgs[curImgIdx];
 }
 
-function getLineIdxByLineId(lineId) {
-    return gLines.findIndex((line) => line.Id === lineId)
+function getGImgs() {
+    return gImgs;
 }
 
-function getGLines() {
-    return gLines
+function getGMeme() {
+    return gMeme
 }
 
 // Create
 
-function saveImgObject(el) {
-        const img = new Image()
-        img.onload = () => {
-            gImg = img
-            renderImg(img)
+function _createMemeImg(el) {
+    //First load the main image and then create the object
+    var MemeImg = {}
+    const img = new Image()
+    img.onload = () => {
+        MemeImg = {
+            id: +el.id,
+            url: el.src,
+            keywords: [],
+            img: img
         }
-        img.src = el.src
+        gImgs.push(MemeImg)
+        // Create GMeme object
+        _createNewGMeme()
+        renderImgOnCanvas(img)
+    }
+    img.src = el.src
 }
+
+function _createNewGMeme() {
+    gMeme = {
+        selectedImgId: +gImgs[gImgs.length - 1].id,
+        selectedLineIdx: 0,
+        lines: [
+            {
+                txt: '', size: 20, color: 'black'
+            }
+        ]
+    }
+}
+
+
+// Update
+
+function setImg(el) {
+    _createMemeImg(el)
+}
+
+
+function setLineTxt(txt) {
+    const curLine = gMeme.lines[gMeme.lines.length - 1]
+    return curLine.txt = txt
+}
+
 
 function saveNewLine(lineStartPointX = 30, lineStartPointy = 20, lineHeight = 40, ev) {
     const line = { lineStartPointX, lineStartPointy, lineHeight }
@@ -43,16 +86,16 @@ function saveLineTextWidth(lineIdx, value) {
 }
 
 
-function saveTextPosition(lineIdx){
+function saveTextPosition(lineIdx) {
     const textPosition = _calculateTextPositionOnLine(lineIdx)
     gLines[lineIdx].textPositionX = textPosition.x
     gLines[lineIdx].textPositionY = textPosition.y
-   return
+    return
 }
 
 
-function saveTextColor(color){
-    gLines[0].color = color
+function saveTextColor(color) {
+    return gMeme.lines[gMeme.lines.length - 1].color = color
 }
 
 // Helpers
@@ -61,6 +104,6 @@ function _calculateTextPositionOnLine(lineIdx) {
     const textPosition = {}
     textPosition.x = gLines[lineIdx].lineStartPointX + 10
     textPosition.y = gLines[lineIdx].lineStartPointy + 10
-    return  textPosition
+    return textPosition
 }
 

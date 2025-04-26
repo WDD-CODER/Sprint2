@@ -1,3 +1,4 @@
+'use strict';
 function getEvPos(ev) {
     const TOUCH_EVS = ['touchstart', 'touchmove', 'touchend']
 

@@ -2,24 +2,27 @@
 
 var gElCanvas
 var gCtx
-// var gImg
 var gPos = {}
 
 
 //  Lists 
 
-function onInit() {
-    gElCanvas = document.querySelector('canvas');
-    gCtx = gElCanvas.getContext('2d')
-}
 
-function renderCanvas() {
+function renderMeme() {    
+    // if (!getGMeme()) return
+    const curMeme = getGMeme()
+    const curMemeGImg = getImgById(curMeme.selectedImgId)
     reSizeCanvas() // Resize first; this clears canvas internally
-    gCtx.fillStyle = "white"
-    gCtx.fillRect(0, 0, gElCanvas.width, gElCanvas.height)
-    renderImg()
+    clearCanvas()
+    renderImgOnCanvas(curMemeGImg.img)
     renderLines()
     renderText()
+
+}
+
+function clearCanvas() {
+    gCtx.fillStyle = "white"
+    gCtx.fillRect(0, 0, gElCanvas.width, gElCanvas.height)
 }
 
 function reSizeCanvasContainer(width, height) {
@@ -34,49 +37,48 @@ function reSizeCanvas() {
     gElCanvas.height = elContainer.offsetHeight;
 }
 
-function onChooseImg(el) {
-    saveImgObject(el)
-    switchBetweenMainContainers()
-    renderCanvas()
-}
 
-function renderImg() {
-    const img = getGImg()
-    if (!img) return
+function renderImgOnCanvas(img) {
     gElCanvas.height = (img.naturalHeight / img.naturalWidth) * gElCanvas.width
     gCtx.drawImage(img, 0, 0, gElCanvas.width - 2, gElCanvas.height - 2)
+    //Does another double check and optimize the canvas container after putting the picture
     reSizeCanvasContainer(gElCanvas.width, gElCanvas.height)
-
 }
 
 function renderLines() {
-    const gLines = getGLines()
-    if (!gLines.length) return
-    gLines.forEach(line => {
-        drawRoundRect(line.lineStartPointX, line.lineStartPointy, line.lineHeight)
+    const gMeme = getGMeme()
+    const CurMemeLInes = gMeme.lines
+    if (!CurMemeLInes.length) return
+    CurMemeLInes.forEach(line => {
+        const lineStartPointX = 30
+        const lineStartPointy = 20
+        const lineHeight = 40
+        drawRoundRect(lineStartPointX, lineStartPointy, lineHeight)
+        // drawRoundRect(line.lineStartPointX, line.lineStartPointy, line.lineHeight)
     })
 }
 
 function renderText() {
-    const gLines = getGLines()
-    if (!gLines.length) return
-    gLines.forEach(line => {
-        drawText(line.text, line.textPositionX, line.textPositionY, 25, 'Arial', line.color)
+    const gMeme = getGMeme()
+    const CurMemeText = gMeme.lines
+    if (!CurMemeText.length) return
+    CurMemeText.forEach(line => {
+        // const lineStartPointX = 30
+        // const lineStartPointy = 20
+        // const lineHeight = 40
+        // drawRoundRect(lineStartPointX, lineStartPointy, lineHeight)
+        const lineTextPositionX = 35
+        const lineTextPositionY = 30
+
+        drawText(line.txt, line.Size, line.color, lineTextPositionX, lineTextPositionY, 'Arial')
     })
 }
 
+
 // Create
 function onAddText(el) {
-    if (!getGLines().length) {
-        alert('First must add a line')
-        return
-    }
-    const curLineIdx = 0
-    const textWidth = measureTextWidthBypX(el.value)
-    saveLineText(curLineIdx, el.value)
-    saveLineTextWidth(curLineIdx, textWidth)
-    saveTextPosition(curLineIdx)
-    renderCanvas()
+    setLineTxt(el.value)
+    renderMeme()
 }
 
 function onAddLine(ev) {
@@ -89,7 +91,7 @@ function onAddLine(ev) {
     renderLines(lineStartPointX, lineStartPointy, lineHeight)
 }
 
-function drawText(str, textPositionX, textPositionY, textSize = 25, fontFamily = 'Arial', color = '#000000') {
+function drawText(str, textSize = 25, color = '#000000', textPositionX, textPositionY, fontFamily = 'Arial') {
     gCtx.font = `${textSize}px ${fontFamily}`
     gCtx.fillStyle = color
     gCtx.textBaseline = 'top'
@@ -97,6 +99,7 @@ function drawText(str, textPositionX, textPositionY, textSize = 25, fontFamily =
 }
 
 function drawRoundRect(startPointX, startPointY, lineHeight, color = '#000000') {
+
     const width = document.querySelector('.canvas-container').offsetWidth - (startPointX * 2);
     gCtx.beginPath()
     gCtx.roundRect(startPointX, startPointY, width, lineHeight, lineHeight / 2)
@@ -113,19 +116,10 @@ function measureTextWidthBypX(str) {
 
 
 // Update
-function switchBetweenMainContainers() {
-    document.querySelectorAll('.container').forEach(el => {
-        if (el.classList.contains('hidden')) el.classList.remove('hidden')
-        else el.classList.add('hidden')
-    })
 
-}
-
-function onChangeTextColor(el){
+function onChangeTextColor(el) {
     saveTextColor(el.value)
-    renderCanvas()
-// const color = el.value
-
+    renderMeme()
 }
 
 
