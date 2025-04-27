@@ -10,7 +10,6 @@ function onInit() {
 
 function renderGallery() {
     const imgs = getGImgs();
-    console.log("🚀 ~ renderGalleryImges ~ imgs:", imgs)
     for (let i = 0; i < 4; i++) {
         document.querySelector('.gallery-pics').innerHTML += `
                          <figure>

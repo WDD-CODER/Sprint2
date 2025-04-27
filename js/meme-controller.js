@@ -7,15 +7,12 @@ var gPos = {}
 
 //  Lists 
 
-
 function renderMeme() {
-    // if (!getGMeme()) return
     const curMeme = getGMeme()
     const curMemeGImg = getImgById(curMeme.selectedImgId)
     reSizeCanvas() // Resize first; this clears canvas internally
     clearCanvas()
     renderImgOnCanvas(curMemeGImg.img)
-    renderBorderLine()
     renderText()
 
 }
@@ -46,15 +43,15 @@ function renderImgOnCanvas(img) {
 }
 
 function renderBorderLine() {
-    getGMeme().lines.forEach(line => {
-        drawRoundRect(line.textPositionX - 10, line.textPositionY - 5, line.lineHeight)
-        // drawRoundRect(line.lineStartPointX, line.lineStartPointy, line.lineHeight)
-    })
+    const gMeme = getGMeme()
+    const line = gMeme.lines[gMeme.selectedLineIdx]
+    drawRoundRect(line.textPositionX - 10, line.textPositionY - 5, line.lineHeight, line.textWidth)
 }
 
 function renderText() {
     getGMeme().lines.forEach(line => {
         drawText(line.txt, line.size, line.color, line.textPositionX, line.textPositionY)
+        renderBorderLine()
     })
 }
 
@@ -62,6 +59,7 @@ function renderText() {
 // Create
 
 function onTextInput(el) {
+    getTextWidth()
     setLineTxt(el.value)
     renderMeme()
 }
@@ -69,7 +67,8 @@ function onTextInput(el) {
 function onAddLine() {
     clearTextInput()
     createNewLine()
-    renderBorderLine()
+    renderMeme()
+    // renderBorderLine()
 }
 
 function drawText(str, textSize = 25, color = '#000000', textPositionX, textPositionY, fontFamily = 'Arial') {
@@ -79,29 +78,29 @@ function drawText(str, textSize = 25, color = '#000000', textPositionX, textPosi
     gCtx.fillText(str, textPositionX, textPositionY)
 }
 
-function drawRoundRect(startPointX, startPointY, lineHeight, color = '#000000') {
-
-    const width = document.querySelector('.canvas-container').offsetWidth - (startPointX * 2);
+function drawRoundRect(startPointX, startPointY,lineHeight,  textWidth ,  color = '#000000') {
+    const lineWidth = textWidth + 32.5 || document.querySelector('.canvas-container').offsetWidth - (startPointX * 2);
     gCtx.beginPath()
-    gCtx.roundRect(startPointX, startPointY, width, lineHeight, lineHeight / 2)
+    gCtx.roundRect(startPointX, startPointY, lineWidth, lineHeight, lineHeight / 2)
     gCtx.strokeStyle = color
     gCtx.stroke()
 }
 
 // Read
 
-function measureTextWidthBypX(str) {
-    const textWidth = gCtx.measureText(str).width
-    return textWidth
-}
 
 
 // Update
+
+function onSetGMemeSelectedLine(el) {
+    setGMemeSelectedLine(el)
+    renderMeme()
+    renderBorderLine()
+}
+
 function onsetFontSize(el) {
-    var changeToFontSize = 2
-    if (el.classList.contains('decrease')) changeToFontSize = -2
-    setFontSize(changeToFontSize)
-    setLineHeight(changeToFontSize)
+    setFontSize(changeByELClassListContainsDecreaseOrIncrease(2, el))
+    setLineHeight(changeByELClassListContainsDecreaseOrIncrease(2, el))
     renderMeme()
 }
 
@@ -110,11 +109,16 @@ function onChangeTextColor(el) {
     renderMeme()
 }
 
-function saveTextTOLine() {
-
-}
 // Delete
 
-function clearTextInput(){
+function clearTextInput() {
     document.querySelector('.line-text').value = '';
+}
+
+// Helpers
+
+function getTextWidth() {
+    const textMetrics = gCtx.measureText(gMeme.lines[gMeme.selectedLineIdx].txt)
+    const textWidth = textMetrics.width
+    return  setTextWidth(textWidth)
 }

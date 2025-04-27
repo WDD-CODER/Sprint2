@@ -4,11 +4,6 @@ var gImgs = []
 var gMeme
 var gKeywordSearchCountMap = { 'funny': 12, 'cat': 16, 'baby': 2 }
 
-// var gImgs =[]
-
-var gLines = []
-
-
 // Lists
 
 function getImgById(id) {
@@ -39,20 +34,25 @@ function _createMemeImg(el) {
         }
         gImgs.push(MemeImg)
         // Create GMeme object
-        _createNewGMeme()
+        _createNewGMeme(MemeImg.id)
         renderImgOnCanvas(img)
     }
     img.src = el.src
 }
 
-function _createNewGMeme() {
+function _createNewGMeme(ImgId) {
     gMeme = {
-        selectedImgId: +gImgs[gImgs.length - 1].id,
+        selectedImgId: ImgId,
         selectedLineIdx: 0,
         lines: [
             {
-                txt: '', size: 20, color: 'black', textPositionX: 35, textPositionY: 30, lineHeight: 30,
-
+                txt: '',
+                size: 20,
+                color: 'black',
+                textPositionX: 35,
+                textPositionY: 30,
+                lineHeight: 30,
+            
             }
         ]
     }
@@ -60,6 +60,15 @@ function _createNewGMeme() {
 
 
 // Update
+
+function setGMemeSelectedLine(el) {
+    let change = changeByELClassListContainsDecreaseOrIncrease(1, el)
+
+    if (change < 0 && gMeme.selectedLineIdx <= 0) return
+    if (change > 0 && gMeme.selectedLineIdx >= gMeme.lines.length - 1) return
+    gMeme.selectedLineIdx += change
+
+}
 
 function setImg(el) {
     _createMemeImg(el)
@@ -74,34 +83,34 @@ function setFontSize(setSize) {
 }
 
 function setLineTxt(txt) {
-    return gMeme.lines[gMeme.lines.length - 1].txt = txt
+    gMeme.selectedLineIdx
+    return gMeme.lines[gMeme.selectedLineIdx].txt = txt
 }
 
+function GetLastLine() {
+    return gMeme.lines[gMeme.lines.length - 1]
+}
 
 function createNewLine() {
-    let lastLine = gMeme.lines[gMeme.lines.length - 1]
-    // const  {txt , size , color , textPositionX , textPositionY, lineHeight} = curLine    
-    const newLine = {...lastLine}
-    if (gMeme.lines.length > 0) newLine.textPositionY += gMeme.lines.length + 50
+    let lastLine = GetLastLine()
+    const { textPositionX, textPositionY } = lastLine
+    const newLine = {
+         txt: '',
+          size: 20,
+           color: 'black',
+            textPositionX,
+             textPositionY,
+              lineHeight: 30,
+             }
+    newLine.textPositionY += 30
+    gMeme.selectedLineIdx++
     gMeme.lines.push(newLine)
-    console.log("🚀 ~ createNewLine ~  gMeme.lines:",  gMeme.lines)
+    gMeme.selectedLineIdx = gMeme.lines.length - 1
+    renderBorderLine()
 }
 
-function saveLineText(lineIdx, value) {
-    return gLines[lineIdx].text = value
-}
-
-
-function saveLineTextWidth(lineIdx, value) {
-    return gLines[lineIdx].textWidth = value
-}
-
-
-function saveTextPosition(lineIdx) {
-    const textPosition = _calculateTextPositionOnLine(lineIdx)
-    gLines[lineIdx].textPositionX = textPosition.x
-    gLines[lineIdx].textPositionY = textPosition.y
-    return
+function setTextWidth(textWidth) {
+    return gMeme.lines[gMeme.selectedLineIdx].textWidth = textWidth
 }
 
 
@@ -116,5 +125,10 @@ function _calculateTextPositionOnLine(lineIdx) {
     textPosition.x = gLines[lineIdx].lineStartPointX + 10
     textPosition.y = gLines[lineIdx].lineStartPointy + 10
     return textPosition
+}
+
+function changeByELClassListContainsDecreaseOrIncrease(factor, el) {
+    if (el.classList.contains('decrease')) return -factor
+    else return factor
 }
 

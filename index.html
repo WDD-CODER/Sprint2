@@ -35,8 +35,8 @@
             <section class="edit-options">
                 <input class="line-text" type="text" placeholder="Start writing something" onkeyup="onTextInput(this)">
                 <div class="line-options">
-                    <button class="move-up-line">Move up line</button>
-                    <button class="move-down-line">Move down line</button>
+                    <button class="line-selected increase" onclick="onSetGMemeSelectedLine(this)">Move line down </button>
+                    <button class="line-selected decrease" onclick="onSetGMemeSelectedLine(this)">Move line up</button>
                     <button class="add-line" onclick="onAddLine()">Add line</button>
                     <button class="delete-line">Delete line</button>
 
