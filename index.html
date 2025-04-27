@@ -30,15 +30,15 @@
         <section class="meme-editor container justify-content align-items hidden">
             <h2 class="gallery-header">Meme added window</h2>
             <div class="canvas-container" onresize="renderCanvas()">
-                <canvas></canvas>
+                <canvas onmousedown="onClickOnLineInCanvas(event)" ontouchstart="onClickOnLineInCanvas(event)"></canvas>
             </div>
             <section class="edit-options">
-                <input class="line-text" type="text" placeholder="Start writing something" onkeyup="onTextInput(this)">
+                <input class="line-text" type="text" placeholder="Start writing something" oninput="onTextInput(this)">
                 <div class="line-options">
-                    <button class="line-selected increase" onclick="onSetGMemeSelectedLine(this)">Move line down </button>
-                    <button class="line-selected decrease" onclick="onSetGMemeSelectedLine(this)">Move line up</button>
+                    <button class="line-selected increase" onclick="onSwitchGMemeSelectedLine(this)">Move line down </button>
+                    <button class="line-selected decrease" onclick="onSwitchGMemeSelectedLine(this)">Move line up</button>
                     <button class="add-line" onclick="onAddLine()">Add line</button>
-                    <button class="delete-line">Delete line</button>
+                    <button class="delete-line" onclick="onDeleteLine()">Delete line</button>
 
                 </div>
                 <br>
@@ -48,7 +48,7 @@
                     <button class="align-line-left">line-left</button>
                     <button class="align-line-center">line-center</button>
                     <button class="align-line-right">line-right</button>
-                    <input type="color" class="text-color" onchange="onChangeTextColor(this)">
+                    <input type="color" class="text-color" onchange="onChangeTextColor(this,event)">
                     <button class="text-underline" onchange="changeTextDecoration()">text-underline</button>
                     <input type="text" list="font-family" placeholder="Choose fond family">
                 </div>
