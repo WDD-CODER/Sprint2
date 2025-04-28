@@ -8,66 +8,76 @@
     <title>Document</title>
 </head>
 
-<body class="main-layout" onload="onInit()">
+<body class="main-layout" onload="onInitGallery()">
     <header class="main-header flex align-items space-between">
-        <article class="logo">MemeMe!!!</article>
-        <nav class="main-nav">
-            <ul class="main-nav-list flex clean-list">
-                <li><button class="go-to-screen">Gallery</button></li>
-                <li><button class="go-to-screen">Editor</button></li>
-                <li><button class="go-to-screen">Saved Memes</button></li>
+        <article class="logo">Meme Me!!!</article>
+        <nav class="navigation">
+            <ul class="navigation-list flex clean-list">
+                <li><a href="#" class="go-to-screen">Gallery</a></li>
+                <li><a href="#" class="go-to-screen">Editor</a></li>
+                <li><a href="#" class="go-to-screen">Saved Memes</a></li>
             </ul>
         </nav>
     </header>
     <main class="main-content">
         <button onclick="SwitchBetweenMainContainers()">switch</button>
-        <section class="main-gallery container">
-            <h2 class="gallery-header">Main picture gallery</h2>
+        <section class="gallery container">
+            <section class="Search-bar flex align-items space-around">
+                <input class="line-text" type="text" placeholder="What you're searching for?"
+                    oninput="onTextInput(this)">
+                <div class="canvas-container-search"><canvas width="100" height="100" class="Search-canvas"></canvas>
+                </div>
+            </section>
+            <h2 class="container-header justify-self">Main Picture Gallery</h2>
             <section class="gallery-pics">
             </section>
         </section>
 
-        <section class="meme-editor container justify-content align-items hidden">
-            <h2 class="gallery-header">Meme added window</h2>
-            <div class="canvas-container" onresize="renderCanvas()">
-                <canvas onmousedown="onClickOnLineInCanvas(event)" ontouchstart="onClickOnLineInCanvas(event)"></canvas>
-            </div>
-            <section class="edit-options">
-                <input class="line-text" type="text" placeholder="Start writing something" oninput="onTextInput(this)">
-                <div class="line-options">
-                    <button class="line-selected increase" onclick="onSwitchGMemeSelectedLine(this)">Move line down </button>
-                    <button class="line-selected decrease" onclick="onSwitchGMemeSelectedLine(this)">Move line up</button>
-                    <button class="add-line" onclick="onAddLine()">Add line</button>
-                    <button class="delete-line" onclick="onDeleteLine()">Delete line</button>
-
+        <section class="meme container hidden">
+            <h2 class="container-header justify-self">Meme Edit Window</h2>
+            <div class="meme-editor justify-content">
+                <div class="canvas-container" onresize="renderCanvas()">
+                    <canvas class="meme-canvas" onmousedown="onClickLineInCanvas(event)"
+                        ontouchstart="onClickLineInCanvas(event)"></canvas>
                 </div>
-                <br>
-                <div class="text-options">
-                    <button type="button" class="font-size increase" onclick="onsetFontSize(this)">+</button>
-                    <button type="button" class="font-size decrease" onclick="onsetFontSize(this)">-</button>
-                    <button class="align-line-left">line-left</button>
-                    <button class="align-line-center">line-center</button>
-                    <button class="align-line-right">line-right</button>
-                    <input type="color" class="text-color" onchange="onChangeTextColor(this,event)">
-                    <button class="text-underline" onchange="changeTextDecoration()">text-underline</button>
-                    <input type="text" list="font-family" placeholder="Choose fond family">
-                </div>
-                <br>
-                <div class="links">
-                    <a href="#" download="your-pic.jpg" onclick="onDownloadImg(this)">Download</a>
-                    <button class="save-Pic" onclick="onSavePicture()">Save Picture</button>
+                <section class="edit-options space-between">
+                    <input class="line-text" type="text" placeholder="Start writing something"
+                        onclick="renderBorderLine()" oninput="onTextInput(this)">
+                    <div class="line-options">
+                        <button class="line-selected increase" onclick="onSetSelectedLine(this)">Move line down
+                        </button>
+                        <button class="line-selected decrease" onclick="onSetSelectedLine(this)">Move line up</button>
+                        <button class="add-line" onclick="onAddLine()">Add line</button>
+                        <button class="delete-line" onclick="onDeleteLine()">Delete line</button>
+                    </div>
+                    <div class="text-options">
+                        <button type="button" class="font-size increase" onclick="onsetFontSize(this)">+</button>
+                        <button type="button" class="font-size decrease" onclick="onsetFontSize(this)">-</button>
+                        <button class="align-line-left">line-left</button>
+                        <button class="align-line-center">line-center</button>
+                        <button class="align-line-right">line-right</button>
+                        <button class="text-underline" onchange="changeTextDecoration()">text-underline</button>
+                    </div>
+                    <div class="inputs">
+                        <input type="text" list="font-family" placeholder="Choose fond family">
+                        <input type="color" class="text-color" onchange="onsetTextColor(this,event)">
+                    </div>
+                    <div class="links">
+                        <button><a href="#" download="your-pic.jpg" onclick="onDownloadImg(this)">Download</a></button>
+                        <button class="save-Pic" onclick="onSavePicture()">Save Picture</button>
+                        <button class="" type="submit">Share img to facebook:</button>
 
-                    <form method="POST" enctype="multipart/form-data" onsubmit="onShareImg(event)">
-                        <button class="btn" type="submit">Share img to facebook:</button>
+                    </div>
+                    <form class="upload-to-facebook" method="POST" enctype="multipart/form-data"
+                        onsubmit="onShareImg(event)">
                     </form>
-                </div>
+                    <datalist id="font-family">
+                        <option value="impact">impact</option>
+                        <option value="arial">arial</option>
+                    </datalist>
 
-                <datalist id="font-family">
-                    <option value="impact">impact</option>
-                    <option value="arial">arial</option>
-                </datalist>
-
-            </section>
+            </div>
+        </section>
         </section>
     </main>
     <footer class="coffe-rights flex justify-content align-items">Made By DanDan</footer>

@@ -6,8 +6,8 @@ var gKeywordSearchCountMap = { 'funny': 12, 'cat': 16, 'baby': 2 }
 
 // Lists
 
-function getSelectedLineIdx(){
-return gMeme.selectedLineIdx
+function getSelectedLineIdx() {
+    return gMeme.selectedLineIdx
 }
 
 function getLineIdxByPosition(ev) {
@@ -100,11 +100,16 @@ function setImg(el) {
 }
 
 function setLineHeight(setSize) {
-    return gMeme.lines[gMeme.selectedLineIdx].lineHeight += +setSize
+    const setSpaceBetweenLines = 20
+    return gMeme.lines[gMeme.selectedLineIdx].lineHeight = setSize + setSpaceBetweenLines
 }
 
-function setFontSize(setSize) {
-    return gMeme.lines[gMeme.selectedLineIdx].size += +setSize
+function setFontSize(size) {
+    const line = gMeme.lines[gMeme.selectedLineIdx]
+    line.size += size
+    gCtx.font = `${line.size}px Arial`
+    setLineHeight(size)
+    return
 }
 
 function setLineTxt(txt) {
@@ -118,19 +123,19 @@ function GetLastLine() {
 
 function createNewLine() {
     let lastLine = GetLastLine()
-    const { textPositionX, textPositionY } = lastLine
+    var { textPositionX, textPositionY, lineHeight } = lastLine
     const newLine = {
         txt: '',
         size: 20,
         color: '#000000',
         textPositionX,
         textPositionY,
-        lineHeight: 30,
+        lineHeight,
     }
-    newLine.textPositionY += 30
+    newLine.textPositionY += lineHeight
     gMeme.selectedLineIdx++
     gMeme.lines.push(newLine)
-    // Make sure when creating a new line always create it at the end
+    // Make sure when creating a new line always set it to the last idx
     gMeme.selectedLineIdx = gMeme.lines.length - 1
     renderBorderLine()
 }
@@ -146,11 +151,10 @@ function saveTextColor(color) {
 
 // Delete
 
-function DeleteLineFromGMeme(){
-    return gMeme.lines.splice(gMeme.selectedLineIdx, 1)    
+function DeleteLineFromGMeme() {
+    gMeme.lines.splice(gMeme.selectedLineIdx, 1)
+    gMeme.selectedLineIdx--
 }
-
-
 
 
 // Helpers

@@ -3,7 +3,5 @@
     grid-template-columns: 1fr 90vw 1fr;
     
     gap: 1em;
-
-
-    background-color: var(--clr-back-primary);
+    background-color: var(--background-color-primary);
 }

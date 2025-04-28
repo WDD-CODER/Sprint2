@@ -1,5 +1,5 @@
 footer{
     grid-column: 1/ -1;
     padding: 1em;
-    background-color: var(--clr-back-primary-1);
+    background-color: var(--color-primary);
 }

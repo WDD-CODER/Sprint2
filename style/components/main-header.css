@@ -2,7 +2,7 @@
 .main-header{
     grid-row: 1;
     grid-column: 1 / -1;
-    padding: 1em;
-    border-bottom: 1px black solid;
-    background-color: var(--clr-back-primary-1);
+    padding: 1em 80px;
+    border-bottom: 1px var(--color-component-border) solid;
+    background-color: var(--color-primary);
 }

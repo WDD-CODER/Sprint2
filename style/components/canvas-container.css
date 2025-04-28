@@ -1,6 +1,14 @@
-.canvas-container{
-    grid-column:1;
+.canvas-container {
+    grid-column: 1;
     width: 100%;
     /* border-radius: var(--border-radios-base); */
-border: 1px black solid;
+    border: 1px black solid;
+}
+
+.canvas-container-search {
+    
+    grid-column: 1;
+    width: 50%;
+    /* border-radius: var(--border-radios-base); */
+    border: 1px black solid;
 }

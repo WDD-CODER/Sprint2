@@ -1,0 +1,13 @@
+button {
+    font-family:var(--btn-font-family);
+    
+    padding: .2em;
+
+    border-radius:var(--);
+    border-color: var(--color-button-border);
+    background-color: var(--color-primary);
+}
+
+button:hover {
+    background-color: var(--color-hover-primary);
+}
