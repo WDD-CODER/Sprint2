@@ -7,19 +7,21 @@ var gPos = {}
 
 //  Lists 
 
-function renderMeme() {
+function onIniMemeEdit() {
+    gElCanvas = document.querySelector('.meme-canvas');
+    gCtx = gElCanvas.getContext('2d')
+    // renderGallery()
+}
+
+function renderGMeme() {
     const curMeme = getGMeme()
     const curMemeGImg = getImgById(curMeme.selectedImgId)
     reSizeCanvas() // Resize first; this clears canvas internally
     clearCanvas()
     renderImgOnCanvas(curMemeGImg.img)
-    renderText()
-    renderColorInputValue()
-}
-
-function clearCanvas() {
-    gCtx.fillStyle = "white"
-    gCtx.fillRect(0, 0, gElCanvas.width, gElCanvas.height)
+    renderLineText()
+    renderLineColorInputValue()
+    renderLineTextInput()
 }
 
 function reSizeCanvasContainer(width, height) {
@@ -34,28 +36,34 @@ function reSizeCanvas() {
     gElCanvas.height = elContainer.offsetHeight;
 }
 
-
 function renderImgOnCanvas(img) {
     gElCanvas.height = (img.naturalHeight / img.naturalWidth) * gElCanvas.width
-    gCtx.drawImage(img, 0, 0, gElCanvas.width - 2, gElCanvas.height - 2)
-    //Does another double check and optimize the canvas container after putting the picture
+    gCtx.drawImage(img, 0, 0, gElCanvas.width - 1, gElCanvas.height - 1)
+    // optimize the canvas container after putting the picture
     reSizeCanvasContainer(gElCanvas.width, gElCanvas.height)
 }
-// I need to make your smarter calculation so it will increase.taking in consideration the growingof the pixel
-function renderBorderLine() {
-    const gMeme = getGMeme()
-    const line = gMeme.lines[gMeme.selectedLineIdx]
-    drawRoundRect(line.textPositionX - 10, line.textPositionY - 5, line.lineHeight, line.textWidth)
-}
+//still new line appear in wrong place
 
-function renderText() {
+// needs to fix line showing-up after out of focus 
+
+// I need to deal with the border. It shouldn't show if the user presses line down or up. 
+// if there were no earlier lines insert
+
+function renderLineText() {
     getGMeme().lines.forEach(line => {
         drawText(line.txt, line.size, line.color, line.textPositionX, line.textPositionY)
         renderBorderLine()
     })
 }
 
-function renderColorInputValue() {
+function renderBorderLine() {
+    const gMeme = getGMeme()
+    const line = gMeme.lines[gMeme.selectedLineIdx]
+    if (!line.textWidth) line.textWidth = document.querySelector('.canvas-container').offsetWidth - (line.textPositionX * 2);
+    drawRoundRect(line.textPositionX - 5, line.textPositionY - 2.5, line.size + 3, 15 + line.textWidth)
+}
+
+function renderLineColorInputValue() {
     const textColorInput = document.querySelector('.text-color')
     const gMemeLines = getGMeme().lines
     if (!gMemeLines.length) return
@@ -65,15 +73,16 @@ function renderColorInputValue() {
 // Create
 
 function onTextInput(el) {
-    getTextWidth()
     setLineTxt(el.value)
-    renderMeme()
+    getTextWidth()
+    renderGMeme()
 }
 
 function onAddLine() {
     createNewLine()
-    moveFocusToTextInput()
-    renderMeme()
+    renderLineTextInput()
+    renderBorderLine()
+    renderGMeme()
 }
 
 function drawText(str, textSize = 25, color = '#000000', textPositionX, textPositionY, fontFamily = 'Arial') {
@@ -83,8 +92,7 @@ function drawText(str, textSize = 25, color = '#000000', textPositionX, textPosi
     gCtx.fillText(str, textPositionX, textPositionY)
 }
 
-function drawRoundRect(startPointX, startPointY, lineHeight, textWidth, color = '#000000') {
-    const lineWidth = textWidth + 32.5 || document.querySelector('.canvas-container').offsetWidth - (startPointX * 2);
+function drawRoundRect(startPointX, startPointY, lineHeight, lineWidth, color = '#000000') {
     gCtx.beginPath()
     gCtx.roundRect(startPointX, startPointY, lineWidth, lineHeight, lineHeight / 2)
     gCtx.strokeStyle = color
@@ -92,7 +100,6 @@ function drawRoundRect(startPointX, startPointY, lineHeight, textWidth, color = 
 }
 
 // Read
-
 
 function getCanvasContainer() {
     const gMeme = getGMeme()
@@ -108,51 +115,53 @@ function getTextWidth() {
 // Update
 
 
-function onClickOnLineInCanvas(ev) {
+function onClickLineInCanvas(ev) {
     var lineIdx = getLineIdxByPosition(ev)
     if (lineIdx === null) return
     setGMemeSelectedLineIdxTo(lineIdx)
-    renderMeme()
-    // Make sure Once lying Check user goes to text input
+    renderGMeme()
+    // Make sure Once lying Check user goes to text input. Didn't find a way to do it
+    //  not with requestAnimationFrame or set timeout
     requestAnimationFrame(() => {
-        moveFocusToTextInput()
+        renderLineTextInput()
     })
 }
-
-function moveFocusToTextInput() {
+function renderLineTextInput() {
     const lineIdx = getSelectedLineIdx()
     const txtInput = document.querySelector('.line-text')
     txtInput.value = getGMeme().lines[lineIdx].txt
     txtInput.focus()
-    // if (elInput) txtInput.focus()
 }
 
 
-// I need to deal with the border. It shouldn't show if the user presses line down or up. 
-// if there waere no earleyer lines insert
 
-function onSwitchGMemeSelectedLine(el, lineIdx) {
+function onSetSelectedLine(el, lineIdx) {
     setGMemeSelectedLine(el, lineIdx)
-    renderMeme()
+    renderGMeme()
     renderBorderLine()
 }
 
 function onsetFontSize(el) {
-    setFontSize(IncreaseOrDecreaseByFactor(2, el))
-    setLineHeight(IncreaseOrDecreaseByFactor(4, el))
-    renderMeme()
+    setFontSize(IncreaseOrDecreaseByFactor(1, el))
+    getTextWidth()
+    renderGMeme()
 }
 
-function onChangeTextColor(el) {
+function onsetTextColor(el) {
     saveTextColor(el.value)
-    renderMeme()
+    renderGMeme()
 }
 
 // Delete
 
-function onDeleteLine(){
+function clearCanvas() {
+    gCtx.fillStyle = "white"
+    gCtx.fillRect(0, 0, gElCanvas.width, gElCanvas.height)
+}
+
+function onDeleteLine() {
     DeleteLineFromGMeme()
-    renderMeme()
+    renderGMeme()
 }
 
 // Helpers

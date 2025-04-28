@@ -2,8 +2,8 @@
 
 
 // Lists
-function onInit() {
-    gElCanvas = document.querySelector('canvas');
+function onInitGallery() {
+    gElCanvas = document.querySelector('.Search-canvas');
     gCtx = gElCanvas.getContext('2d')
     renderGallery()
 }
@@ -33,6 +33,7 @@ function SwitchBetweenMainContainers() {
 
 function onImgSelect(el) {
     SwitchBetweenMainContainers()
+    onIniMemeEdit()
     setImg(el)
 }
 

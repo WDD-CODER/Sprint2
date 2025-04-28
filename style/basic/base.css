@@ -4,30 +4,46 @@
     box-sizing: border-box;
 }
 
-html{
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+html {
+    font-family: cursive;
+    color: var(--color-text-primary);
 }
 
-body{
+body {
     margin: 0;
     width: 100%;
 }
 
-button{
+button {
     margin: 0;
     padding: 0;
+    background-color: transparent;
 }
 
-figure{
+figure {
     padding: 1em;
     margin: 0;
 }
 
-img{
+img {
     width: 100%;
     border: 1px black solid;
 }
 
-.gallery-header{
-    justify-self: center;
+input {
+    padding: 0;
+    height: 2em;
+    border-radius: .5em;
+    margin: 0
+    
 }
+
+a {
+    text-decoration: none;
+    color: var(--color-text-primary);
+}
+
+
+/* .container-header{
+    justify-self: center;
+} */

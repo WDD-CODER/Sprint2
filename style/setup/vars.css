@@ -1,37 +1,43 @@
 /* pallette */
 
 :root {
+    /*Colors */
 
-    /* Primary colors */
+    /* Base Colors */
+    --color-primary: #1E90FF;
+    --color-secondary: #FF69B4;
+    --color-background-primary: #FAFAFA;
+    --color-text-primary: #111111;
     
-    --clr-back-primary: rgb(167, 166, 166);
-    --clr-back-primary-1: rgb(202, 202, 202);
-    --clr-white-primary: rgba(248.0000004172325, 248.0000004172325, 248.0000004172325, 1);
-    /* --clr-primary--2: rgba(225.00045776367188, 223.99658203125, 223.99658203125, 1);
-    --clr-primary--1: rgba(193.9989, 193.23645, 193.23645, 1);
-    --clr-primary-base: rgba(95.99985000000001, 95.99985000000001, 95.99985000000001, 1);
-    --clr-primary-1: rgba(78.99900000000001, 78.07079999999999, 78.07079999999999, 1);
-    --clr-primary-2: rgba(41.00000135600567, 41.00000135600567, 41.00000135600567, 1); */
-
-
-    /* Specific component colors */
-    /* --clr-Rights--2: rgba(229.00039672851562, 229.00039672851562, 229.00039672851562, 1);
-    --clr-Rights--1: rgba(165.9999, 165.9999, 165.9999, 1);
-
-    --clr-pagination: rgba(129.00195, 129.00195, 129.00195, 1);
-
-    --color-hover-header: rgba(87.99795, 201.0012, 57.999750000000006, 1);
-    --color-hover-social: rgba(80.73151677846909, 111.14007666707039, 173.00000488758087, 1); */
     
+    /* Specific compounds color */
+    --color-button-border: #187bcd; /* Darker version of primary accent */
+    --color-component-border: #DDDDDD; /* Light Grey */
+    --color-component-background:  #F5F5F5; /* Light Grey */
+    --meme-details-background: #E6F7FF;
+
+    --color-footer: #005f99;
+    --color-logo: #E0FFFF;
+
+    /* Status Colors */
+    --error-color: #FF4040;
+    --color-hover-primary: #32CD32;
+    
+    
+    
+    /* Generale component styling */
+    --border-radios-base: 1em;
+    --btn-font-family: cursive;
 
 
- /* Specific component styling */
 
- --border-radios-base: 1em
-
-    /* Break Pointes */
-
-    /* --L: 1000px;
+    --main-background: #FAFAFA;
+    --component-background: #F5F5F5; /* NEW */
+    --footer-background: #005f99;
+    --meme-details-background: #E6F7FF;
+    --input-background: #F0F0F0;
+        /* Break Pointes */
+        /* --L: 1000px;
     --M: 900px;
     --S: 600px; */
 }

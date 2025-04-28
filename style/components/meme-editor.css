@@ -1,17 +1,26 @@
 .meme-editor {
     display: grid;
-    grid-template-columns: minmax(40%, 1fr) minmax(auto-fit, 1fr);
-
-    /* width: 80vw; */
     padding: 1em;
 
     gap: 1em;
-
-border-radius: var(--border-radios-base);
-border: 1px black dotted;
-    background-color: white;
 }
 
-.gallery-header{
-    grid-column: 1/-1;
+.edit-options {
+    display: grid;
+    grid-column: 2;
+
+    justify-items: center;
+    align-items: center;
+    
+    padding: 1em;
+    gap: 1em;
+    
+    border-radius: var(--border-radios-base);
+    border: 1px var(--color-component-border) dotted;
+    background-color: var(--meme-details-background);
+}
+
+input.text-color{
+    margin-left: 5em;
+height: 20px;
 }

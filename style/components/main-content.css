@@ -1,5 +1,11 @@
-
-.main-content{
+.main-content {
     grid-column: 2;
-    
+
+    padding: 1em;
+
+    border: 1px var(--color-component-border) dotted;
+    border-radius: var(--border-radios-base);
+    background-color: var(--color-component-background);
+
 }
+
