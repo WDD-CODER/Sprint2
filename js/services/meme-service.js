@@ -84,7 +84,6 @@ function _createNewGMeme(ImgId) {
 
 // Update
 
-
 function setGMemeSelectedLine(el) {
     let change = IncreaseOrDecreaseByFactor(1, el)
     if (change < 0 && gMeme.selectedLineIdx <= 0) return
@@ -99,21 +98,15 @@ function setImg(el) {
     _createMemeImg(el)
 }
 
-function setLineHeight(setSize) {
-    const setSpaceBetweenLines = 20
-    return gMeme.lines[gMeme.selectedLineIdx].lineHeight = setSize + setSpaceBetweenLines
-}
-
-function setFontSize(size) {
+function setFontSize(change) {
     const line = gMeme.lines[gMeme.selectedLineIdx]
-    line.size += size
+    line.size += change
     gCtx.font = `${line.size}px Arial`
-    setLineHeight(size)
+    // line.textWidth = gCtx.measureText(line.txt).width;
     return
 }
 
 function setLineTxt(txt) {
-    gMeme.selectedLineIdx
     return gMeme.lines[gMeme.selectedLineIdx].txt = txt
 }
 
@@ -123,13 +116,13 @@ function GetLastLine() {
 
 function createNewLine() {
     let lastLine = GetLastLine()
-    var { textPositionX, textPositionY, lineHeight } = lastLine
+    var { textPositionX, textPositionY, lineHeight, size } = lastLine
     const newLine = {
         txt: '',
         size: 20,
         color: '#000000',
         textPositionX,
-        textPositionY,
+        textPositionY:textPositionY + size,
         lineHeight,
     }
     newLine.textPositionY += lineHeight
@@ -140,9 +133,9 @@ function createNewLine() {
     renderBorderLine()
 }
 
-function setTextWidth(textWidth) {
-    return gMeme.lines[gMeme.selectedLineIdx].textWidth = textWidth
-}
+function setTextWidth(width) {
+   return gMeme.lines[gMeme.selectedLineIdx].textWidth = width
+} 
 
 
 function saveTextColor(color) {
@@ -171,3 +164,8 @@ function IncreaseOrDecreaseByFactor(factor, el) {
     else return factor
 }
 
+function CheckGMemeLinesNumb(){
+    if (gMeme.lines.length <= 0) return null
+    else return gMeme.lines.length
+    }
+    

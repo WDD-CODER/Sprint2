@@ -10,7 +10,6 @@ var gPos = {}
 function onIniMemeEdit() {
     gElCanvas = document.querySelector('.meme-canvas');
     gCtx = gElCanvas.getContext('2d')
-    // renderGallery()
 }
 
 function renderGMeme() {
@@ -21,7 +20,7 @@ function renderGMeme() {
     renderImgOnCanvas(curMemeGImg.img)
     renderLineText()
     renderLineColorInputValue()
-    renderLineTextInput()
+    moveToTextInput()
 }
 
 function reSizeCanvasContainer(width, height) {
@@ -58,9 +57,12 @@ function renderLineText() {
 
 function renderBorderLine() {
     const gMeme = getGMeme()
+    console.log("🚀 ~ renderBorderLine ~ gMeme:", gMeme.lines[gMeme.selectedLineIdx])
     const line = gMeme.lines[gMeme.selectedLineIdx]
-    if (!line.textWidth) line.textWidth = document.querySelector('.canvas-container').offsetWidth - (line.textPositionX * 2);
-    drawRoundRect(line.textPositionX - 5, line.textPositionY - 2.5, line.size + 3, 15 + line.textWidth)
+    const fallback = document.querySelector('.canvas-container.meme').offsetWidth - line.textPositionX * 2;
+    const curWidth = line.textWidth || fallback;
+    console.log("🚀 ~ renderBorderLine ~ curWidth:", curWidth)
+    drawRoundRect(line.textPositionX - 5, line.textPositionY - 2.5, curWidth + 15, line.size + 3, )
 }
 
 function renderLineColorInputValue() {
@@ -70,17 +72,30 @@ function renderLineColorInputValue() {
     textColorInput.value = gMemeLines[gMeme.selectedLineIdx].color
 }
 
+function onClickLineInCanvas(ev) {
+    var lineIdx = getLineIdxByPosition(ev)
+    if (lineIdx === null) return
+    setGMemeSelectedLineIdxTo(lineIdx)
+    renderGMeme()
+    // Make sure Once lying Check user goes to text input. Didn't find a way to do it
+    //  not with requestAnimationFrame or set timeout
+    requestAnimationFrame(() => {
+        moveToTextInput()
+    })
+}
+
+
 // Create
 
 function onTextInput(el) {
     setLineTxt(el.value)
-    getTextWidth()
+    onSetTextWidth()
     renderGMeme()
 }
 
 function onAddLine() {
     createNewLine()
-    renderLineTextInput()
+    moveToTextInput()
     renderBorderLine()
     renderGMeme()
 }
@@ -92,7 +107,7 @@ function drawText(str, textSize = 25, color = '#000000', textPositionX, textPosi
     gCtx.fillText(str, textPositionX, textPositionY)
 }
 
-function drawRoundRect(startPointX, startPointY, lineHeight, lineWidth, color = '#000000') {
+function drawRoundRect(startPointX, startPointY, lineWidth, lineHeight, color = '#000000') {
     gCtx.beginPath()
     gCtx.roundRect(startPointX, startPointY, lineWidth, lineHeight, lineHeight / 2)
     gCtx.strokeStyle = color
@@ -106,36 +121,19 @@ function getCanvasContainer() {
     return document.querySelector('.canvas-container').offsetWidth - (35 * 2)
 }
 
-function getTextWidth() {
-    const textMetrics = gCtx.measureText(gMeme.lines[gMeme.selectedLineIdx].txt)
-    const textWidth = textMetrics.width
-    return setTextWidth(textWidth)
-}
 
 // Update
 
 
-function onClickLineInCanvas(ev) {
-    var lineIdx = getLineIdxByPosition(ev)
-    if (lineIdx === null) return
-    setGMemeSelectedLineIdxTo(lineIdx)
-    renderGMeme()
-    // Make sure Once lying Check user goes to text input. Didn't find a way to do it
-    //  not with requestAnimationFrame or set timeout
-    requestAnimationFrame(() => {
-        renderLineTextInput()
-    })
+function onSetTextWidth() {
+    const line = getGMeme().lines[gMeme.selectedLineIdx]
+    gCtx.font = `${line.size}px Arial`;
+    const textWidth = gCtx.measureText(line.txt).width
+    return setTextWidth(textWidth)
 }
-function renderLineTextInput() {
-    const lineIdx = getSelectedLineIdx()
-    const txtInput = document.querySelector('.line-text')
-    txtInput.value = getGMeme().lines[lineIdx].txt
-    txtInput.focus()
-}
-
-
 
 function onSetSelectedLine(el, lineIdx) {
+    if (getGMeme().lines.length >= 1) return
     setGMemeSelectedLine(el, lineIdx)
     renderGMeme()
     renderBorderLine()
@@ -143,7 +141,7 @@ function onSetSelectedLine(el, lineIdx) {
 
 function onsetFontSize(el) {
     setFontSize(IncreaseOrDecreaseByFactor(1, el))
-    getTextWidth()
+    onSetTextWidth()
     renderGMeme()
 }
 
@@ -160,10 +158,18 @@ function clearCanvas() {
 }
 
 function onDeleteLine() {
+    if (!CheckGMemeLinesNumb()) return
     DeleteLineFromGMeme()
     renderGMeme()
 }
 
 // Helpers
 
+function moveToTextInput() {
+    if (!CheckGMemeLinesNumb()) return
+    const lineIdx = getSelectedLineIdx()
+    const txtInput = document.querySelector('.line-text.meme')
+    txtInput.value = getGMeme().lines[lineIdx].txt
+    txtInput.focus()
+}
 
