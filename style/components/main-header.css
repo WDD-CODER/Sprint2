@@ -2,7 +2,11 @@
 .main-header{
     grid-row: 1;
     grid-column: 1 / -1;
-    padding: 1em 80px;
+    padding: .5em 40px;
     border-bottom: 1px var(--color-component-border) solid;
     background-color: var(--color-primary);
+}
+
+.navigation-list{
+    gap: 1em;
 }

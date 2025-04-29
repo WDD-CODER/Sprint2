@@ -9,5 +9,8 @@ button {
 }
 
 button:hover {
-    background-color: var(--color-hover-primary);
+    background-color: var(--color-primary--1);
+}
+button .active:hover {
+    background-color: var(--error-color);
 }

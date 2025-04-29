@@ -6,35 +6,41 @@
 
 html {
     font-family: cursive;
+
     color: var(--color-text-primary);
 }
 
 body {
     margin: 0;
+
     width: 100%;
 }
 
 button {
     margin: 0;
     padding: 0;
+
     background-color: transparent;
 }
 
 figure {
-    padding: 1em;
     margin: 0;
+    padding: 1em;
 }
 
 img {
     width: 100%;
+
     border: 1px black solid;
 }
 
 input {
+    margin: 0;
     padding: 0;
+    
     height: 2em;
+    
     border-radius: .5em;
-    margin: 0
     
 }
 
@@ -42,8 +48,3 @@ a {
     text-decoration: none;
     color: var(--color-text-primary);
 }
-
-
-/* .container-header{
-    justify-self: center;
-} */

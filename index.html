@@ -23,9 +23,11 @@
         <button onclick="SwitchBetweenMainContainers()">switch</button>
         <section class="gallery container">
             <section class="Search-bar flex align-items space-around">
-                <input class="line-text gallery" type="text" placeholder="What you're searching for?"
-                    oninput="onTextInput(this)">
-                <div class="canvas-container-search"><canvas width="100" height="100" class="Search-canvas"></canvas>
+                <form class="text-submit-search" onsubmit="onAddLine(event)">
+                    <input class="line-text-search" type="text" placeholder="Start writing something"
+                        onclick="renderBorderLine111()" oninput="onTextInput111(this)">
+                </form>
+            <div class="canvas-container-search"><canvas width="100" height="100" class="Search-canvas"></canvas>
                 </div>
             </section>
             <h2 class="container-header justify-self">Main Picture Gallery</h2>
@@ -41,13 +43,15 @@
                         ontouchstart="onClickLineInCanvas(event)"></canvas>
                 </div>
                 <section class="edit-options space-between">
-                    <input class="line-text meme" type="text" placeholder="Start writing something"
-                        onclick="renderBorderLine()" oninput="onTextInput(this)">
+                    <form class="text-submit" onsubmit="onAddLine(event)">
+                        <input class="line-text meme" type="text" placeholder="Start writing something"
+                            onclick="renderBorderLine()" oninput="onTextInput(this)">
+                    </form>
                     <div class="line-options">
                         <button class="line-selected increase" onclick="onSetSelectedLine(this)">Move line down
                         </button>
                         <button class="line-selected decrease" onclick="onSetSelectedLine(this)">Move line up</button>
-                        <button class="add-line" onclick="onAddLine()">Add line</button>
+                        <button class="add-line" onclick="onAddLine(event)">Add line</button>
                         <button class="delete-line" onclick="onDeleteLine()">Delete line</button>
                     </div>
                     <div class="text-options">
@@ -89,7 +93,7 @@
     <script src="js/services/storege-service.js"></script>
     <script src="js/services/canvas-service.js"></script>
     <script src="js/services/links-service.js"></script>
-    <script src="js/gallery-controoler.js"></script>
+    <script src="js/gallery-controller.js"></script>
     <script src="js/meme-controller.js"></script>
 </body>
 

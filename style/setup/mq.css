@@ -1,17 +1,59 @@
 /* Mobile only */
-@media (max-width:760px) {
+@media (max-width:700px) {
+    html{
+        font-size: 12px;
+    }
+    .main-layout {
+        grid-template-columns: 12px 1fr 12px;
+        }
+
+    .meme-editor {
+        grid-auto-flow: column;
+        grid-template-rows:1fr 1fr;
+        gap: 1em;
+
+    }
+    .main-header{
+        font-size: smaller;
+    }
+
 }
 
 
 
-/* Small */
-@media (min-width: 740px) {
+/* Medium */
+@media (min-width: 780px) {
+
+    
+    .meme-editor {
+        display: grid;
+        grid-template-columns: minmax(auto-fit, 356px);
+    }
+    .edit-options{
+        grid-column: 2;
+    }
 
 }
 
-/* Medium  */
-@media (min-width: 840px) {
-    /* .edit-options{
-        min-width: 300px;
-    } */
+/* Large  */
+@media (min-width: 880px) {
+    .main-layout {
+        grid-template-columns: 1fr 90vw 1fr;
+    }
+
+    .main-content {
+        padding: 1em;    
+    }
+
+    .main-header{
+        padding: 1em 80px;
+    }
+    
+    .meme-editor {
+        grid-template-columns: minmax(auto-fit, 356px);
+        padding: .3em;
+        gap: 1em;
+
+    }
+    
 }

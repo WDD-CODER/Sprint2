@@ -57,12 +57,10 @@ function renderLineText() {
 
 function renderBorderLine() {
     const gMeme = getGMeme()
-    console.log("🚀 ~ renderBorderLine ~ gMeme:", gMeme.lines[gMeme.selectedLineIdx])
     const line = gMeme.lines[gMeme.selectedLineIdx]
     const fallback = document.querySelector('.canvas-container.meme').offsetWidth - line.textPositionX * 2;
     const curWidth = line.textWidth || fallback;
-    console.log("🚀 ~ renderBorderLine ~ curWidth:", curWidth)
-    drawRoundRect(line.textPositionX - 5, line.textPositionY - 2.5, curWidth + 15, line.size + 3, )
+    drawRoundRect(line.textPositionX - 5, line.textPositionY - 2.5, curWidth + 15, line.size + 3,)
 }
 
 function renderLineColorInputValue() {
@@ -93,7 +91,8 @@ function onTextInput(el) {
     renderGMeme()
 }
 
-function onAddLine() {
+function onAddLine(ev) {
+    ev.preventDefault()
     createNewLine()
     moveToTextInput()
     renderBorderLine()

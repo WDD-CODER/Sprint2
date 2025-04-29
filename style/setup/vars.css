@@ -4,6 +4,7 @@
     /*Colors */
 
     /* Base Colors */
+    --color-primary--1: #61bef8;
     --color-primary: #1E90FF;
     --color-secondary: #FF69B4;
     --color-background-primary: #FAFAFA;
@@ -16,7 +17,6 @@
     --color-component-background:  #F5F5F5; /* Light Grey */
     --meme-details-background: #E6F7FF;
 
-    --color-footer: #005f99;
     --color-logo: #E0FFFF;
 
     /* Status Colors */
