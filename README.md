@@ -11,3 +11,6 @@ Create a choose from image section that allows the user to input emojis or image
 
 Make it so that if a button is not available for whatever reason, once User hover on it, it will show red instead of green
 
+The fun family in the phone is different from the fun family in my computer. It's better.
+
+Make sure border-line disappears After user done Entering text

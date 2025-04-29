@@ -6,6 +6,34 @@ var gKeywordSearchCountMap = { 'funny': 12, 'cat': 16, 'baby': 2 }
 
 // Lists
 
+function getAccurateBorderLinePosition() {
+    const curLine = gMeme.lines[gMeme.selectedLineIdx]
+    const elCanvasContainerWidth = document.querySelector('.canvas-container.meme').offsetWidth
+    const centerOfCanvas = elCanvasContainerWidth / 2
+    // starts with left
+    const widthFallback = elCanvasContainerWidth - curLine.textPositionX * 2;
+    const lineWidth = curLine.textWidth + 15 || widthFallback
+    const lineHeight = curLine.size + 4
+    const textAlign = curLine.textAlign || ''
+
+    let linePositionX = curLine.textPositionX - 5
+    let linePositionY = curLine.textPositionY - 2.5
+
+    if (textAlign === 'center') {
+        linePositionX = centerOfCanvas - lineWidth / 2
+        linePositionY = curLine.textPositionY - 2.5
+    }
+
+    else if (textAlign === "right") {
+        linePositionX = curLine.textPositionX + 5 - lineWidth
+        linePositionY = curLine.textPositionY - 2.5
+    }
+
+    const accurateLinePositions = { linePositionX, linePositionY, lineWidth, lineHeight }
+    return accurateLinePositions
+
+}
+
 function getSelectedLineIdx() {
     return gMeme.selectedLineIdx
 }
@@ -43,6 +71,12 @@ function getGMeme() {
     return gMeme
 }
 
+function getTextAlignment() {
+    const textAlignment = {}
+    textAlignment.textAlign = gMeme.lines[gMeme.selectedLineIdx].textAlign
+    textAlignment.newPositionX = gMeme.lines[gMeme.selectedLineIdx].textPositionX
+    return textAlignment
+}
 // Create
 
 function _createMemeImg(el) {
@@ -84,6 +118,18 @@ function _createNewGMeme(ImgId) {
 
 // Update
 
+function SetTextAlignment(el) {
+    const gMemeCurLine = gMeme.lines[gMeme.selectedLineIdx]
+    gMemeCurLine.textAlign = el.value
+    gMemeCurLine.textPositionX = getUpdatedTextPositionX(el.value)
+
+
+    // const textAlignment = {align, newPositionX}
+    // textAlignment.align = gMeme.lines[gMeme.selectedLineIdx].textAlign
+    // textAlignment.newPositionX = gMeme.lines[gMeme.selectedLineIdx].textAlign
+
+}
+
 function setGMemeSelectedLine(el) {
     let change = IncreaseOrDecreaseByFactor(1, el)
     if (change < 0 && gMeme.selectedLineIdx <= 0) return
@@ -122,7 +168,7 @@ function createNewLine() {
         size: 20,
         color: '#000000',
         textPositionX,
-        textPositionY:textPositionY + size,
+        textPositionY: textPositionY + size,
         lineHeight,
     }
     newLine.textPositionY += lineHeight
@@ -134,8 +180,8 @@ function createNewLine() {
 }
 
 function setTextWidth(width) {
-   return gMeme.lines[gMeme.selectedLineIdx].textWidth = width
-} 
+    return gMeme.lines[gMeme.selectedLineIdx].textWidth = width
+}
 
 
 function saveTextColor(color) {
@@ -164,8 +210,9 @@ function IncreaseOrDecreaseByFactor(factor, el) {
     else return factor
 }
 
-function CheckGMemeLinesNumb(){
+function CheckGMemeLinesNumb() {
     if (gMeme.lines.length <= 0) return null
     else return gMeme.lines.length
-    }
-    
+}
+
+

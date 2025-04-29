@@ -45,11 +45,10 @@
                 <section class="edit-options space-between">
                     <form class="text-submit" onsubmit="onAddLine(event)">
                         <input class="line-text meme" type="text" placeholder="Start writing something"
-                            onclick="renderBorderLine()" oninput="onTextInput(this)">
+                             oninput="onTextInput(this)">
                     </form>
                     <div class="line-options">
-                        <button class="line-selected increase" onclick="onSetSelectedLine(this)">Move line down
-                        </button>
+                        <button class="line-selected increase" onclick="onSetSelectedLine(this)">Move line down</button>
                         <button class="line-selected decrease" onclick="onSetSelectedLine(this)">Move line up</button>
                         <button class="add-line" onclick="onAddLine(event)">Add line</button>
                         <button class="delete-line" onclick="onDeleteLine()">Delete line</button>
@@ -57,9 +56,9 @@
                     <div class="text-options">
                         <button type="button" class="font-size increase" onclick="onsetFontSize(this)">+</button>
                         <button type="button" class="font-size decrease" onclick="onsetFontSize(this)">-</button>
-                        <button class="align-line-left">line-left</button>
-                        <button class="align-line-center">line-center</button>
-                        <button class="align-line-right">line-right</button>
+                        <button class="align-line left" onclick="onSetTextAlignment(this)" value="left">line-left</button>
+                        <button class="align-line center" onclick="onSetTextAlignment(this)" value="center">line-center</button>
+                        <button class="align-line right" onclick="onSetTextAlignment(this)"value="right">line-right</button>
                         <button class="text-underline" onchange="changeTextDecoration()">text-underline</button>
                     </div>
                     <div class="inputs">

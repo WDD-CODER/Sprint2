@@ -1,5 +1,6 @@
 'use strict';
-
+const G_START_POSITION_X = 35
+const G_START_POSITION_Y = 30
 var gElCanvas
 var gCtx
 var gPos = {}
@@ -41,12 +42,6 @@ function renderImgOnCanvas(img) {
     // optimize the canvas container after putting the picture
     reSizeCanvasContainer(gElCanvas.width, gElCanvas.height)
 }
-//still new line appear in wrong place
-
-// needs to fix line showing-up after out of focus 
-
-// I need to deal with the border. It shouldn't show if the user presses line down or up. 
-// if there were no earlier lines insert
 
 function renderLineText() {
     getGMeme().lines.forEach(line => {
@@ -56,11 +51,9 @@ function renderLineText() {
 }
 
 function renderBorderLine() {
-    const gMeme = getGMeme()
-    const line = gMeme.lines[gMeme.selectedLineIdx]
-    const fallback = document.querySelector('.canvas-container.meme').offsetWidth - line.textPositionX * 2;
-    const curWidth = line.textWidth || fallback;
-    drawRoundRect(line.textPositionX - 5, line.textPositionY - 2.5, curWidth + 15, line.size + 3,)
+    const line = getAccurateBorderLinePosition()
+    console.log("🚀 ~ renderBorderLine ~ line:", line)
+    drawRoundRect(line.linePositionX, line.linePositionY, line.lineWidth, line.lineHeight)
 }
 
 function renderLineColorInputValue() {
@@ -100,9 +93,12 @@ function onAddLine(ev) {
 }
 
 function drawText(str, textSize = 25, color = '#000000', textPositionX, textPositionY, fontFamily = 'Arial') {
+    const TextAlignment = getTextAlignment()
     gCtx.font = `${textSize}px ${fontFamily}`
+    gCtx.textAlign = TextAlignment.textAlign || 'start';
     gCtx.fillStyle = color
     gCtx.textBaseline = 'top'
+    textPositionY = TextAlignment.newPositionY || textPositionY
     gCtx.fillText(str, textPositionX, textPositionY)
 }
 
@@ -123,6 +119,10 @@ function getCanvasContainer() {
 
 // Update
 
+function onSetTextAlignment(el) {
+    SetTextAlignment(el)
+}
+
 
 function onSetTextWidth() {
     const line = getGMeme().lines[gMeme.selectedLineIdx]
@@ -132,7 +132,7 @@ function onSetTextWidth() {
 }
 
 function onSetSelectedLine(el, lineIdx) {
-    if (getGMeme().lines.length >= 1) return
+    if (getGMeme().lines.length <= 1) return
     setGMemeSelectedLine(el, lineIdx)
     renderGMeme()
     renderBorderLine()
@@ -147,6 +147,16 @@ function onsetFontSize(el) {
 function onsetTextColor(el) {
     saveTextColor(el.value)
     renderGMeme()
+}
+
+function onsetTextDirection() {
+    setTextDirection()
+    renderGMeme()
+}
+
+
+function setTextDirection() {
+    gCtx.textAlign = 'center'; // center the text horizontally
 }
 
 // Delete
@@ -167,8 +177,15 @@ function onDeleteLine() {
 function moveToTextInput() {
     if (!CheckGMemeLinesNumb()) return
     const lineIdx = getSelectedLineIdx()
-    const txtInput = document.querySelector('.line-text.meme')
-    txtInput.value = getGMeme().lines[lineIdx].txt
-    txtInput.focus()
+    const textInput = document.querySelector('.line-text.meme')
+    textInput.value = getGMeme().lines[lineIdx].txt
+    textInput.focus()
+}
+
+function getUpdatedTextPositionX(value) {
+    console.log("🚀 ~ getUpdatedTextPositionX ~ value:", value)
+    if (value === 'left') return  G_START_POSITION_X
+    else if (value === 'right') return gElCanvas.width - G_START_POSITION_X
+    else return gElCanvas.width / 2 
 }
 
