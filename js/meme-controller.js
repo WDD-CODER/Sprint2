@@ -19,10 +19,9 @@ function renderGMeme() {
     reSizeCanvas() // Resize first; this clears canvas internally
     clearCanvas()
     renderImgOnCanvas(curMemeGImg.img)
-    renderLineText()
+    renderLine()
     renderLineColorInputValue()
     renderFontFamilySelectionValue()
-
     moveToTextInput()
 }
 
@@ -46,23 +45,29 @@ function renderImgOnCanvas(img) {
 }
 
 
-function renderLineText() {
+function renderLine() {
     getGMeme().lines.forEach(line => {
-        // const TextAlignment = setTextAlignment()
-        // let textAlign = TextAlignment.textAlign
-        // line.textPositionY = TextAlignment.newPositionY || line.textPositionY
         drawText(line.txt, line.size, line.color, line.textPositionX, line.textPositionY, line.textAlign, line.fontFamily)
-        renderBorderLine()
+        RenderUnderLine(line)
+        if (!line.txt) renderBorderLine(line)
     })
 }
-//לא סיימתי את הפונקציה הזו אני באמצע
-function onRenderUnderLine() {
-    const line = getAccurateUnderLinePosition()
-    drawUnderline(line.strokeStartPointX, line.strokeStartPointY, line.strokeEndPointX)
+
+function onSetUnderline() {
+    setGMemeUnderline()
+    renderGMeme()
 }
-function renderBorderLine() {
-    const line = getAccurateBorderLinePosition()
-    drawRoundRect(line.linePositionX, line.linePositionY, line.lineWidth, line.lineHeight)
+
+function RenderUnderLine(line) {
+    if (!line.underLine) return;
+    const pos = getAccurateUnderLinePosition(line); // Pass line if needed
+    drawUnderline(pos.strokeStartPointX, pos.strokeStartPointY, pos.strokeEndPointX);
+
+}
+
+function renderBorderLine(line) {
+    const newLine = getAccurateBorderLinePosition(line)
+    drawRoundRect(newLine.linePositionX, newLine.linePositionY, newLine.lineWidth, newLine.lineHeight)
 }
 
 function renderLineColorInputValue() {
@@ -74,7 +79,6 @@ function renderLineColorInputValue() {
 
 function onClickLineInCanvas(ev) {
     var lineIdx = getLineIdxByPosition(ev)
-    console.log("🚀 ~ onClickLineInCanvas ~ lineIdx:", lineIdx)
     if (lineIdx === null) return
     setGMemeSelectedLineIdxTo(lineIdx)
     renderGMeme()
@@ -100,13 +104,11 @@ function onTextInput(el) {
 }
 
 function onAddLine(ev) {
-    ev.preventDefault()
+    if (ev) ev.preventDefault()
     createNewLine()
     moveToTextInput()
-    renderBorderLine()
     renderGMeme()
 }
-// אני לא מצליח להיחליף פונט  הכל עובר נכון אבל לא עושה שינוי בטקס שנכתב על הקנבס.
 function drawText(str, textSize, color, textPositionX, textPositionY, textAlign, fontFamily) {
     fontFamily = fontFamily || 'Arial'
     gCtx.textAlign = textAlign || 'start';
@@ -135,7 +137,7 @@ function drawUnderline(strokeStartPointX, strokeStartPointY, strokeEndPointX, co
 
 // Read
 
-function getCanvasContainerWidth () {
+function getCanvasContainerWidth() {
     const gMeme = getGMeme()
     return document.querySelector('.canvas-container').offsetWidth - (35 * 2)
 }
@@ -145,7 +147,7 @@ function getCanvasContainerWidth () {
 
 function onMoveLinePosition(el) {
     let change = -5
- if (el.classList.contains('down')) change = 5
+    if (el.classList.contains('down')) change = 5
     getGMeme().lines[gMeme.selectedLineIdx].textPositionY += change
     renderGMeme()
 }
@@ -153,7 +155,6 @@ function onMoveLinePosition(el) {
 
 function onSetFontFamily(el) {
     setFontFamily(el.value)
-    // renderFontFamilySelectionValue()
     renderGMeme()
 }
 
@@ -174,7 +175,6 @@ function onSetSelectedLine(el, lineIdx) {
     if (getGMeme().lines.length <= 1) return
     setGMemeSelectedLine(el, lineIdx)
     renderGMeme()
-    renderBorderLine()
 }
 
 function onsetFontSize(el) {
@@ -189,16 +189,9 @@ function onsetTextColor(el) {
 }
 
 function onsetTextDirection() {
-    setTextDirection()
+    gCtx.textAlign = 'center'; // center the text horizontally
     renderGMeme()
 }
-
-
-function setTextDirection() {
-    gCtx.textAlign = 'center'; // center the text horizontally
-}
-
-// Delete
 
 function clearCanvas() {
     gCtx.fillStyle = "white"

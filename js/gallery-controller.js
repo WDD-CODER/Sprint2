@@ -10,7 +10,7 @@ function onInitGallery() {
 
 function renderGallery() {
     const imgs = getGImgs();
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 12; i++) {
         document.querySelector('.gallery-pics').innerHTML += `
                          <figure>
                          <figcaption class="img-name"></figcaption>
@@ -36,6 +36,16 @@ function onImgSelect(el) {
     onIniMemeEdit()
     setImg(el)
 }
+
+function onGenerateRandomMeme() {
+    SwitchBetweenMainContainers()
+    onIniMemeEdit()
+    const randomImg = getRandomImg()
+    setImg(randomImg, () => {
+        setRandomTextLines(3)
+        onSetTextWidth()
+        renderGMeme()
+    })}
 
 // Update
 

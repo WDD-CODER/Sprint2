@@ -1,13 +1,28 @@
 'use strict';
+var gRandomTexts = [
+    "You know I love you!",
+    "Hey there... you!",
+    "How's it hanging over there?",
+    "That doesn't look good.",
+    "Ah, shit... Here we go again.",
+    "When you open the fridge and forget why.",
+    "Me? Normal? Never heard of it.",
+    "404: Motivation not found.",
+    "Just one more episode… at 3am.",
+    "I came. I saw. I made it awkward."
+];
 var gImgs = []
-// { id: 1, url: 'img/1.jpg', keywords: ['funny', 'cat'] }
 var gMeme
 var gKeywordSearchCountMap = { 'funny': 12, 'cat': 16, 'baby': 2 }
 
 // Lists
+function GetLastLine() {
+    return gMeme.lines[gMeme.lines.length - 1]
+}
 
-function getAccurateBorderLinePosition() {
-    const curLine = gMeme.lines[gMeme.selectedLineIdx]
+
+function getAccurateBorderLinePosition(line) {
+    const curLine = line || gMeme.lines[gMeme.selectedLineIdx]
     const elCanvasContainerWidth = document.querySelector('.canvas-container.meme').offsetWidth
     const centerOfCanvas = elCanvasContainerWidth / 2
     // starts with left
@@ -15,6 +30,7 @@ function getAccurateBorderLinePosition() {
     const lineWidth = curLine.textWidth + 15 || widthFallback
     const lineHeight = curLine.size + 4
     const textAlign = curLine.textAlign || ''
+    const textSize = curLine.size
 
     let linePositionX = curLine.textPositionX - 5
     let linePositionY = curLine.textPositionY - 2.5
@@ -29,17 +45,17 @@ function getAccurateBorderLinePosition() {
         linePositionY = curLine.textPositionY - 2.5
     }
 
-    const accurateLinePositions = { linePositionX, linePositionY, lineWidth, lineHeight }
+    const accurateLinePositions = { linePositionX, linePositionY, lineWidth, lineHeight, textSize }
     return accurateLinePositions
 
 }
-function getAccurateUnderLinePosition() {
-    const curLine = gMeme.lines[gMeme.selectedLineIdx]
-    let strokeStartPointX = curLine.textPositionX - 2
-    let strokeStartPointY = curLine.textPositionY + curLine.size + 2
-    let strokeEndPointX = curLine.textPositionX + curLine.textWidth + 2
-    const UnderLinePosition = { strokeStartPointX, strokeStartPointY, strokeEndPointX }
-    return UnderLinePosition
+function getAccurateUnderLinePosition(line) {
+    const { linePositionX, linePositionY, lineWidth, lineHeight, textSize } = getAccurateBorderLinePosition(line)
+    var UnderLinePosition = {}
+    let strokeStartPointX = linePositionX
+    let strokeStartPointY = linePositionY + textSize
+    let strokeEndPointX = lineWidth
+    return UnderLinePosition = { strokeStartPointX, strokeStartPointY, strokeEndPointX }
 }
 
 function getSelectedLineIdx() {
@@ -113,10 +129,23 @@ function getGImgs() {
 function getGMeme() {
     return gMeme
 }
+function getLineByIdX(lineIdx) {
+    return gMeme.lines[lineIdx]
+}
+
+function getRandomImg() {
+    const elGImgs = document.querySelectorAll('.gallery-pics img');
+    return elGImgs[getRandomInt(0, elGImgs.length - 1)]
+
+}
+
 // Create
 
-function _createMemeImg(el) {
-    //First load the main image and then create the object
+function getRandomText() {
+    return gRandomTexts[getRandomInt(0, gRandomTexts.length - 1)]
+}
+
+function _createMemeImg(el, onReady) {    //First load the main image and then create the object
     var MemeImg = {}
     const img = new Image()
     img.onload = () => {
@@ -130,6 +159,7 @@ function _createMemeImg(el) {
         // Create GMeme object
         _createNewGMeme(MemeImg.id)
         renderImgOnCanvas(img)
+        if (onReady) onReady()
     }
     img.src = el.src
 }
@@ -141,7 +171,7 @@ function _createNewGMeme(ImgId) {
         lines: [
             {
                 txt: '',
-                size: 30,
+                size: 16,
                 color: '#000000',
                 textPositionX: 35,
                 textPositionY: 30,
@@ -154,6 +184,12 @@ function _createNewGMeme(ImgId) {
 
 // Update
 
+function setGMemeUnderline() {
+    gMeme.lines[gMeme.selectedLineIdx].underLine = !gMeme.lines[gMeme.selectedLineIdx].underLine;
+    return gMeme.lines[gMeme.selectedLineIdx].underLine;
+}
+
+
 function setFontFamily(value) {
     return gMeme.lines[gMeme.selectedLineIdx].fontFamily = value
 }
@@ -163,12 +199,6 @@ function SetTextAlignment(el) {
     const CurLine = gMeme.lines[gMeme.selectedLineIdx]
     CurLine.textAlign = el.value
     CurLine.textPositionX = getUpdatedTextPositionX(el.value)
-
-
-    // const textAlignment = {align, newPositionX}
-    // textAlignment.align = gMeme.lines[gMeme.selectedLineIdx].textAlign
-    // textAlignment.newPositionX = gMeme.lines[gMeme.selectedLineIdx].textAlign
-
 }
 
 function setGMemeSelectedLine(el) {
@@ -181,43 +211,44 @@ function setGMemeSelectedLineIdxTo(lineIdx) {
     return gMeme.selectedLineIdx = lineIdx
 }
 
-function setImg(el) {
-    _createMemeImg(el)
+function setImg(el, onReady) {
+    _createMemeImg(el, onReady)
 }
 
 function setFontSize(change) {
     const line = gMeme.lines[gMeme.selectedLineIdx]
     line.size += change
     gCtx.font = `${line.size}px Arial`
-    // line.textWidth = gCtx.measureText(line.txt).width;
     return
+}
+
+function setRandomTextLines(numOfLines) {
+     gMeme.lines = []
+    for (let i = 0; i < numOfLines; i++) {
+        createNewLine()
+    }
+    gMeme.lines.forEach(line =>  line.txt = getRandomText())
 }
 
 function setLineTxt(txt) {
     return gMeme.lines[gMeme.selectedLineIdx].txt = txt
 }
 
-function GetLastLine() {
-    return gMeme.lines[gMeme.lines.length - 1]
-}
-
 function createNewLine() {
-    let lastLine = GetLastLine()
-    var { textPositionY, lineHeight, size } = lastLine
+    let lastLine = GetLastLine();
+    const baseY = lastLine ? lastLine.textPositionY + lastLine.lineHeight : G_START_POSITION_Y;
+
     const newLine = {
         txt: '',
-        size: 20,
+        size: 16,
         color: '#000000',
-        textPositionX: 35,
-        textPositionY: textPositionY + size,
-        lineHeight,
-    }
-    newLine.textPositionY += lineHeight
-    gMeme.selectedLineIdx++
-    gMeme.lines.push(newLine)
-    // Make sure when creating a new line always set it to the last idx
-    gMeme.selectedLineIdx = gMeme.lines.length - 1
-    renderBorderLine()
+        textPositionX: G_START_POSITION_X,
+        textPositionY: baseY,
+        lineHeight: 30
+    };
+
+    gMeme.lines.push(newLine);
+    gMeme.selectedLineIdx = gMeme.lines.length - 1;
 }
 
 function setTextWidth(width) {
@@ -256,4 +287,7 @@ function CheckGMemeLinesNumb() {
     else return gMeme.lines.length
 }
 
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
