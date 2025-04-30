@@ -21,6 +21,8 @@ function renderGMeme() {
     renderImgOnCanvas(curMemeGImg.img)
     renderLineText()
     renderLineColorInputValue()
+    renderFontFamilySelectionValue()
+
     moveToTextInput()
 }
 
@@ -43,16 +45,23 @@ function renderImgOnCanvas(img) {
     reSizeCanvasContainer(gElCanvas.width, gElCanvas.height)
 }
 
+
 function renderLineText() {
     getGMeme().lines.forEach(line => {
-        drawText(line.txt, line.size, line.color, line.textPositionX, line.textPositionY)
+        // const TextAlignment = setTextAlignment()
+        // let textAlign = TextAlignment.textAlign
+        // line.textPositionY = TextAlignment.newPositionY || line.textPositionY
+        drawText(line.txt, line.size, line.color, line.textPositionX, line.textPositionY, line.textAlign, line.fontFamily)
         renderBorderLine()
     })
 }
-
+//לא סיימתי את הפונקציה הזו אני באמצע
+function onRenderUnderLine() {
+    const line = getAccurateUnderLinePosition()
+    drawUnderline(line.strokeStartPointX, line.strokeStartPointY, line.strokeEndPointX)
+}
 function renderBorderLine() {
     const line = getAccurateBorderLinePosition()
-    console.log("🚀 ~ renderBorderLine ~ line:", line)
     drawRoundRect(line.linePositionX, line.linePositionY, line.lineWidth, line.lineHeight)
 }
 
@@ -65,6 +74,7 @@ function renderLineColorInputValue() {
 
 function onClickLineInCanvas(ev) {
     var lineIdx = getLineIdxByPosition(ev)
+    console.log("🚀 ~ onClickLineInCanvas ~ lineIdx:", lineIdx)
     if (lineIdx === null) return
     setGMemeSelectedLineIdxTo(lineIdx)
     renderGMeme()
@@ -73,6 +83,11 @@ function onClickLineInCanvas(ev) {
     requestAnimationFrame(() => {
         moveToTextInput()
     })
+}
+
+function renderFontFamilySelectionValue() {
+    let FontFamily = getGMeme().lines[gMeme.selectedLineIdx].fontFamily
+    return FontFamily = document.querySelector('.font-family').value;
 }
 
 
@@ -91,14 +106,13 @@ function onAddLine(ev) {
     renderBorderLine()
     renderGMeme()
 }
-
-function drawText(str, textSize = 25, color = '#000000', textPositionX, textPositionY, fontFamily = 'Arial') {
-    const TextAlignment = getTextAlignment()
-    gCtx.font = `${textSize}px ${fontFamily}`
-    gCtx.textAlign = TextAlignment.textAlign || 'start';
-    gCtx.fillStyle = color
+// אני לא מצליח להיחליף פונט  הכל עובר נכון אבל לא עושה שינוי בטקס שנכתב על הקנבס.
+function drawText(str, textSize, color, textPositionX, textPositionY, textAlign, fontFamily) {
+    fontFamily = fontFamily || 'Arial'
+    gCtx.textAlign = textAlign || 'start';
     gCtx.textBaseline = 'top'
-    textPositionY = TextAlignment.newPositionY || textPositionY
+    gCtx.font = `${textSize}px ${fontFamily}`
+    gCtx.fillStyle = color || '#000000'
     gCtx.fillText(str, textPositionX, textPositionY)
 }
 
@@ -109,9 +123,19 @@ function drawRoundRect(startPointX, startPointY, lineWidth, lineHeight, color = 
     gCtx.stroke()
 }
 
+function drawUnderline(strokeStartPointX, strokeStartPointY, strokeEndPointX, color, size = 30) {
+    gCtx.beginPath();
+    gCtx.strokeStyle = color || 'black';
+    gCtx.lineWidth = 2;
+    gCtx.moveTo(strokeStartPointX, strokeStartPointY);
+    gCtx.lineTo(strokeStartPointX + strokeEndPointX, strokeStartPointY);
+    gCtx.stroke();
+
+}
+
 // Read
 
-function getCanvasContainer() {
+function getCanvasContainerWidth () {
     const gMeme = getGMeme()
     return document.querySelector('.canvas-container').offsetWidth - (35 * 2)
 }
@@ -119,8 +143,23 @@ function getCanvasContainer() {
 
 // Update
 
+function onMoveLinePosition(el) {
+    let change = -5
+ if (el.classList.contains('down')) change = 5
+    getGMeme().lines[gMeme.selectedLineIdx].textPositionY += change
+    renderGMeme()
+}
+
+
+function onSetFontFamily(el) {
+    setFontFamily(el.value)
+    // renderFontFamilySelectionValue()
+    renderGMeme()
+}
+
 function onSetTextAlignment(el) {
     SetTextAlignment(el)
+    renderGMeme()
 }
 
 
@@ -183,9 +222,8 @@ function moveToTextInput() {
 }
 
 function getUpdatedTextPositionX(value) {
-    console.log("🚀 ~ getUpdatedTextPositionX ~ value:", value)
-    if (value === 'left') return  G_START_POSITION_X
+    if (value === 'left') return G_START_POSITION_X
     else if (value === 'right') return gElCanvas.width - G_START_POSITION_X
-    else return gElCanvas.width / 2 
+    else return gElCanvas.width / 2
 }
 
