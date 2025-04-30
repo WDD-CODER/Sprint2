@@ -33,6 +33,14 @@ function getAccurateBorderLinePosition() {
     return accurateLinePositions
 
 }
+function getAccurateUnderLinePosition() {
+    const curLine = gMeme.lines[gMeme.selectedLineIdx]
+    let strokeStartPointX = curLine.textPositionX - 2
+    let strokeStartPointY = curLine.textPositionY + curLine.size + 2
+    let strokeEndPointX = curLine.textPositionX + curLine.textWidth + 2
+    const UnderLinePosition = { strokeStartPointX, strokeStartPointY, strokeEndPointX }
+    return UnderLinePosition
+}
 
 function getSelectedLineIdx() {
     return gMeme.selectedLineIdx
@@ -41,20 +49,55 @@ function getSelectedLineIdx() {
 function getLineIdxByPosition(ev) {
     if (!gMeme) return
     const pos = getEvPos(ev)
+    const elCanvasContainerWidth = document.querySelector('.canvas-container.meme').offsetWidth
+    const centerOfCanvas = elCanvasContainerWidth / 2
     const curLineIdx = gMeme.lines.findIndex(line => {
         let { textPositionX, textPositionY, lineHeight, textWidth } = line
         // In case the line was added without any text, Gives the line One time use width so it could be chosen.
-        if (!textWidth) textWidth = getCanvasContainer()
-        const isClicked =
-            pos.x >= textPositionX - 10 &&
-            pos.x <= textPositionX + textWidth + 20
-            &&
-            pos.y <= textPositionY - 5 + lineHeight &&
-            pos.y >= textPositionY - 5
-        return isClicked
+        if (!textWidth) textWidth = getCanvasContainerWidth()
+        var isClicked
+        if (line.textAlign) {
+            if (line.textAlign === "center") {
+                isClicked =
+                    pos.x >= centerOfCanvas - 10 - textWidth / 2 &&
+                    pos.x <= centerOfCanvas + 10 + textWidth / 2
+                    &&
+                    pos.y >= textPositionY - 3 &&
+                    pos.y <= textPositionY + lineHeight + 3
+            }
+            else if (line.textAlign === "right") {
+                isClicked =
+                    pos.x >= textPositionX - textWidth - 10 &&
+                    pos.x <= textPositionX + 10
+                    &&
+                    pos.y >= textPositionY - 3 &&
+                    pos.y <= textPositionY + lineHeight + 3
+            }
+            else {
+                //text align to the left
+                isClicked =
+                    pos.x >= textPositionX - 10 &&
+                    pos.x <= textPositionX + textWidth + 20
+                    &&
+                    pos.y >= textPositionY - 3 &&
+                    pos.y <= textPositionY + lineHeight + 3
+            }
+            return isClicked
+        }
+
+        else {
+            //text align to the left
+            isClicked =
+                pos.x >= textPositionX - 10 &&
+                pos.x <= textPositionX + textWidth + 20
+                &&
+                pos.y >= textPositionY - 3 &&
+                pos.y <= textPositionY + lineHeight + 3
+            return isClicked
+        }
+
     })
-    var res = curLineIdx !== -1 ? curLineIdx : null
-    return res
+    return curLineIdx !== -1 ? curLineIdx : null
 }
 
 
@@ -69,13 +112,6 @@ function getGImgs() {
 
 function getGMeme() {
     return gMeme
-}
-
-function getTextAlignment() {
-    const textAlignment = {}
-    textAlignment.textAlign = gMeme.lines[gMeme.selectedLineIdx].textAlign
-    textAlignment.newPositionX = gMeme.lines[gMeme.selectedLineIdx].textPositionX
-    return textAlignment
 }
 // Create
 
@@ -105,7 +141,7 @@ function _createNewGMeme(ImgId) {
         lines: [
             {
                 txt: '',
-                size: 20,
+                size: 30,
                 color: '#000000',
                 textPositionX: 35,
                 textPositionY: 30,
@@ -118,10 +154,15 @@ function _createNewGMeme(ImgId) {
 
 // Update
 
+function setFontFamily(value) {
+    return gMeme.lines[gMeme.selectedLineIdx].fontFamily = value
+}
+
+
 function SetTextAlignment(el) {
-    const gMemeCurLine = gMeme.lines[gMeme.selectedLineIdx]
-    gMemeCurLine.textAlign = el.value
-    gMemeCurLine.textPositionX = getUpdatedTextPositionX(el.value)
+    const CurLine = gMeme.lines[gMeme.selectedLineIdx]
+    CurLine.textAlign = el.value
+    CurLine.textPositionX = getUpdatedTextPositionX(el.value)
 
 
     // const textAlignment = {align, newPositionX}

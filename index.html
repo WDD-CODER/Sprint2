@@ -27,7 +27,7 @@
                     <input class="line-text-search" type="text" placeholder="Start writing something"
                         onclick="renderBorderLine111()" oninput="onTextInput111(this)">
                 </form>
-            <div class="canvas-container-search"><canvas width="100" height="100" class="Search-canvas"></canvas>
+                <div class="canvas-container-search"><canvas width="100" height="100" class="Search-canvas"></canvas>
                 </div>
             </section>
             <h2 class="container-header justify-self">Main Picture Gallery</h2>
@@ -45,7 +45,7 @@
                 <section class="edit-options space-between">
                     <form class="text-submit" onsubmit="onAddLine(event)">
                         <input class="line-text meme" type="text" placeholder="Start writing something"
-                             oninput="onTextInput(this)">
+                            oninput="onTextInput(this)">
                     </form>
                     <div class="line-options">
                         <button class="line-selected increase" onclick="onSetSelectedLine(this)">Move line down</button>
@@ -56,13 +56,23 @@
                     <div class="text-options">
                         <button type="button" class="font-size increase" onclick="onsetFontSize(this)">+</button>
                         <button type="button" class="font-size decrease" onclick="onsetFontSize(this)">-</button>
-                        <button class="align-line left" onclick="onSetTextAlignment(this)" value="left">line-left</button>
-                        <button class="align-line center" onclick="onSetTextAlignment(this)" value="center">line-center</button>
-                        <button class="align-line right" onclick="onSetTextAlignment(this)"value="right">line-right</button>
-                        <button class="text-underline" onchange="changeTextDecoration()">text-underline</button>
+                        <button class="align-line left" onclick="onSetTextAlignment(this)"
+                            value="left">line-left</button>
+                        <button class="align-line center" onclick="onSetTextAlignment(this)"
+                            value="center">line-center</button>
+                        <button class="align-line right" onclick="onSetTextAlignment(this)"
+                            value="right">line-right</button>
+                        <button class="text-underline" onchange="onRenderUnderLine()">text-underline</button>
                     </div>
                     <div class="inputs">
-                        <input type="text" list="font-family" placeholder="Choose fond family">
+                        <select class="font-family" onchange="onSetFontFamily(this)">
+                            <option value="Arial">Arial</option>
+                            <option value="Times New Roman">Times New Roman</option>
+                            <option value="Impact">Impact</option>
+                            <option value="Comic Sans MS">Comic Sans MS</option>
+                        </select>
+                        <button class="move up" onclick="onMoveLinePosition(this)">Move Up</button>
+                        <button class="move down" onclick="onMoveLinePosition(this)">Move Down</button>
                         <input type="color" class="text-color" onchange="onsetTextColor(this,event)">
                     </div>
                     <!-- <div class="icons-input">
@@ -78,11 +88,6 @@
                     <form class="upload-to-facebook" method="POST" enctype="multipart/form-data"
                         onsubmit="onShareImg(event)">
                     </form>
-                    <datalist id="font-family">
-                        <option value="impact">impact</option>
-                        <option value="arial">arial</option>
-                    </datalist>
-
             </div>
         </section>
         </section>
