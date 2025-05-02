@@ -32,28 +32,24 @@ function SwitchBetweenMainContainers() {
 function showContainer(containerClassName) {
     document.querySelector(`.${containerClassName}.container`).classList.remove('hidden')
     document.querySelectorAll('.container').forEach((el) => {
-        console.log("🚀 ~ document.querySelectorAll ~ el:", el)
         if (!el.classList.contains(containerClassName))
             el.classList.add('hidden')
     })
 }
 
-function showSavedMemeGallery() {
-    document.querySelector('.saved-meme-gallery.container').classList.remove('hidden')
-    document.querySelectorAll('.container').forEach((el) => {
-        !el.classList.contains('gallery-pics')
-        el.classList.add('hidden')
-    })
-
-
-    document.querySelector('.gallery.container').classList.add('hidden')
-}
+// function showSavedMemeGallery() {
+//     document.querySelector('.saved-meme-gallery.container').classList.remove('hidden')
+//     document.querySelectorAll('.container').forEach((el) => {
+//         !el.classList.contains('gallery-pics')
+//         el.classList.add('hidden')
+//     })
+//     document.querySelector('.gallery.container').classList.add('hidden')
+// }
 
 
 // Create
 
 function onImgSelect(el) {
-    // showEditorContainer()
     showContainer('meme')
     onIniMemeEdit()
     setImg(el)

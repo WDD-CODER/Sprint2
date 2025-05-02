@@ -14,3 +14,6 @@ Make it so that if a button is not available for whatever reason, once User hove
 The fun family in the phone is different from the fun family in my computer. It's better.
 
 Make sure border-line disappears After user done Entering text
+
+
+When pressing line centered, it makes the borderline only in the center and not expand all over the line.

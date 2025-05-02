@@ -22,11 +22,13 @@ function GetLastLine() {
 
 
 function getAccurateBorderLinePosition(line) {
+    
     const curLine = line || gMeme.lines[gMeme.selectedLineIdx]
     const elCanvasContainerWidth = document.querySelector('.canvas-container.meme').offsetWidth
     const centerOfCanvas = elCanvasContainerWidth / 2
     // starts with left
-    const widthFallback = elCanvasContainerWidth - curLine.textPositionX * 2;
+    const widthFallback = elCanvasContainerWidth - 70;
+    
     const lineWidth = curLine.textWidth + 15 || widthFallback
     const lineHeight = curLine.size + 4
     const textAlign = curLine.textAlign || ''
@@ -50,6 +52,7 @@ function getAccurateBorderLinePosition(line) {
 
 }
 function getAccurateUnderLinePosition(line) {
+    
     const { linePositionX, linePositionY, lineWidth, lineHeight, textSize } = getAccurateBorderLinePosition(line)
     var UnderLinePosition = {}
     let strokeStartPointX = linePositionX
@@ -172,7 +175,7 @@ function _createNewGMeme(ImgId) {
             {
                 txt: '',
                 size: 16,
-                color: '#000000',
+                color: '#f5f5f5',
                 textPositionX: 35,
                 textPositionY: 30,
                 lineHeight: 30,
@@ -241,7 +244,7 @@ function createNewLine() {
     const newLine = {
         txt: '',
         size: 16,
-        color: '#000000',
+        color: '#f5f5f5',
         textPositionX: G_START_POSITION_X,
         textPositionY: baseY,
         lineHeight: 30

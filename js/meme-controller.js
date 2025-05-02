@@ -46,10 +46,11 @@ function renderImgOnCanvas(img) {
 
 
 function renderLine() {
-    getGMeme().lines.forEach(line => {
+    getGMeme().lines.forEach((line,idx) => {
         drawText(line.txt, line.size, line.color, line.textPositionX, line.textPositionY, line.textAlign, line.fontFamily)
         RenderUnderLine(line)
-        if (!line.txt) renderBorderLine(line)
+        // if (!line.txt) renderBorderLine(line)
+        if (idx === getGMeme().selectedLineIdx) renderBorderLine(line)
     })
 }
 
@@ -60,6 +61,7 @@ function onSetUnderline() {
 
 function RenderUnderLine(line) {
     if (!line.underLine) return;
+    
     const pos = getAccurateUnderLinePosition(line); // Pass line if needed
     drawUnderline(pos.strokeStartPointX, pos.strokeStartPointY, pos.strokeEndPointX);
 
@@ -78,6 +80,7 @@ function renderLineColorInputValue() {
 }
 
 function onClickLineInCanvas(ev) {
+    
     var lineIdx = getLineIdxByPosition(ev)
     if (lineIdx === null) return
     setGMemeSelectedLineIdxTo(lineIdx)
@@ -106,7 +109,7 @@ function onTextInput(el) {
 function onAddLine(ev) {
     if (ev) ev.preventDefault()
     createNewLine()
-    moveToTextInput()
+    // moveToTextInput()
     renderGMeme()
 }
 function drawText(str, textSize, color, textPositionX, textPositionY, textAlign, fontFamily) {
