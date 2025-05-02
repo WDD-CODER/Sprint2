@@ -13,19 +13,18 @@
         <article class="logo">Meme Me!!!</article>
         <nav class="navigation">
             <ul class="navigation-list flex clean-list">
-                <li><a href="#" class="go-to-screen">Gallery</a></li>
-                <li><a href="#" class="go-to-screen">Editor</a></li>
-                <li><a href="#" class="go-to-screen">Saved Memes</a></li>
+                <li><a href="#" onclick="onChooseContainer(this)" data-tab="gallery">Gallery</a></li>
+                <li><a href="#" onclick="onChooseContainer(this)" data-tab="meme">Editor</a></li>
+                <li><a href="#" onclick="onChooseContainer(this)" data-tab="saved-meme-gallery">Saved Memes</a></li>
             </ul>
         </nav>
     </header>
     <main class="main-content">
-        <button onclick="SwitchBetweenMainContainers()">switch</button>
         <section class="gallery container">
             <section class="Search-bar flex align-items space-around">
                 <form class="text-submit-search" onsubmit="onAddLine(event)">
                     <input class="line-text-search" type="text" placeholder="Start writing something"
-                        onclick="renderBorderLine111()" oninput="onTextInput111(this)">
+                    onclick="renderBorderLine111()" oninput="onTextInput111(this)">
                 </form>
                 <div class="canvas-container-search"><canvas width="100" height="100" class="Search-canvas"></canvas>
                 </div>
@@ -35,10 +34,26 @@
             <section class="gallery-pics">
             </section>
         </section>
+        <section class="saved-meme-gallery container hidden">
+            <!-- <button onclick="SwitchBetweenMainContainers()">switch</button> -->
+            <section class="Search-bar flex align-items space-around">
+                <form class="text-submit-search" onsubmit="onAddLine(event)">
+                    <input class="line-text-search" type="text" placeholder="Start writing something"
+                        onclick="renderBorderLine111()" oninput="onTextInput111(this)">
+                </form>
+                <div class="canvas-container-search"><canvas width="100" height="100" class="Search-canvas"></canvas>
+                </div>
+            </section>
+            <h2 class="container-header justify-self">Saved Meme Gallery</h2>
+            <section class="meme-gallery-pics">
+            </section>
+        </section>
 
         <section class="meme container hidden">
+            <!-- <button onclick="showMainGallery()">Back To Gallery</button> -->
+
             <h2 class="container-header justify-self">Meme Edit Window</h2>
-            <div class="meme-editor justify-content">
+            <div class="meme-editor justify-content align-items">
                 <div class="canvas-container meme" onresize="renderCanvas()">
                     <canvas class="meme-canvas" onmousedown="onClickLineInCanvas(event)"
                         ontouchstart="onClickLineInCanvas(event)"></canvas>
