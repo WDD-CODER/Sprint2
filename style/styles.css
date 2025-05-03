@@ -17,6 +17,7 @@
 @import url('components/meme-editor.css');
 @import url('components/canvas-container.css');
 @import url('components/btn.css');
+@import url('components/meme-gallery-pics.css');
 
 /* MQ */
 @import url('setup/mq.css');

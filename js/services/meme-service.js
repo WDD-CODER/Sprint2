@@ -1,5 +1,7 @@
 'use strict';
-var gRandomTexts = [
+const MEME_STORAGE_KEY = 'memeDB'
+const IMG_STORAGE_KEY = 'imgDB'
+const gRandomTexts = [
     "You know I love you!",
     "Hey there... you!",
     "How's it hanging over there?",
@@ -11,24 +13,41 @@ var gRandomTexts = [
     "Just one more episode… at 3am.",
     "I came. I saw. I made it awkward."
 ];
-var gImgs = []
+
+var gImgs = loadGImgsFromStorage(IMG_STORAGE_KEY) || []
 var gMeme
+var gSavedMems = loadFromStorage(MEME_STORAGE_KEY) || []
 var gKeywordSearchCountMap = { 'funny': 12, 'cat': 16, 'baby': 2 }
 
 // Lists
+
+function loadGImgsFromStorage(key) {
+    const savedImgs = loadFromStorage(key)
+    if (savedImgs) savedImgs.forEach(gImg => {
+        const img = new Image();
+        img.src = gImg.url;
+        gImg.img = img;
+    })
+    return savedImgs
+}
+
+function getGSavedMems() {
+    return gSavedMems
+}
+
 function GetLastLine() {
     return gMeme.lines[gMeme.lines.length - 1]
 }
 
 
 function getAccurateBorderLinePosition(line) {
-    
+
     const curLine = line || gMeme.lines[gMeme.selectedLineIdx]
     const elCanvasContainerWidth = document.querySelector('.canvas-container.meme').offsetWidth
     const centerOfCanvas = elCanvasContainerWidth / 2
     // starts with left
     const widthFallback = elCanvasContainerWidth - 70;
-    
+
     const lineWidth = curLine.textWidth + 15 || widthFallback
     const lineHeight = curLine.size + 4
     const textAlign = curLine.textAlign || ''
@@ -52,7 +71,7 @@ function getAccurateBorderLinePosition(line) {
 
 }
 function getAccurateUnderLinePosition(line) {
-    
+
     const { linePositionX, linePositionY, lineWidth, lineHeight, textSize } = getAccurateBorderLinePosition(line)
     var UnderLinePosition = {}
     let strokeStartPointX = linePositionX
@@ -135,6 +154,10 @@ function getGMeme() {
 function getLineByIdX(lineIdx) {
     return gMeme.lines[lineIdx]
 }
+function getMemeById(memeId) {
+
+    return gSavedMems.find(meme => meme.selectedImgId === memeId)
+}
 
 function getRandomImg() {
     const elGImgs = document.querySelectorAll('.gallery-pics img');
@@ -153,11 +176,12 @@ function _createMemeImg(el, onReady) {    //First load the main image and then c
     const img = new Image()
     img.onload = () => {
         MemeImg = {
-            id: +el.id,
+            id: el.id,
             url: el.src,
             keywords: [],
             img: img
         }
+
         gImgs.push(MemeImg)
         // Create GMeme object
         _createNewGMeme(MemeImg.id)
@@ -186,16 +210,34 @@ function _createNewGMeme(ImgId) {
 
 
 // Update
+function setGMeme(meme) {
+    return gMeme = meme
+}
 
-function setGMemeUnderline() {
-    gMeme.lines[gMeme.selectedLineIdx].underLine = !gMeme.lines[gMeme.selectedLineIdx].underLine;
-    return gMeme.lines[gMeme.selectedLineIdx].underLine;
+function saveMemeToLocalStorage(meme) {
+    const curId = meme.selectedImgId
+    const alreadyExists = gSavedMems.findIndex(meme => meme.selectedImgId === curId)
+    if (alreadyExists === -1) gSavedMems.push(meme)
+    _saveGMemes()
 }
 
 
-function setFontFamily(value) {
-    return gMeme.lines[gMeme.selectedLineIdx].fontFamily = value
+function saveImgToLocalStorage(img) {
+    const curId = img.id
+    const alreadyExists = gImgs.findIndex(img => img.id === curId)
+    if (alreadyExists === -1) gImgs.push(img)
+        _saveGImgs()
 }
+
+function _saveGImgs() {
+    saveToStorage(IMG_STORAGE_KEY, gImgs)
+}
+
+function _saveGMemes() {
+    saveToStorage(MEME_STORAGE_KEY, gSavedMems)
+}
+
+
 
 
 function SetTextAlignment(el) {
@@ -218,24 +260,7 @@ function setImg(el, onReady) {
     _createMemeImg(el, onReady)
 }
 
-function setFontSize(change) {
-    const line = gMeme.lines[gMeme.selectedLineIdx]
-    line.size += change
-    gCtx.font = `${line.size}px Arial`
-    return
-}
 
-function setRandomTextLines(numOfLines) {
-     gMeme.lines = []
-    for (let i = 0; i < numOfLines; i++) {
-        createNewLine()
-    }
-    gMeme.lines.forEach(line =>  line.txt = getRandomText())
-}
-
-function setLineTxt(txt) {
-    return gMeme.lines[gMeme.selectedLineIdx].txt = txt
-}
 
 function createNewLine() {
     let lastLine = GetLastLine();
@@ -254,8 +279,36 @@ function createNewLine() {
     gMeme.selectedLineIdx = gMeme.lines.length - 1;
 }
 
+function setRandomTextLines(numOfLines) {
+    gMeme.lines = []
+    for (let i = 0; i < numOfLines; i++) {
+        createNewLine()
+    }
+    gMeme.lines.forEach(line => line.txt = getRandomText())
+}
+
+function setLineTxt(txt) {
+    return gMeme.lines[gMeme.selectedLineIdx].txt = txt
+}
+
+function setGMemeUnderline() {
+    gMeme.lines[gMeme.selectedLineIdx].underLine = !gMeme.lines[gMeme.selectedLineIdx].underLine;
+    return gMeme.lines[gMeme.selectedLineIdx].underLine;
+}
+
+function setFontFamily(value) {
+    return gMeme.lines[gMeme.selectedLineIdx].fontFamily = value
+}
+
 function setTextWidth(width) {
     return gMeme.lines[gMeme.selectedLineIdx].textWidth = width
+}
+
+function setFontSize(change) {
+    const line = gMeme.lines[gMeme.selectedLineIdx]
+    line.size += change
+    gCtx.font = `${line.size}px Arial`
+    return
 }
 
 
@@ -292,5 +345,8 @@ function CheckGMemeLinesNumb() {
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+function getRandomId() {
+    return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
 }
 

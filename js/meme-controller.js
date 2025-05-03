@@ -44,24 +44,17 @@ function renderImgOnCanvas(img) {
     reSizeCanvasContainer(gElCanvas.width, gElCanvas.height)
 }
 
-
 function renderLine() {
-    getGMeme().lines.forEach((line,idx) => {
+    getGMeme().lines.forEach((line, idx) => {
         drawText(line.txt, line.size, line.color, line.textPositionX, line.textPositionY, line.textAlign, line.fontFamily)
         RenderUnderLine(line)
-        // if (!line.txt) renderBorderLine(line)
         if (idx === getGMeme().selectedLineIdx) renderBorderLine(line)
     })
 }
 
-function onSetUnderline() {
-    setGMemeUnderline()
-    renderGMeme()
-}
 
 function RenderUnderLine(line) {
     if (!line.underLine) return;
-    
     const pos = getAccurateUnderLinePosition(line); // Pass line if needed
     drawUnderline(pos.strokeStartPointX, pos.strokeStartPointY, pos.strokeEndPointX);
 
@@ -80,7 +73,6 @@ function renderLineColorInputValue() {
 }
 
 function onClickLineInCanvas(ev) {
-    
     var lineIdx = getLineIdxByPosition(ev)
     if (lineIdx === null) return
     setGMemeSelectedLineIdxTo(lineIdx)
@@ -99,6 +91,21 @@ function renderFontFamilySelectionValue() {
 
 
 // Create
+function onSaveMeme() {
+        if (!confirm('Are you sure you want to save the picture?')) return
+    const gMeme = getGMeme()
+    const CurImgUrl = gElCanvas.toDataURL();
+    const RandomId = getRandomId()
+    let curGImg = getImgById(gMeme.selectedImgId)
+
+    gMeme.imgUrl = CurImgUrl
+    gMeme.selectedImgId = RandomId
+    curGImg.id = gMeme.selectedImgId
+
+    saveImgToLocalStorage(curGImg)
+    saveMemeToLocalStorage(gMeme)
+    showContainer('saved-meme-gallery')
+}
 
 function onTextInput(el) {
     setLineTxt(el.value)
@@ -109,7 +116,6 @@ function onTextInput(el) {
 function onAddLine(ev) {
     if (ev) ev.preventDefault()
     createNewLine()
-    // moveToTextInput()
     renderGMeme()
 }
 function drawText(str, textSize, color, textPositionX, textPositionY, textAlign, fontFamily) {
@@ -139,6 +145,14 @@ function drawUnderline(strokeStartPointX, strokeStartPointY, strokeEndPointX, co
 }
 
 // Read
+function moveToTextInput() {
+    if (!CheckGMemeLinesNumb()) return
+    const lineIdx = getSelectedLineIdx()
+    const textInput = document.querySelector('.line-text.meme')
+    textInput.value = getGMeme().lines[lineIdx].txt
+    textInput.focus()
+}
+
 
 function getCanvasContainerWidth() {
     const gMeme = getGMeme()
@@ -147,6 +161,10 @@ function getCanvasContainerWidth() {
 
 
 // Update
+function onSetUnderline() {
+    setGMemeUnderline()
+    renderGMeme()
+}
 
 function onMoveLinePosition(el) {
     let change = -5
@@ -191,11 +209,7 @@ function onsetTextColor(el) {
     renderGMeme()
 }
 
-function onsetTextDirection() {
-    gCtx.textAlign = 'center'; // center the text horizontally
-    renderGMeme()
-}
-
+// Delete
 function clearCanvas() {
     gCtx.fillStyle = "white"
     gCtx.fillRect(0, 0, gElCanvas.width, gElCanvas.height)
@@ -208,14 +222,6 @@ function onDeleteLine() {
 }
 
 // Helpers
-
-function moveToTextInput() {
-    if (!CheckGMemeLinesNumb()) return
-    const lineIdx = getSelectedLineIdx()
-    const textInput = document.querySelector('.line-text.meme')
-    textInput.value = getGMeme().lines[lineIdx].txt
-    textInput.focus()
-}
 
 function getUpdatedTextPositionX(value) {
     if (value === 'left') return G_START_POSITION_X

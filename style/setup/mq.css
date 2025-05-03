@@ -1,19 +1,21 @@
 /* Mobile only */
 @media (max-width:700px) {
-    html{
+    html {
         font-size: 12px;
     }
+
     .main-layout {
         grid-template-columns: 12px 1fr 12px;
-        }
+    }
 
     .meme-editor {
         grid-auto-flow: column;
-        grid-template-rows:1fr 1fr;
+        grid-template-rows: 1fr 1fr;
         gap: 1em;
 
     }
-    .main-header{
+
+    .main-header {
         font-size: smaller;
     }
 
@@ -24,12 +26,13 @@
 /* Medium */
 @media (min-width: 780px) {
 
-    
+
     .meme-editor {
         display: grid;
         grid-template-columns: minmax(auto-fit, 356px);
     }
-    .edit-options{
+
+    .edit-options {
         grid-column: 2;
     }
 
@@ -42,18 +45,21 @@
     }
 
     .main-content {
-        padding: 1em;    
+        padding: 1em;
     }
 
-    .main-header{
+    .main-header {
         padding: 1em 80px;
     }
-    
+
     .meme-editor {
         grid-template-columns: minmax(auto-fit, 356px);
         padding: .3em;
         gap: 1em;
 
     }
-    
+
+    figure {
+        max-width: 20vw;
+    }
 }

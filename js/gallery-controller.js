@@ -2,6 +2,8 @@
 var gLastContainer
 
 // Lists
+
+
 function onInitGallery() {
     gElCanvas = document.querySelector('.Search-canvas');
     gCtx = gElCanvas.getContext('2d')
@@ -21,31 +23,16 @@ function renderGallery() {
     }
 
 }
-//not sure needed anymore...
-function SwitchBetweenMainContainers() {
-    document.querySelectorAll('.container').forEach(el => {
-        if (el.classList.contains('hidden')) el.classList.remove('hidden')
-        else el.classList.add('hidden')
-    })
-}
 
 function showContainer(containerClassName) {
-    document.querySelector(`.${containerClassName}.container`).classList.remove('hidden')
+    const elContainer = document.querySelector(`.${containerClassName}.container`)
+    elContainer.classList.remove('hidden')
     document.querySelectorAll('.container').forEach((el) => {
         if (!el.classList.contains(containerClassName))
             el.classList.add('hidden')
     })
+    if (elContainer.classList.contains('saved-meme-gallery')) renderSavedMemeGallery()
 }
-
-// function showSavedMemeGallery() {
-//     document.querySelector('.saved-meme-gallery.container').classList.remove('hidden')
-//     document.querySelectorAll('.container').forEach((el) => {
-//         !el.classList.contains('gallery-pics')
-//         el.classList.add('hidden')
-//     })
-//     document.querySelector('.gallery.container').classList.add('hidden')
-// }
-
 
 // Create
 
@@ -56,7 +43,7 @@ function onImgSelect(el) {
 }
 
 function onGenerateRandomMeme() {
-    SwitchBetweenMainContainers()
+    showContainer('meme')
     onIniMemeEdit()
     const randomImg = getRandomImg()
     setImg(randomImg, () => {
