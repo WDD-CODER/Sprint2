@@ -39,14 +39,14 @@ function showContainer(containerClassName) {
 function onImgSelect(el) {
     showContainer('meme')
     onIniMemeEdit()
-    setImg(el)
+    setImgObject(el)
 }
 
 function onGenerateRandomMeme() {
     showContainer('meme')
     onIniMemeEdit()
-    const randomImg = getRandomImg()
-    setImg(randomImg, () => {
+    const randomImg = getRandomImgFromGallery()
+    setImgObject(randomImg, () => {
         setRandomTextLines(3)
         onSetTextWidth()
         renderGMeme()

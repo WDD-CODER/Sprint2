@@ -6,7 +6,6 @@ function onInitSavedMemeGallery() {
 
 }
 renderSavedMemeGallery()
-//אני מציג רק את התמונה מתוך מה שנשמר במיים!!
 function renderSavedMemeGallery() {
     document.querySelector('.meme.gallery-pics').innerHTML = ''
     getGSavedMems().forEach(meme => {
@@ -26,18 +25,5 @@ function onEditMeme(el) {
     onIniMemeEdit()
     renderGMeme()
 }
-
-
-
-// const imgs = getGImgs();
-// for (let i = 0; i < imgs.length; i++) {
-//     document.querySelector('.gallery-pics').innerHTML += `
-//                      <figure>
-//                      <figcaption class="img-name"></figcaption>
-//                      <img onclick="onImgSelect(this)" id="${i + 1}" src="${}" alt="img">
-//                      </figure>
-//     `;
-// }
-
 
 

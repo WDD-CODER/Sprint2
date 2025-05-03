@@ -45,19 +45,12 @@ function renderImgOnCanvas(img) {
 }
 
 function renderLine() {
+    const selectedLineIdx = getGMeme().selectedLineIdx;
     getGMeme().lines.forEach((line, idx) => {
         drawText(line.txt, line.size, line.color, line.textPositionX, line.textPositionY, line.textAlign, line.fontFamily)
         RenderUnderLine(line)
-        if (idx === getGMeme().selectedLineIdx) renderBorderLine(line)
+        if (idx === selectedLineIdx) renderBorderLine(line)
     })
-}
-
-
-function RenderUnderLine(line) {
-    if (!line.underLine) return;
-    const pos = getAccurateUnderLinePosition(line); // Pass line if needed
-    drawUnderline(pos.strokeStartPointX, pos.strokeStartPointY, pos.strokeEndPointX);
-
 }
 
 function renderBorderLine(line) {
@@ -65,11 +58,22 @@ function renderBorderLine(line) {
     drawRoundRect(newLine.linePositionX, newLine.linePositionY, newLine.lineWidth, newLine.lineHeight)
 }
 
+function RenderUnderLine(line) {
+    if (!line.underLine) return;
+    const pos = getAccurateUnderLinePosition(line);
+    drawUnderline(pos.strokeStartPointX, pos.strokeStartPointY, pos.strokeEndPointX);
+}
+
+function renderFontFamilySelectionValue() {
+    let FontFamily = getGMeme().lines[gMeme.selectedLineIdx].fontFamily
+    return FontFamily = document.querySelector('.font-family').value;
+}
+
 function renderLineColorInputValue() {
-    const textColorInput = document.querySelector('.text-color')
     const gMemeLines = getGMeme().lines
     if (!gMemeLines.length) return
-    textColorInput.value = gMemeLines[gMeme.selectedLineIdx].color
+    var textColorInput = document.querySelector('.text-color').value
+    textColorInput = gMemeLines[gMeme.selectedLineIdx].color
 }
 
 function onClickLineInCanvas(ev) {
@@ -79,20 +83,12 @@ function onClickLineInCanvas(ev) {
     renderGMeme()
     // Make sure Once lying Check user goes to text input. Didn't find a way to do it
     //  not with requestAnimationFrame or set timeout
-    requestAnimationFrame(() => {
-        moveToTextInput()
-    })
+    requestAnimationFrame(() => moveToTextInput())
 }
-
-function renderFontFamilySelectionValue() {
-    let FontFamily = getGMeme().lines[gMeme.selectedLineIdx].fontFamily
-    return FontFamily = document.querySelector('.font-family').value;
-}
-
 
 // Create
 function onSaveMeme() {
-        if (!confirm('Are you sure you want to save the picture?')) return
+    if (!confirm('Are you sure you want to save the picture?')) return
     const gMeme = getGMeme()
     const CurImgUrl = gElCanvas.toDataURL();
     const RandomId = getRandomId()
@@ -118,6 +114,7 @@ function onAddLine(ev) {
     createNewLine()
     renderGMeme()
 }
+
 function drawText(str, textSize, color, textPositionX, textPositionY, textAlign, fontFamily) {
     fontFamily = fontFamily || 'Arial'
     gCtx.textAlign = textAlign || 'start';
@@ -137,7 +134,7 @@ function drawRoundRect(startPointX, startPointY, lineWidth, lineHeight, color = 
 function drawUnderline(strokeStartPointX, strokeStartPointY, strokeEndPointX, color, size = 30) {
     gCtx.beginPath();
     gCtx.strokeStyle = color || 'black';
-    gCtx.lineWidth = 2;
+    gCtx.lineWidth = 1;
     gCtx.moveTo(strokeStartPointX, strokeStartPointY);
     gCtx.lineTo(strokeStartPointX + strokeEndPointX, strokeStartPointY);
     gCtx.stroke();
@@ -146,17 +143,22 @@ function drawUnderline(strokeStartPointX, strokeStartPointY, strokeEndPointX, co
 
 // Read
 function moveToTextInput() {
-    if (!CheckGMemeLinesNumb()) return
+    if (!getGMemeLinesNum()) return
     const lineIdx = getSelectedLineIdx()
     const textInput = document.querySelector('.line-text.meme')
     textInput.value = getGMeme().lines[lineIdx].txt
     textInput.focus()
 }
 
-
 function getCanvasContainerWidth() {
     const gMeme = getGMeme()
     return document.querySelector('.canvas-container').offsetWidth - (35 * 2)
+}
+
+function getUpdatedTextPositionX(value) {
+    if (value === 'left') return G_START_POSITION_X
+    else if (value === 'right') return gElCanvas.width - G_START_POSITION_X
+    else return gElCanvas.width / 2
 }
 
 
@@ -166,13 +168,12 @@ function onSetUnderline() {
     renderGMeme()
 }
 
-function onMoveLinePosition(el) {
+function onSetLinePosition(el) {
     let change = -5
     if (el.classList.contains('down')) change = 5
-    getGMeme().lines[gMeme.selectedLineIdx].textPositionY += change
+    setLinePosition(change)
     renderGMeme()
 }
-
 
 function onSetFontFamily(el) {
     setFontFamily(el.value)
@@ -184,12 +185,11 @@ function onSetTextAlignment(el) {
     renderGMeme()
 }
 
-
 function onSetTextWidth() {
     const line = getGMeme().lines[gMeme.selectedLineIdx]
     gCtx.font = `${line.size}px Arial`;
     const textWidth = gCtx.measureText(line.txt).width
-    return setTextWidth(textWidth)
+    setTextWidth(textWidth)
 }
 
 function onSetSelectedLine(el, lineIdx) {
@@ -216,16 +216,11 @@ function clearCanvas() {
 }
 
 function onDeleteLine() {
-    if (!CheckGMemeLinesNumb()) return
+    if (!getGMemeLinesNum()) return
     DeleteLineFromGMeme()
     renderGMeme()
 }
 
 // Helpers
 
-function getUpdatedTextPositionX(value) {
-    if (value === 'left') return G_START_POSITION_X
-    else if (value === 'right') return gElCanvas.width - G_START_POSITION_X
-    else return gElCanvas.width / 2
-}
 

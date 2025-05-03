@@ -23,7 +23,7 @@
         <section class="gallery container">
             <section class="Search-bar flex align-items space-around">
                 <form class="text-submit-search" onsubmit="onAddLine(event)">
-                    <input class="line-text-search" type="text" placeholder="Start writing something"
+                    <input class="line-text-search" type="text" placeholder="What are you searching for?"
                     onclick="renderBorderLine111()" oninput="onTextInput111(this)">
                 </form>
                 <div class="canvas-container-search"><canvas width="100" height="100" class="Search-canvas"></canvas>
@@ -54,7 +54,8 @@
 
             <h2 class="container-header justify-self">Meme Edit Window</h2>
             <div class="meme-editor justify-content align-items">
-                <div class="canvas-container meme" onresize="renderCanvas()">
+                <div class="canvas-container meme"> 
+                <!-- onresize="renderCanvas()"> -->
                     <canvas class="meme-canvas" onmousedown="onClickLineInCanvas(event)"
                         ontouchstart="onClickLineInCanvas(event)"></canvas>
                 </div>
@@ -109,6 +110,7 @@
         </section>
     </main>
     <footer class="coffe-rights flex justify-content align-items">Made By DanDan</footer>
+    <script src="js/services/util-service.js"></script>
     <script src="js/services/storege-service.js"></script>
     <script src="js/services/canvas-service.js"></script>
     <script src="js/services/links-service.js"></script>
