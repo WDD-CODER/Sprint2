@@ -6,7 +6,6 @@ window.onerror = (msg, src, line, col, err) => {
     console.error('💥 Global error:', { msg, src, line, col, err });
 };
 
-
 function onInitGallery() {
     gElCanvas = document.querySelector('.Search-canvas');
     gCtx = gElCanvas.getContext('2d')
@@ -14,7 +13,10 @@ function onInitGallery() {
 }
 
 function renderGallery(filteredImages) {
+    console.log("🚀 ~ renderGallery ~ filteredImages:", filteredImages)
     var gImgs = filteredImages || getGImgs()
+    document.querySelector('.gallery-pics').innerHTML = ''
+
     gImgs.forEach(img => {
         document.querySelector('.gallery-pics').innerHTML += `
                          <figure>
