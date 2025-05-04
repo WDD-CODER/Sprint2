@@ -1,5 +1,8 @@
 'use strict';
 
+window.onerror = (msg, src, line, col, err) => {
+    console.error('💥 Global error:', { msg, src, line, col, err });
+  };
 
 
 function onInitSavedMemeGallery() {
@@ -12,15 +15,15 @@ function renderSavedMemeGallery() {
         document.querySelector('.meme.gallery-pics').innerHTML += `
                          <figure>
                          <figcaption class="img-name"></figcaption>
-                         <img onclick="onEditMeme(this)" id="${meme.selectedImgId}" src="${meme.imgUrl}" alt="img">
+                         <img onclick="onEditMeme(this)" id="${meme.id}" src="${meme.imgUrl}" alt="img">
                          </figure>
         `;
     })
 }
 
 function onEditMeme(el) {
-    setGMeme(getMemeById(el.id))
-    console.log('gMeme', gMeme);
+    var res = getMemeById(el.id)
+    setGMeme(res)
     showContainer('meme')
     onIniMemeEdit()
     renderGMeme()

@@ -22,10 +22,25 @@
     <main class="main-content">
         <section class="gallery container">
             <section class="Search-bar flex align-items space-around">
-                <form class="text-submit-search" onsubmit="onAddLine(event)">
-                    <input class="line-text-search" type="text" placeholder="What are you searching for?"
-                    onclick="renderBorderLine111()" oninput="onTextInput111(this)">
-                </form>
+                    <section>
+                        <input type="text" list="keyWords-list" class="keyWords-input"
+                            placeholder="Choose filter options" onchange="onFilterImgs(this)">
+                        <button class="clear-filter" onclick="onClearFilter()">x</button>
+                        <datalist id="keyWords-list">
+                            <option value="funny">funny</option>
+                            <option value="cat">cat</option>
+                            <option value="baby">baby</option>
+                            <option value="dog">dog</option>
+                            <option value="man">man</option>
+                            <option value="cute">cute</option>
+                            <option value="cool">cool</option>
+                            <option value="lady">lady</option>
+                            <option value="drEvil">drEvil</option>
+                            <option value="obama">obama</option>
+                            <option value="kids">kids</option>
+                            <option value="strict">strict</option>
+                        </datalist>
+                    </section>
                 <div class="canvas-container-search"><canvas width="100" height="100" class="Search-canvas"></canvas>
                 </div>
             </section>
@@ -38,7 +53,7 @@
             <!-- <button onclick="SwitchBetweenMainContainers()">switch</button> -->
             <section class="Search-bar flex align-items space-around">
                 <form class="text-submit-search" onsubmit="onAddLine(event)">
-                    <input class="line-text-search" type="text" placeholder="Start writing something"
+                    <input class="line-text-search" type="" placeholder="Start writing something"
                         onclick="renderBorderLine111()" oninput="onTextInput111(this)">
                 </form>
                 <div class="canvas-container-search"><canvas width="100" height="100" class="Search-canvas"></canvas>
@@ -54,15 +69,15 @@
 
             <h2 class="container-header justify-self">Meme Edit Window</h2>
             <div class="meme-editor justify-content align-items">
-                <div class="canvas-container meme"> 
-                <!-- onresize="renderCanvas()"> -->
+                <div class="canvas-container meme">
+                    <!-- onresize="renderCanvas()"> -->
                     <canvas class="meme-canvas" onmousedown="onClickLineInCanvas(event)"
                         ontouchstart="onClickLineInCanvas(event)"></canvas>
                 </div>
                 <section class="edit-options space-between">
                     <form class="text-submit" onsubmit="onAddLine(event)">
                         <input class="line-text meme" type="text" placeholder="Start writing something"
-                        onfocus="renderBorderLine()" oninput="onTextInput(this)">
+                            onfocus="renderBorderLine()" oninput="onTextInput(this)">
                     </form>
                     <div class="line-options">
                         <button class="line-selected increase" onclick="onSetSelectedLine(this)">Move line down</button>
@@ -88,9 +103,9 @@
                             <option value="Impact">Impact</option>
                             <option value="Comic Sans MS">Comic Sans MS</option>
                         </select>
-                        <button class="move up" onclick="onMoveLinePosition(this)">Move Up</button>
-                        <button class="move down" onclick="onMoveLinePosition(this)">Move Down</button>
-                        <input type="color" class="text-color" onchange="onsetTextColor(this,event)">
+                        <button class="move up" onclick="onSetLinePosition(this)">Move Up</button>
+                        <button class="move down" onclick="onSetLinePosition(this)">Move Down</button>
+                        <input type="color" class="text-color" onchange="onsetTextColor(this)">
                     </div>
                     <!-- <div class="icons-input">
                         <input type="text" list="font-family" placeholder="Choose fond family">

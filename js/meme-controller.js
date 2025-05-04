@@ -5,6 +5,9 @@ var gElCanvas
 var gCtx
 var gPos = {}
 
+window.onerror = (msg, src, line, col, err) => {
+    console.error('💥 Global error:', { msg, src, line, col, err });
+};
 
 //  Lists 
 
@@ -14,8 +17,8 @@ function onIniMemeEdit() {
 }
 
 function renderGMeme() {
-    const curMeme = getGMeme()
-    const curMemeGImg = getImgById(curMeme.selectedImgId)
+    const curMeme = getGMeme();
+    const curMemeGImg = getImgById(curMeme.selectedImgId);
     reSizeCanvas() // Resize first; this clears canvas internally
     clearCanvas()
     renderImgOnCanvas(curMemeGImg.img)
@@ -72,8 +75,7 @@ function renderFontFamilySelectionValue() {
 function renderLineColorInputValue() {
     const gMemeLines = getGMeme().lines
     if (!gMemeLines.length) return
-    var textColorInput = document.querySelector('.text-color').value
-    textColorInput = gMemeLines[gMeme.selectedLineIdx].color
+    document.querySelector('.text-color').value = gMemeLines[gMeme.selectedLineIdx].color
 }
 
 function onClickLineInCanvas(ev) {
@@ -87,6 +89,7 @@ function onClickLineInCanvas(ev) {
 }
 
 // Create
+
 function onSaveMeme() {
     if (!confirm('Are you sure you want to save the picture?')) return
     const gMeme = getGMeme()
@@ -95,8 +98,7 @@ function onSaveMeme() {
     let curGImg = getImgById(gMeme.selectedImgId)
 
     gMeme.imgUrl = CurImgUrl
-    gMeme.selectedImgId = RandomId
-    curGImg.id = gMeme.selectedImgId
+    gMeme.id = RandomId
 
     saveImgToLocalStorage(curGImg)
     saveMemeToLocalStorage(gMeme)

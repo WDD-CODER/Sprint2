@@ -1,27 +1,35 @@
 'use strict';
-var gLastContainer
+var gFilterBy
 
 // Lists
+window.onerror = (msg, src, line, col, err) => {
+    console.error('💥 Global error:', { msg, src, line, col, err });
+};
 
 
 function onInitGallery() {
     gElCanvas = document.querySelector('.Search-canvas');
     gCtx = gElCanvas.getContext('2d')
-    gLastContainer = 'gallery-container'
     renderGallery()
 }
 
-function renderGallery() {
-    const imgs = getGImgs();
-    for (let i = 0; i < 10; i++) {
+function renderGallery(filteredImages) {
+    var gImgs = filteredImages || getGImgs()
+    gImgs.forEach(img => {
         document.querySelector('.gallery-pics').innerHTML += `
                          <figure>
                          <figcaption class="img-name"></figcaption>
-                         <img onclick="onImgSelect(this)" id="${i + 1}" src="style/assets/img/meme-imgs-(various-aspect-ratios)/${i + 1}.jpg" alt="img">
+                         <img onclick="onImgSelect(this)" id="${img.id}" src="${img.url}" alt="img">
                          </figure>
         `;
-    }
+    })
 
+}
+
+function onFilterImgs(el) {
+    gFilterBy = el.value
+    var filteredImgs = getGImgs().filter(img => img.keywords.includes(gFilterBy))
+    renderGallery(filteredImgs)
 }
 
 function showContainer(containerClassName) {
@@ -31,6 +39,7 @@ function showContainer(containerClassName) {
         if (!el.classList.contains(containerClassName))
             el.classList.add('hidden')
     })
+
     if (elContainer.classList.contains('saved-meme-gallery')) renderSavedMemeGallery()
 }
 
@@ -58,4 +67,12 @@ function onGenerateRandomMeme() {
 function onChooseContainer(el) {
     const containerClassName = el.dataset.tab
     showContainer(containerClassName)
+}
+
+// Delete
+
+function onClearFilter() {
+    gFilterBy = ''
+    document.querySelector('.keyWords-input').value = ''
+    renderGallery()
 }
