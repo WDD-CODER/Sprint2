@@ -71,10 +71,10 @@
                         ontouchstart="onClickLineInCanvas(event)"></canvas>
                 </div>
                 <section class="edit-options space-between">
-                    <form class="text-submit" onsubmit="onAddLine(event)">
+                    <section class="text-submit" onsubmit="onAddLine(event)">
                         <input class="line-text meme" type="text" placeholder="Start writing something"
                        oninput="onTextInput(this)" onblur="gMemeEditModeNotActive()">
-                    </form>
+                    </section>
                     <div class="line-options">
                         <button class="line-selected increase" onclick="onSetSelectedLine(this)">Move line down</button>
                         <button class="line-selected decrease" onclick="onSetSelectedLine(this)">Move line up</button>

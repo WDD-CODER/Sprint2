@@ -214,7 +214,6 @@ function onSetFontFamily(el) {
 function onsetFontSize(el) {
     setFontSize(IncreaseOrDecreaseByFactor(1, el))
     onSetTextWidth()
-    moveToTextInput()
     renderGMeme()
 }
 
