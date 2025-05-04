@@ -21,7 +21,10 @@
     background-color: var(--meme-details-background);
 }
 
+input.line-text {
+    text-align: center;
+    width: 210px;
+}
 input.text-color {
-    /* margin-left: 5em; */
     height: 20px;
 }

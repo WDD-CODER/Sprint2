@@ -10,12 +10,9 @@ window.onerror = (msg, src, line, col, err) => {
 };
 
 //  Lists 
-
 function onIniMemeEdit() {
     gElCanvas = document.querySelector('.meme-canvas');
     gCtx = gElCanvas.getContext('2d')
-    gMemeEditModeActive()
-
 }
 
 function renderGMeme() {
@@ -27,7 +24,6 @@ function renderGMeme() {
     renderLine()
     renderLineColorInputValue()
     renderFontFamilySelectionValue()
-    moveToTextInput()
 }
 
 function reSizeCanvasContainer(width, height) {
@@ -83,6 +79,7 @@ function renderLineColorInputValue() {
 
 function onClickLineInCanvas(ev) {
     var lineIdx = getLineIdxByPosition(ev)
+    // gMemeEditModeActive()
     if (lineIdx === null) return
     setGMemeSelectedLineIdxTo(lineIdx)
     renderGMeme()
@@ -95,6 +92,7 @@ function onClickLineInCanvas(ev) {
 
 function onSaveMeme() {
     if (!confirm('Are you sure you want to save the picture?')) return
+    gMemeEditModeNotActive()
     const gMeme = getGMeme()
     const CurImgUrl = gElCanvas.toDataURL();
     const RandomId = getRandomId()
@@ -109,9 +107,6 @@ function onSaveMeme() {
 }
 
 function onTextInput(el) {
-    console.log("getGMeme():", getGMeme())
-
-    // isActiveState()
     setLineTxt(el.value)
     onSetTextWidth()
     renderGMeme()
@@ -119,8 +114,8 @@ function onTextInput(el) {
 
 function onAddLine(ev) {
     if (ev) ev.preventDefault()
-
     createNewLine()
+    moveToTextInput()
     renderGMeme()
 }
 
@@ -152,8 +147,9 @@ function drawUnderline(strokeStartPointX, strokeStartPointY, strokeEndPointX, co
 
 // Read
 function moveToTextInput() {
+    console.log("🚀 ~ moveToTextInput ~ getGMemeLinesNum():", getGMemeLinesNum())
     if (!getGMemeLinesNum()) return
-    // isActiveState()
+    gMemeEditModeActive()
     const lineIdx = getSelectedLineIdx()
     const textInput = document.querySelector('.line-text.meme')
     textInput.value = getGMeme().lines[lineIdx].txt
@@ -174,6 +170,7 @@ function getUpdatedTextPositionX(value) {
 
 // Update
 function onSetUnderline() {
+    moveToTextInput()
     setGMemeUnderline()
     renderGMeme()
 }
@@ -182,19 +179,14 @@ function onSetLinePosition(el) {
     let change = -5
     if (el.classList.contains('down')) change = 5
     setLinePosition(change)
-    gMemeEditModeActive()
+    moveToTextInput()
     renderGMeme()
 }
 
-function onSetFontFamily(el) {
-    setFontFamily(el.value)
-    gMemeEditModeActive()
-    renderGMeme()
-}
 
 function onSetTextAlignment(el) {
     SetTextAlignment(el)
-    gMemeEditModeActive()
+    moveToTextInput()
     renderGMeme()
 }
 
@@ -203,23 +195,32 @@ function onSetTextWidth() {
     gCtx.font = `${line.size}px Arial`;
     const textWidth = gCtx.measureText(line.txt).width
     setTextWidth(textWidth)
+    if (textWidth > getMaxLineWidth())    onAddLine()
 }
 
 function onSetSelectedLine(el, lineIdx) {
     if (getGMeme().lines.length <= 1) return
     setGMemeSelectedLine(el, lineIdx)
-    gMemeEditModeActive()
+    moveToTextInput()
+    renderGMeme()
+}
+
+function onSetFontFamily(el) {
+    setFontFamily(el.value)
+    moveToTextInput()
     renderGMeme()
 }
 
 function onsetFontSize(el) {
     setFontSize(IncreaseOrDecreaseByFactor(1, el))
     onSetTextWidth()
+    moveToTextInput()
     renderGMeme()
 }
 
 function onsetTextColor(el) {
     saveTextColor(el.value)
+    moveToTextInput()
     renderGMeme()
 }
 
@@ -232,13 +233,15 @@ function clearCanvas() {
 function onDeleteLine() {
     if (!getGMemeLinesNum()) return
     DeleteLineFromGMeme()
-    gMemeEditModeActive()
+    moveToTextInput()
     renderGMeme()
 }
 
 // Helpers
 
 function gMemeEditModeActive(){
+    console.log('gMemeEditModeActive');
+    
     if (!getGMeme()) return
     const gMeme = getGMeme()
     gMeme.isActive =  true 
@@ -246,6 +249,8 @@ function gMemeEditModeActive(){
 }
 
 function gMemeEditModeNotActive(){
+    console.log('gMemeEditModeNotActive');
+
     if (!getGMeme()) return
     const gMeme = getGMeme()
     gMeme.isActive = false 

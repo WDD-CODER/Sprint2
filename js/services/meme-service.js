@@ -164,7 +164,7 @@ function _createNewGMeme(ImgId) {
     gMeme = {
         selectedImgId: +ImgId,
         selectedLineIdx: 0,
-        isActive:false,
+        isActive: false,
         lines: [
             {
                 txt: '',
@@ -176,7 +176,7 @@ function _createNewGMeme(ImgId) {
             }
         ]
     }
-    gMemeEditModeActive()
+    moveToTextInput()
 }
 
 function createNewLine() {
@@ -194,7 +194,6 @@ function createNewLine() {
 
     gMeme.lines.push(newLine);
     gMeme.selectedLineIdx = gMeme.lines.length - 1;
-    gMemeEditModeActive()
 }
 
 // Reade
@@ -241,14 +240,16 @@ function getAccurateUnderLinePosition(line) {
     return UnderLinePosition
 }
 
+function getMaxLineWidth() {
+    const elCanvasContainerWidth = document.querySelector('.canvas-container.meme').offsetWidth
+    const marginInline = 35 * 2
+    return elCanvasContainerWidth - marginInline
+}
 
 // Update
 function setGMeme(meme) {
     var res = gMeme = meme
     return res
-}
-function clearGMeme() {
-    return gMeme = ''
 }
 
 function saveMemeToLocalStorage(meme) {
@@ -341,6 +342,11 @@ function DeleteLineFromGMeme() {
     gMeme.lines.splice(gMeme.selectedLineIdx, 1)
     gMeme.selectedLineIdx--
 }
+
+function clearGMeme() {
+    return gMeme = ''
+}
+
 
 
 // Helpers

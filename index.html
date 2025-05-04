@@ -50,7 +50,6 @@
             </section>
         </section>
         <section class="saved-meme-gallery container hidden">
-            <!-- <button onclick="SwitchBetweenMainContainers()">switch</button> -->
             <section class="Search-bar flex align-items space-around">
                 <form class="text-submit-search" onsubmit="onAddLine(event)">
                     <input class="line-text-search" type="" placeholder="Start writing something"
@@ -65,12 +64,9 @@
         </section>
 
         <section class="meme container hidden">
-            <!-- <button onclick="showMainGallery()">Back To Gallery</button> -->
-
             <h2 class="container-header justify-self">Meme Edit Window</h2>
             <div class="meme-editor justify-content align-items">
                 <div class="canvas-container meme">
-                    <!-- onresize="renderCanvas()"> -->
                     <canvas class="meme-canvas" onmousedown="onClickLineInCanvas(event)"
                         ontouchstart="onClickLineInCanvas(event)"></canvas>
                 </div>
