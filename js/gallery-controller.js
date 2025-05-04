@@ -13,7 +13,6 @@ function onInitGallery() {
 }
 
 function renderGallery(filteredImages) {
-    console.log("🚀 ~ renderGallery ~ filteredImages:", filteredImages)
     var gImgs = filteredImages || getGImgs()
     document.querySelector('.gallery-pics').innerHTML = ''
 
@@ -42,7 +41,9 @@ function showContainer(containerClassName) {
             el.classList.add('hidden')
     })
 
-    if (elContainer.classList.contains('saved-meme-gallery')) renderSavedMemeGallery()
+    if (elContainer.classList.contains('saved-meme-gallery')) onInitSavedMemeGallery()
+    else if (elContainer.classList.contains('meme')) onIniMemeEdit()
+    else if (elContainer.classList.contains('gallery')) onInitGallery()
 }
 
 // Create

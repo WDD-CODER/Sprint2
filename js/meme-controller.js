@@ -14,6 +14,8 @@ window.onerror = (msg, src, line, col, err) => {
 function onIniMemeEdit() {
     gElCanvas = document.querySelector('.meme-canvas');
     gCtx = gElCanvas.getContext('2d')
+    gMemeEditModeActive()
+
 }
 
 function renderGMeme() {
@@ -57,6 +59,7 @@ function renderLine() {
 }
 
 function renderBorderLine(line) {
+    if (!getGMeme().isActive) return
     const newLine = getAccurateBorderLinePosition(line)
     drawRoundRect(newLine.linePositionX, newLine.linePositionY, newLine.lineWidth, newLine.lineHeight)
 }
@@ -106,6 +109,9 @@ function onSaveMeme() {
 }
 
 function onTextInput(el) {
+    console.log("getGMeme():", getGMeme())
+
+    // isActiveState()
     setLineTxt(el.value)
     onSetTextWidth()
     renderGMeme()
@@ -113,6 +119,7 @@ function onTextInput(el) {
 
 function onAddLine(ev) {
     if (ev) ev.preventDefault()
+
     createNewLine()
     renderGMeme()
 }
@@ -146,6 +153,7 @@ function drawUnderline(strokeStartPointX, strokeStartPointY, strokeEndPointX, co
 // Read
 function moveToTextInput() {
     if (!getGMemeLinesNum()) return
+    // isActiveState()
     const lineIdx = getSelectedLineIdx()
     const textInput = document.querySelector('.line-text.meme')
     textInput.value = getGMeme().lines[lineIdx].txt
@@ -174,16 +182,19 @@ function onSetLinePosition(el) {
     let change = -5
     if (el.classList.contains('down')) change = 5
     setLinePosition(change)
+    gMemeEditModeActive()
     renderGMeme()
 }
 
 function onSetFontFamily(el) {
     setFontFamily(el.value)
+    gMemeEditModeActive()
     renderGMeme()
 }
 
 function onSetTextAlignment(el) {
     SetTextAlignment(el)
+    gMemeEditModeActive()
     renderGMeme()
 }
 
@@ -197,6 +208,7 @@ function onSetTextWidth() {
 function onSetSelectedLine(el, lineIdx) {
     if (getGMeme().lines.length <= 1) return
     setGMemeSelectedLine(el, lineIdx)
+    gMemeEditModeActive()
     renderGMeme()
 }
 
@@ -220,9 +232,23 @@ function clearCanvas() {
 function onDeleteLine() {
     if (!getGMemeLinesNum()) return
     DeleteLineFromGMeme()
+    gMemeEditModeActive()
     renderGMeme()
 }
 
 // Helpers
 
+function gMemeEditModeActive(){
+    if (!getGMeme()) return
+    const gMeme = getGMeme()
+    gMeme.isActive =  true 
+    renderBorderLine()
+}
 
+function gMemeEditModeNotActive(){
+    if (!getGMeme()) return
+    const gMeme = getGMeme()
+    gMeme.isActive = false 
+    renderGMeme()
+
+}

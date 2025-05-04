@@ -164,6 +164,7 @@ function _createNewGMeme(ImgId) {
     gMeme = {
         selectedImgId: +ImgId,
         selectedLineIdx: 0,
+        isActive:false,
         lines: [
             {
                 txt: '',
@@ -175,6 +176,7 @@ function _createNewGMeme(ImgId) {
             }
         ]
     }
+    gMemeEditModeActive()
 }
 
 function createNewLine() {
@@ -192,6 +194,7 @@ function createNewLine() {
 
     gMeme.lines.push(newLine);
     gMeme.selectedLineIdx = gMeme.lines.length - 1;
+    gMemeEditModeActive()
 }
 
 // Reade

@@ -2,13 +2,14 @@
 
 window.onerror = (msg, src, line, col, err) => {
     console.error('💥 Global error:', { msg, src, line, col, err });
-  };
+};
 
 
 function onInitSavedMemeGallery() {
-
+    // isNotActiveState()
+    renderSavedMemeGallery()
 }
-renderSavedMemeGallery()
+
 function renderSavedMemeGallery() {
     document.querySelector('.meme.gallery-pics').innerHTML = ''
     getGSavedMems().forEach(meme => {

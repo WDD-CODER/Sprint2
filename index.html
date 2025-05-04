@@ -77,7 +77,7 @@
                 <section class="edit-options space-between">
                     <form class="text-submit" onsubmit="onAddLine(event)">
                         <input class="line-text meme" type="text" placeholder="Start writing something"
-                            onfocus="renderBorderLine()" oninput="onTextInput(this)">
+                       oninput="onTextInput(this)" onblur="gMemeEditModeNotActive()">
                     </form>
                     <div class="line-options">
                         <button class="line-selected increase" onclick="onSetSelectedLine(this)">Move line down</button>
