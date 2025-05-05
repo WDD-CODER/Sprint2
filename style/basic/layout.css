@@ -1,7 +1,7 @@
 .main-layout {
     display: grid;
     grid-template-columns: minmax(5px, 20px) 1fr minmax(5px, 20px);
-
+    height: 100vh;
     gap: 1em;
 
     background-color: var(--background-color-primary);

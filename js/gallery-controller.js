@@ -34,16 +34,20 @@ function onFilterImgs(el) {
 }
 
 function showContainer(containerClassName) {
-    const elContainer = document.querySelector(`.${containerClassName}.container`)
-    elContainer.classList.remove('hidden')
+    const elContainer = document.querySelectorAll(`.${containerClassName}.container`)
+    const elSearchBarContainer = document.querySelector('.Search-bar');
+    elContainer.forEach(container => container.classList.remove('hidden'))
     document.querySelectorAll('.container').forEach((el) => {
         if (!el.classList.contains(containerClassName))
             el.classList.add('hidden')
     })
 
-    if (elContainer.classList.contains('saved-meme-gallery')) onInitSavedMemeGallery()
-    else if (elContainer.classList.contains('meme')) onIniMemeEdit()
-    else if (elContainer.classList.contains('gallery')) onInitGallery()
+    if ([...elContainer].some(el => el.classList.contains('saved-meme-gallery'))) {
+        // elSearchBarContainer.classList.remove('hidden')
+        onInitSavedMemeGallery()
+    }
+    else if ([...elContainer].some(el => el.classList.contains('meme'))) onIniMemeEdit()
+    else if ([...elContainer].some(el => el.classList.contains('gallery'))) onInitGallery()
 }
 
 // Create
@@ -59,13 +63,23 @@ function onGenerateRandomMeme() {
     onIniMemeEdit()
     const randomImg = getRandomImgFromGallery()
     setImgObject(randomImg, () => {
-        setRandomTextLines(3)
+        createRandomTextLines(3)
         onSetTextWidth()
         renderGMeme()
     })
+
 }
 
 // Update
+
+function wiggleElement(el) {
+    console.log("🚀 ~ wiggleElement ~ el:", el)
+    el.classList.remove('wiggle');
+    setTimeout(() => {
+        el.classList.add('wiggle')
+
+    }, 50);
+}
 
 function onChooseContainer(el) {
     const containerClassName = el.dataset.tab

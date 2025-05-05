@@ -1,11 +1,14 @@
 .main-content {
+    display: grid;
     grid-column: 2;
-
-    /* padding: 1em; */
-
-    border: 1px var(--color-component-border) dotted;
+    grid-template-columns: 1fr 1fr;
+    
+    border: 1px var(--color-base-gray) dotted;
     border-radius: var(--border-radios-base);
-    background-color: var(--color-component-background);
+    background-color: var(--color-white--1);
 
 }
 
+.container-header{
+    padding: 2vh;
+}

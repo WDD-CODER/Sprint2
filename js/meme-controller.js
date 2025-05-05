@@ -1,6 +1,4 @@
 'use strict';
-const G_START_POSITION_X = 35
-const G_START_POSITION_Y = 30
 var gElCanvas
 var gCtx
 var gPos = {}
@@ -39,8 +37,10 @@ function reSizeCanvas() {
 }
 
 function renderImgOnCanvas(img) {
+    const maxWidth = 400; // or container max width
+    gElCanvas.width = Math.min(maxWidth, img.naturalWidth);
     gElCanvas.height = (img.naturalHeight / img.naturalWidth) * gElCanvas.width
-    gCtx.drawImage(img, 0, 0, gElCanvas.width - 1, gElCanvas.height - 1)
+    gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height)
     // optimize the canvas container after putting the picture
     reSizeCanvasContainer(gElCanvas.width, gElCanvas.height)
 }
@@ -147,13 +147,18 @@ function drawUnderline(strokeStartPointX, strokeStartPointY, strokeEndPointX, co
 
 // Read
 function moveToTextInput() {
-    console.log("🚀 ~ moveToTextInput ~ getGMemeLinesNum():", getGMemeLinesNum())
+    console.log("🚀 ~ moveToTextInput ~ !getGMemeLinesNum():", !getGMemeLinesNum())
     if (!getGMemeLinesNum()) return
     gMemeEditModeActive()
+    getTextInputValue()
+    document.querySelector('.line-text.meme').focus()
+}
+
+function getTextInputValue() {
     const lineIdx = getSelectedLineIdx()
     const textInput = document.querySelector('.line-text.meme')
     textInput.value = getGMeme().lines[lineIdx].txt
-    textInput.focus()
+    gMeme.isActive = true
 }
 
 function getCanvasContainerWidth() {
@@ -162,8 +167,8 @@ function getCanvasContainerWidth() {
 }
 
 function getUpdatedTextPositionX(value) {
-    if (value === 'left') return G_START_POSITION_X
-    else if (value === 'right') return gElCanvas.width - G_START_POSITION_X
+    if (value === 'left') return getGTextPosition().x
+    else if (value === 'right') return gElCanvas.width - getGTextPosition().y
     else return gElCanvas.width / 2
 }
 
@@ -195,7 +200,7 @@ function onSetTextWidth() {
     gCtx.font = `${line.size}px Arial`;
     const textWidth = gCtx.measureText(line.txt).width
     setTextWidth(textWidth)
-    if (textWidth > getMaxLineWidth())    onAddLine()
+    if (textWidth >= getMaxLineWidth()) onAddLine()
 }
 
 function onSetSelectedLine(el, lineIdx) {
@@ -238,21 +243,17 @@ function onDeleteLine() {
 
 // Helpers
 
-function gMemeEditModeActive(){
-    console.log('gMemeEditModeActive');
-    
+function gMemeEditModeActive() {
     if (!getGMeme()) return
     const gMeme = getGMeme()
-    gMeme.isActive =  true 
+    gMeme.isActive = true
     renderBorderLine()
 }
 
-function gMemeEditModeNotActive(){
-    console.log('gMemeEditModeNotActive');
-
+function gMemeEditModeNotActive() {
     if (!getGMeme()) return
     const gMeme = getGMeme()
-    gMeme.isActive = false 
+    gMeme.isActive = false
     renderGMeme()
 
 }

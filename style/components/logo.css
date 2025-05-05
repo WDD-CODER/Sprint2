@@ -1,5 +1,10 @@
 .logo{
     font-size: 3em;
     letter-spacing: .2em;
-    color: var(--color-logo);
+    color: var(--color-white-1);
+}
+
+.logo:hover{
+    color: var(--color-white-base);
+
 }

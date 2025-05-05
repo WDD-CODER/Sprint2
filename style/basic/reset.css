@@ -1,0 +1,52 @@
+*, *::before, *::after{
+    box-sizing: border-box;
+}
+
+html{
+    /* color-scheme: dark; */
+}
+
+
+body {
+    margin: 0;
+}
+
+button {
+    margin: 0;
+    padding: 0;
+}
+
+h1,h2,h3,h4{
+    text-align: center;
+    margin: 0 0 1em;
+    text-wrap: balance ;
+}
+
+figure {
+    margin: 0;
+    padding: 1em;
+}
+
+img, canvas { 
+    display: block;
+    max-width: 100%;
+}
+
+ul, li { 
+    list-style: none;
+    padding: 0;
+}
+
+a {
+   text-decoration: none;
+   color: inherit;
+   /* text-decoration-skip-ink: none;  */
+}
+
+input,select {
+    margin: 0;
+    padding: 0;
+    
+    max-width: 100%;
+    font: inherit;
+}

@@ -1,15 +1,2 @@
-.canvas-container {
-    grid-column: 1;
 
-    justify-self: center;
 
-    width: 100%;
-    border: 1px black solid;
-}
-
-.canvas-container-search {
-    
-    grid-column: 1;
-    width: 50%;
-    border: 1px black solid;
-}

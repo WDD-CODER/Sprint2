@@ -1,0 +1,38 @@
+.Search-bar {
+    grid-column: 1/-1;
+    gap: 10px;
+    padding: 1em;
+}
+
+.Search-bar-buttons-container {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns:repeat(3,1fr) ;
+    grid-template-rows: repeat(2,1fr);
+
+    gap: 20px;
+}
+.Search-bar-buttons-container input{
+    grid-column: 1/-1;
+}
+
+.search-buttons {
+    place-self: center;
+    grid-column: 1/-1;
+}
+
+
+.canvas-container-search {
+    grid-column: 3;
+    width: 80%;
+    border: 1px black solid;
+    border-radius: var(--border-radios-base);
+}
+
+.Search-bar-buttons-container input:focus {
+    outline: 2px dashed var(--color-blue-base);
+}
+.Search-bar-buttons-container button:focus {
+    outline: 2px dashed var(--color-blue-base);
+}
+

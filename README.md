@@ -17,3 +17,9 @@ Make sure border-line disappears After user done Entering text
 
 
 When pressing line centered, it makes the borderline only in the center and not expand all over the line.
+
+
+Mobile fixing
+
+
+Make sure text fits accordingly. He said, the mean, give more space

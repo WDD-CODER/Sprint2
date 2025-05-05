@@ -3,10 +3,32 @@
     grid-row: 1;
     grid-column: 1 / -1;
     padding: .5em 40px;
-    border-bottom: 1px var(--color-component-border) solid;
-    background-color: var(--color-primary);
 }
 
 .navigation-list{
-    gap: 1em;
+    gap: clamp(10px, 10vw, 20px)
 }
+.navigation-list a{
+    font-weight: bold;
+    color: var(--color-blue-2);
+}
+
+.navigation-list li:hover a{
+color: var(--color-blue-base);
+}
+
+.navigation-list li:active a{
+    color: var(--color-white-base);
+}
+
+
+@keyframes wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(30deg); }
+    50% { transform: rotate(-10deg); }
+    75% { transform: rotate(6deg); }
+  }
+  
+  .wiggle {
+    animation: wiggle 360ms ease-out
+  }

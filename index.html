@@ -5,61 +5,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <title>Document</title>
 </head>
 
 <body class="main-layout" onload="onInitGallery()">
-    <header class="main-header flex align-items space-between">
+    <article class="ex-space1"></article>
+    <header class="main-header flex align-items space-between flag-stripe">
         <article class="logo">Meme Me!!!</article>
         <nav class="navigation">
-            <ul class="navigation-list flex clean-list">
-                <li><a href="#" onclick="onChooseContainer(this)" data-tab="gallery">Gallery</a></li>
-                <li><a href="#" onclick="onChooseContainer(this)" data-tab="meme">Editor</a></li>
-                <li><a href="#" onclick="onChooseContainer(this)" data-tab="saved-meme-gallery">Saved Memes</a></li>
+            <ul class="navigation-list flex ">
+                <li onclick="wiggleElement(this)"><a class="navigation-tag" href="#" onclick="onChooseContainer(this)" data-tab="gallery">Gallery</a></li>
+                <li onclick="wiggleElement(this)"><a class="navigation-tag" href="#" onclick="onChooseContainer(this)" data-tab="meme">Editor</a></li>
+                <li onclick="wiggleElement(this)"><a class="navigation-tag" href="#" onclick="onChooseContainer(this)" data-tab="saved-meme-gallery">Saved Memes</a></li>
             </ul>
         </nav>
     </header>
     <main class="main-content">
-        <section class="gallery container">
-            <section class="Search-bar flex align-items space-around">
-                    <section>
-                        <input type="text" list="keyWords-list" class="keyWords-input"
-                            placeholder="Choose filter options" onchange="onFilterImgs(this)">
-                        <button class="clear-filter" onclick="onClearFilter()">x</button>
-                        <datalist id="keyWords-list">
-                            <option value="funny">funny</option>
-                            <option value="cat">cat</option>
-                            <option value="baby">baby</option>
-                            <option value="dog">dog</option>
-                            <option value="man">man</option>
-                            <option value="cute">cute</option>
-                            <option value="cool">cool</option>
-                            <option value="lady">lady</option>
-                            <option value="drEvil">drEvil</option>
-                            <option value="obama">obama</option>
-                            <option value="kids">kids</option>
-                            <option value="strict">strict</option>
-                        </datalist>
-                    </section>
-                <div class="canvas-container-search"><canvas width="100" height="100" class="Search-canvas"></canvas>
+        <section class="Search-bar gallery container flex align-items ">
+            <section class="Search-bar-buttons-container">
+                <input type="text" list="keyWords-list" class="keyWords-input" placeholder="Choose filter options"
+                    onchange="onFilterImgs(this)">
+                <div class="search-buttons">
+                    <button class="clear-filter" onclick="onClearFilter()">Clear</button>
+                    <button class="random-mame" onclick="onGenerateRandomMeme()">I'm Flexible</button>
                 </div>
+                <datalist id="keyWords-list">
+                    <option value="funny">funny</option>
+                    <option value="cat">cat</option>
+                    <option value="baby">baby</option>
+                    <option value="dog">dog</option>
+                    <option value="man">man</option>
+                    <option value="cute">cute</option>
+                    <option value="cool">cool</option>
+                    <option value="lady">lady</option>
+                    <option value="drEvil">drEvil</option>
+                    <option value="obama">obama</option>
+                    <option value="kids">kids</option>
+                    <option value="strict">strict</option>
+                </datalist>
             </section>
-            <button class="random-mame" onclick="onGenerateRandomMeme()">I'm Flexible</button>
+            <div class="canvas-container-search"><canvas width="100" height="100" class="Search-canvas"></canvas>
+            </div>
+        </section>
+        <section class="gallery container">
             <h2 class="container-header justify-self">Main Picture Gallery</h2>
             <section class="gallery-pics">
-            </section>
-        </section>
-        <section class="saved-meme-gallery container hidden">
-            <section class="Search-bar flex align-items space-around">
-                <form class="text-submit-search" onsubmit="onAddLine(event)">
-                    <input class="line-text-search" type="" placeholder="Start writing something"
-                        onclick="renderBorderLine111()" oninput="onTextInput111(this)">
-                </form>
-                <div class="canvas-container-search"><canvas width="100" height="100" class="Search-canvas"></canvas>
-                </div>
-            </section>
-            <h2 class="container-header justify-self">Saved Meme Gallery</h2>
-            <section class="meme gallery-pics justify-self">
             </section>
         </section>
 
@@ -70,27 +61,35 @@
                     <canvas class="meme-canvas" onmousedown="onClickLineInCanvas(event)"
                         ontouchstart="onClickLineInCanvas(event)"></canvas>
                 </div>
-                <section class="edit-options space-between">
+                <section class="edit-options">
                     <section class="text-submit" onsubmit="onAddLine(event)">
                         <input class="line-text meme" type="text" placeholder="Start writing something"
-                       oninput="onTextInput(this)" onblur="gMemeEditModeNotActive()">
+                            onclick="getTextInputValue()" oninput="onTextInput(this)" onblur="gMemeEditModeNotActive()">
                     </section>
                     <div class="line-options">
-                        <button class="line-selected increase" onclick="onSetSelectedLine(this)">Move line down</button>
-                        <button class="line-selected decrease" onclick="onSetSelectedLine(this)">Move line up</button>
-                        <button class="add-line" onclick="onAddLine(event)">Add line</button>
-                        <button class="delete-line" onclick="onDeleteLine()">Delete line</button>
+                        <button class="line-selected increase" onclick="onSetSelectedLine(this)"><span
+                                class="fa-solid fa-up-long" aria-hidden="true"></span></button>
+                        <button class="line-selected decrease" onclick="onSetSelectedLine(this)"><span
+                                class="fa-solid fa-down-long" aria-hidden="true"></span></button>
+                        <button class="add-line " onclick="onAddLine(event)"><span class="fa-solid fa-circle-plus"
+                                aria-hidden="true"></span></button>
+                        <button class="delete-line" onclick="onDeleteLine()"><span class="fa-solid fa-trash-can"
+                                aria-hidden="true"></span></button>
                     </div>
                     <div class="text-options">
-                        <button type="button" class="font-size increase" onclick="onsetFontSize(this)">+</button>
-                        <button type="button" class="font-size decrease" onclick="onsetFontSize(this)">-</button>
-                        <button class="align-line left" onclick="onSetTextAlignment(this)"
-                            value="left">line-left</button>
-                        <button class="align-line center" onclick="onSetTextAlignment(this)"
-                            value="center">line-center</button>
-                        <button class="align-line right" onclick="onSetTextAlignment(this)"
-                            value="right">line-right</button>
-                        <button class="text-underline" onclick="onSetUnderline()">text-underline</button>
+                        <button type="button" class="font-size increase" onclick="onsetFontSize(this)"><span
+                                class="fa-solid fa-magnifying-glass-plus" aria-hidden="true"></span></button>
+                        <button type="button" class="font-size decrease" onclick="onsetFontSize(this)"><span
+                                class="fa-solid fa-magnifying-glass-minus" aria-hidden="true"></span></button>
+                        <button class="align-line left" onclick="onSetTextAlignment(this)" value="left"><span
+                                class="fa-solid fa-indent" aria-hidden="true"></span></button>
+                        <button class="align-line center" onclick="onSetTextAlignment(this)" value="center"><span
+                                class="fa-solid  fa-align-center" aria-hidden="true"></span></button>
+                        <button class="align-line right" onclick="onSetTextAlignment(this)" value="right"><span
+                                class="fa-solid fa-outdent"></span></button>
+                        <button class="text-underline" onclick="onSetUnderline()"><span class="fa-solid fa-underline"
+                                aria-hidden="true"></span>
+                        </button>
                     </div>
                     <div class="inputs">
                         <select class="font-family" onchange="onSetFontFamily(this)">
@@ -98,19 +97,33 @@
                             <option value="Times New Roman">Times New Roman</option>
                             <option value="Impact">Impact</option>
                             <option value="Comic Sans MS">Comic Sans MS</option>
+                            <input type="color" class="text-color" id="text-color" onchange="onsetTextColor(this)">
                         </select>
-                        <button class="move up" onclick="onSetLinePosition(this)">Move Up</button>
-                        <button class="move down" onclick="onSetLinePosition(this)">Move Down</button>
-                        <input type="color" class="text-color" onchange="onsetTextColor(this)">
                     </div>
+                        <div class="set-line-buttons align-self">
+                            <button class="move up" onclick="onSetLinePosition(this)"><span
+                                    class="fa-solid  fa-arrows-up-to-line" aria-hidden="true"></span></button>
+                            <button class="move down" onclick="onSetLinePosition(this)"><span
+                                    class="fa-solid  fa-arrows-down-to-line" aria-hidden="true"></span>
+                        </div></button>
+                        <!-- <label class="new-color-input" for="text-color" onchange="onsetTextColor(this)" ></label> -->
                     <!-- <div class="icons-input">
                         <input type="text" list="font-family" placeholder="Choose fond family">
                         <input type="color" class="text-color" onchange="onsetTextColor(this,event)">
                     </div> -->
                     <div class="links">
-                        <button><a href="#" download="your-pic.jpg" onclick="onDownloadImg(this)">Download</a></button>
-                        <button class="save-Pic" onclick="onSaveMeme()">Save Picture</button>
-                        <button class="" type="submit">Share img to facebook:</button>
+                        <button>
+                            <a href="#" download="your-pic.jpg" onclick="onDownloadImg(this)">
+                                <span class="fa-solid fa-solid fa-download" aria-hidden="true"></span></a>
+                        </button>
+                        <button class="save-Pic" onclick="onSaveMeme()">
+                            <span class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></span>
+                        </button>
+                        <button class="" type="submit">
+                            <span class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></span>
+                            <span class="fa-solid fa-arrow-right" aria-hidden="true"></span>
+                            <span class="fa-brands fa-facebook-square" aria-hidden="true"></span>
+                        </button>
 
                     </div>
                     <form class="upload-to-facebook" method="POST" enctype="multipart/form-data"
@@ -119,8 +132,23 @@
             </div>
         </section>
         </section>
+
+        <section class="saved-meme-gallery container hidden">
+            <!-- <section class="Search-bar-buttons flex align-items space-around">
+                <form class="text-submit-search" onsubmit="onAddLine(event)">
+                    <input class="line-text-search" type="" placeholder="Start writing something"
+                        onclick="renderBorderLine111()" oninput="onTextInput111(this)">
+                </form>
+                <div class="canvas-container-search"><canvas width="100" height="100" class="Search-canvas"></canvas>
+                </div>
+            </section> -->
+            <h2 class="container-header justify-self">Saved Meme Gallery</h2>
+            <section class="meme gallery-pics justify-self">
+            </section>
+        </section>
+
     </main>
-    <footer class="coffe-rights flex justify-content align-items">Made By DanDan</footer>
+    <footer class="coffe-rights flex justify-content align-items flag-stripe">Made By DanDan</footer>
     <script src="js/services/util-service.js"></script>
     <script src="js/services/storege-service.js"></script>
     <script src="js/services/canvas-service.js"></script>

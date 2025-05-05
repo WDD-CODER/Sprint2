@@ -1,5 +1,5 @@
 /* Mobile only */
-@media (max-width:700px) {
+@media (max-width:730px) {
     html {
         font-size: 12px;
     }
@@ -12,13 +12,21 @@
         grid-auto-flow: column;
         grid-template-rows: 1fr 1fr;
         gap: 1em;
+        justify-items: center;
+
 
     }
 
     .main-header {
-        font-size: smaller;
+        font-size: .9em;
     }
-
+    
+    .edit-options > * {
+        gap: 5px;
+        display: flex;
+      }  
+        
+        
 }
 
 
@@ -34,6 +42,7 @@
 
     .edit-options {
         grid-column: 2;
+        gap: .5em;
     }
 
 }
@@ -55,7 +64,7 @@
     .meme-editor {
         grid-template-columns: minmax(auto-fit, 356px);
         padding: .3em;
-        gap: 1em;
+        gap: 5vw;
 
     }
 

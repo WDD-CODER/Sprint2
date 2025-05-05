@@ -1,35 +1,11 @@
 'use strict';
 
-// function getRandomImgFromGallery() {
-//     const elGImgs = document.querySelectorAll('.gallery-pics img');
-//     elGImgs[getRandomInt(0, elGImgs.length - 1)]
-//     console.log("🚀 ~ getRandomImgFromGallery ~ elGImgs:", elGImgs)
-//     var MemeImg = {}
-//     const img = new Image()
-//     img.onload = () => {
-//         MemeImg = {
-//             id: +elGImgs.id,
-//             url: elGImgs.src,
-//             keywords: [],
-//             img: img
-//         } 
-//     }
-//     return MemeImg
-// }  
 
 
 function getRandomImgFromGallery() {
     const elGImgs = document.querySelectorAll('.gallery-pics img');
     return elGImgs[getRandomInt(0, elGImgs.length - 1)]
 }
-
-// function getRandomImgFromGallery() {
-//     const elGImgs = document.querySelectorAll('.gallery-pics img');
-//     const el = elGImgs[getRandomInt(0, elGImgs.length - 1)]
-//     console.log('🎲 Random image DOM element picked:', el)
-//     return el
-// }
-
 
 function getRandomText() {
     return gRandomTexts[getRandomInt(0, gRandomTexts.length - 1)]

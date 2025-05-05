@@ -6,7 +6,6 @@ window.onerror = (msg, src, line, col, err) => {
 
 
 function onInitSavedMemeGallery() {
-    // isNotActiveState()
     renderSavedMemeGallery()
 }
 

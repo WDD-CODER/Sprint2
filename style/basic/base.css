@@ -3,30 +3,28 @@
 *::after {
     box-sizing: border-box;
 }
+.debug * {
+    outline: 1px solid orange;
+}
 
 html {
     font-family: cursive;
-
-    color: var(--color-text-primary);
+    
+    color: var(--color-black-base);
 }
 
 body {
-    margin: 0;
-
+    margin-block: 10px;
     width: 100%;
 }
 
-button {
-    margin: 0;
-    padding: 0;
 
+
+button {
+    text-align: center;
     background-color: transparent;
 }
 
-figure {
-    margin: 0;
-    padding: 1em;
-}
 
 img {
     width: 100%;
@@ -35,16 +33,40 @@ img {
 }
 
 input,select {
-    margin: 0;
-    padding: 0;
-    
     height: 2em;
     
+    text-align: center;
+
     border-radius: .5em;
-    
 }
 
 a {
     text-decoration: none;
-    color: var(--color-text-primary);
+    color: var(--color-black-base);
+}
+
+.container {
+    grid-column: 1/-1;
+}
+
+h2{
+    color: var(--color-blue-1);
+}
+
+::placeholder{
+    color: var(--color-blue--1);
+}
+
+figure{
+
+    transition: 300ms;
+}
+
+.flag-stripe{
+    height: 11vh;
+    
+    background-color: var(--color-blue-base);
+
+    border-top: 1px var(--color-base-gray) solid;
+    border-bottom: 1px var(--color-base-gray) solid;
 }

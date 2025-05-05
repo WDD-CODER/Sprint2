@@ -4,6 +4,8 @@ window.onerror = (msg, src, line, col, err) => {
     console.error('💥 Global error:', { msg, src, line, col, err });
 };
 
+const G_START_POSITION_X = 20
+const G_START_POSITION_Y = 30
 const MEME_STORAGE_KEY = 'memeDB'
 const IMG_STORAGE_KEY = 'imgDB'
 const gRandomTexts = [
@@ -12,7 +14,7 @@ const gRandomTexts = [
     "How's it hanging over there?",
     "That doesn't look good.",
     "Ah, shit... Here we go again.",
-    "When you open the fridge and forget why.",
+    "When you forget and open the fridge.",
     "Me? Normal? Never heard of it.",
     "404: Motivation not found.",
     "Just one more episode… at 3am.",
@@ -49,16 +51,6 @@ var gKeywordSearchCountMap = { 'funny': 12, 'cat': 16, 'baby': 2, 'dog': 2, 'man
 
 // Lists
 
-function getGSavedMems() {
-    return gSavedMems
-}
-function GetLastLine() {
-    return gMeme.lines[gMeme.lines.length - 1]
-}
-
-function getSelectedLineIdx() {
-    return gMeme.selectedLineIdx
-}
 
 function getLineIdxByPosition(ev) {
     if (!gMeme) return
@@ -116,9 +108,18 @@ function getLineIdxByPosition(ev) {
 
 
 function getImgById(id) {
-
     const curImgIdx = gImgs.findIndex(img => img.id === id)
     return gImgs[curImgIdx];
+}
+function getGSavedMems() {
+    return gSavedMems
+}
+function GetLastLine() {
+    return gMeme.lines[gMeme.lines.length - 1]
+}
+
+function getSelectedLineIdx() {
+    return gMeme.selectedLineIdx
 }
 
 function getGImgs() {
@@ -134,14 +135,29 @@ function getMemeById(memeId) {
     return res
 }
 
+function getGTextPosition(){
+    const gTextPosition = {
+        x :G_START_POSITION_X,
+        y :G_START_POSITION_Y
+    }
+    return gTextPosition
+}
+
+
 // Create
+function createRandomTextLines(numOfLines) {
+    gMeme.lines = []
+    for (let i = 0; i < numOfLines; i++) {
+        createNewLine()
+    }
+    gMeme.lines.forEach(line => line.txt = getRandomText())
+}
 
 function setImgObject(el, onReady) {
     _createMemeImg(el, onReady)
 }
 
-
-function _createMemeImg(el, onReady) {    //First load the main image and then create the object
+function _createMemeImg(el, onReady) {    
     var MemeImg = {}
     const img = new Image()
     img.onload = () => {
@@ -170,8 +186,8 @@ function _createNewGMeme(ImgId) {
                 txt: '',
                 size: 16,
                 color: '#f5f5f5',
-                textPositionX: 35,
-                textPositionY: 30,
+                textPositionX: G_START_POSITION_X,
+                textPositionY: G_START_POSITION_Y,
                 lineHeight: 30,
             }
         ]
@@ -182,7 +198,6 @@ function _createNewGMeme(ImgId) {
 function createNewLine() {
     const lastLine = GetLastLine();
     const baseY = lastLine ? lastLine.textPositionY + lastLine.lineHeight : G_START_POSITION_Y;
-
     const newLine = {
         txt: '',
         size: 16,
@@ -212,7 +227,7 @@ function getAccurateBorderLinePosition(line) {
     const curLine = line || gMeme.lines[gMeme.selectedLineIdx]
     const elCanvasContainerWidth = document.querySelector('.canvas-container.meme').offsetWidth
     const centerOfCanvas = elCanvasContainerWidth / 2
-    const marginInline = 35 * 2
+    const marginInline = G_START_POSITION_X * 2
     const lineWidthFallback = elCanvasContainerWidth - marginInline;
 
     // starts with left
@@ -242,7 +257,7 @@ function getAccurateUnderLinePosition(line) {
 
 function getMaxLineWidth() {
     const elCanvasContainerWidth = document.querySelector('.canvas-container.meme').offsetWidth
-    const marginInline = 35 * 2
+    const marginInline = G_START_POSITION_X * 2
     return elCanvasContainerWidth - marginInline
 }
 
@@ -296,15 +311,6 @@ function setGMemeSelectedLineIdxTo(lineIdx) {
     return gMeme.selectedLineIdx = lineIdx
 }
 
-
-function setRandomTextLines(numOfLines) {
-    gMeme.lines = []
-    for (let i = 0; i < numOfLines; i++) {
-        createNewLine()
-    }
-    gMeme.lines.forEach(line => line.txt = getRandomText())
-}
-
 function setLineTxt(txt) {
     return gMeme.lines[gMeme.selectedLineIdx].txt = txt
 }
@@ -336,6 +342,7 @@ function saveTextColor(color) {
 function setLinePosition(change) {
     return gMeme.lines[gMeme.selectedLineIdx].textPositionY += change
 }
+
 // Delete
 
 function DeleteLineFromGMeme() {
