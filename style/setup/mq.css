@@ -1,35 +1,20 @@
 /* Mobile only */
-@media (max-width:730px) {
+@media (max-width:735px) {
     html {
-        font-size: 12px;
+        font-size: 1em;
     }
 
     .main-layout {
         grid-template-columns: 12px 1fr 12px;
     }
 
-    .meme-editor {
-        grid-auto-flow: column;
-        grid-template-rows: 1fr 1fr;
-        gap: 1em;
-        justify-items: center;
-
-
-    }
 
     .main-header {
-        font-size: .9em;
+        font-size: .8em;
     }
-    
-    .edit-options > * {
-        gap: 5px;
-        display: flex;
-      }  
-        
+            
         
 }
-
-
 
 /* Medium */
 @media (min-width: 780px) {

@@ -1,2 +1,7 @@
 
-
+.canvas-container-search {
+    grid-column: 3;
+    width: 80%;
+    border: 1px black solid;
+    border-radius: var(--border-radios-base);
+}

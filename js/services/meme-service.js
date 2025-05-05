@@ -1,9 +1,5 @@
 'use strict';
 
-window.onerror = (msg, src, line, col, err) => {
-    console.error('💥 Global error:', { msg, src, line, col, err });
-};
-
 const G_START_POSITION_X = 20
 const G_START_POSITION_Y = 30
 const MEME_STORAGE_KEY = 'memeDB'
@@ -22,29 +18,30 @@ const gRandomTexts = [
 ];
 
 const gImgs = loadGImgsFromStorage(IMG_STORAGE_KEY) || [
-    { id: 1, url: 'style/assets/img/meme-imgs-(various-aspect-ratios)/1.jpg', keywords: ['lady', 'fun'] },
-    { id: 2, url: 'style/assets/img/meme-imgs-(various-aspect-ratios)/2.jpg', keywords: ['baby', 'cute'] },
-    { id: 3, url: 'style/assets/img/meme-imgs-(various-aspect-ratios)/3.jpg', keywords: ['dog', 'cute'] },
-    { id: 4, url: 'style/assets/img/meme-imgs-(various-aspect-ratios)/4.jpg', keywords: ['baby', 'dog'] },
-    { id: 5, url: 'style/assets/img/meme-imgs-(various-aspect-ratios)/5.jpg', keywords: ['baby', 'cool'] },
-    { id: 6, url: 'style/assets/img/meme-imgs-(various-aspect-ratios)/6.jpg', keywords: ['man', 'fun'] },
-    { id: 7, url: 'style/assets/img/meme-imgs-(various-aspect-ratios)/7.jpg', keywords: ['cat', 'cute'] },
-    { id: 8, url: 'style/assets/img/meme-imgs-(various-aspect-ratios)/8.jpg', keywords: ['baby', 'funny'] },
-    { id: 9, url: 'style/assets/img/meme-imgs-(various-aspect-ratios)/9.jpg', keywords: ['man', 'strict'] },
-    { id: 10, url: 'style/assets/img/meme-imgs-(various-aspect-ratios)/10.jpg', keywords: ['man', 'funny'] },
-    { id: 11, url: 'style/assets/img/meme-imgs-(various-aspect-ratios)/Ancient-Aliens.jpg', keywords: ['actor', 'funny'] },
-    { id: 12, url: 'style/assets/img/meme-imgs-(various-aspect-ratios)/drevil.jpg', keywords: ['drEvil', 'man'] },
-    { id: 13, url: 'style/assets/img/meme-imgs-(various-aspect-ratios)/img2.jpg', keywords: ['kids', 'fun'] },
-    { id: 14, url: 'style/assets/img/meme-imgs-(various-aspect-ratios)/img6.jpg', keywords: ['dog', 'funny'] },
-    { id: 15, url: 'style/assets/img/meme-imgs-(various-aspect-ratios)/img11.jpg', keywords: ['obama', 'funny'] },
-    { id: 16, url: 'style/assets/img/meme-imgs-(various-aspect-ratios)/img12.jpg', keywords: ['man', 'funny'] },
-    { id: 17, url: 'style/assets/img/meme-imgs-(various-aspect-ratios)/leo.jpg', keywords: ['actor', 'fun'] },
-    { id: 18, url: 'style/assets/img/meme-imgs-(various-aspect-ratios)/meme1.jpg', keywords: ['actor', 'cool'] },
-    { id: 19, url: 'style/assets/img/meme-imgs-(various-aspect-ratios)/One-Does-Not-Simply.jpg', keywords: ['man', 'cool'] },
-    { id: 20, url: 'style/assets/img/meme-imgs-(various-aspect-ratios)/Oprah-You-Get-A.jpg', keywords: ['lady', 'funny'] },
-    { id: 21, url: 'style/assets/img/meme-imgs-(various-aspect-ratios)/patrick.jpg', keywords: ['man', 'funny'] },
-    { id: 22, url: 'style/assets/img/meme-imgs-(various-aspect-ratios)/X-Everywhere.jpg', keywords: ['funny', 'cute'] }
+    { id: 1, url: 'assets/img/pics/1.jpg', keywords: ['lady', 'fun'] },
+    { id: 2, url: 'assets/img/pics/2.jpg', keywords: ['baby', 'cute'] },
+    { id: 3, url: 'assets/img/pics/3.jpg', keywords: ['dog', 'cute'] },
+    { id: 4, url: 'assets/img/pics/4.jpg', keywords: ['baby', 'dog'] },
+    { id: 5, url: 'assets/img/pics/5.jpg', keywords: ['baby', 'cool'] },
+    { id: 6, url: 'assets/img/pics/6.jpg', keywords: ['man', 'fun'] },
+    { id: 7, url: 'assets/img/pics/7.jpg', keywords: ['cat', 'cute'] },
+    { id: 8, url: 'assets/img/pics/8.jpg', keywords: ['baby', 'funny'] },
+    { id: 9, url: 'assets/img/pics/9.jpg', keywords: ['man', 'strict'] },
+    { id: 10, url: 'assets/img/pics/10.jpg', keywords: ['man', 'funny'] },
+    { id: 11, url: 'assets/img/pics/Ancient-Aliens.jpg', keywords: ['actor', 'funny'] },
+    { id: 12, url: 'assets/img/pics/drevil.jpg', keywords: ['drEvil', 'man'] },
+    { id: 13, url: 'assets/img/pics/img2.jpg', keywords: ['kids', 'fun'] },
+    { id: 14, url: 'assets/img/pics/img6.jpg', keywords: ['dog', 'funny'] },
+    { id: 15, url: 'assets/img/pics/img11.jpg', keywords: ['obama', 'funny'] },
+    { id: 16, url: 'assets/img/pics/img12.jpg', keywords: ['man', 'funny'] },
+    { id: 17, url: 'assets/img/pics/leo.jpg', keywords: ['actor', 'fun'] },
+    { id: 18, url: 'assets/img/pics/meme1.jpg', keywords: ['actor', 'cool'] },
+    { id: 19, url: 'assets/img/pics/One-Does-Not-Simply.jpg', keywords: ['man', 'cool'] },
+    { id: 20, url: 'assets/img/pics/Oprah-You-Get-A.jpg', keywords: ['lady', 'funny'] },
+    { id: 21, url: 'assets/img/pics/patrick.jpg', keywords: ['man', 'funny'] },
+    { id: 22, url: 'assets/img/pics/X-Everywhere.jpg', keywords: ['funny', 'cute'] }
 ];
+console.log("🚀 ~ gImgs:", gImgs)
 var gSavedMems = loadFromStorage(MEME_STORAGE_KEY) || []
 var gMeme
 var gKeywordSearchCountMap = { 'funny': 12, 'cat': 16, 'baby': 2, 'dog': 2, 'man': 2, 'cute': 2, 'cool': 2, 'strict': 2 }
@@ -223,7 +220,6 @@ function loadGImgsFromStorage(key) {
     return savedImgs
 }
 function getAccurateBorderLinePosition(line) {
-    // להוסיף את הטיפול במידה והטקסט הוא באות גדולה!
     const curLine = line || gMeme.lines[gMeme.selectedLineIdx]
     const elCanvasContainerWidth = document.querySelector('.canvas-container.meme').offsetWidth
     const centerOfCanvas = elCanvasContainerWidth / 2
@@ -257,7 +253,8 @@ function getAccurateUnderLinePosition(line) {
 
 function getMaxLineWidth() {
     const elCanvasContainerWidth = document.querySelector('.canvas-container.meme').offsetWidth
-    const marginInline = G_START_POSITION_X * 2
+    console.log("🚀 ~ getMaxLineWidth ~ elCanvasContainerWidth:", elCanvasContainerWidth)
+    const marginInline = G_START_POSITION_X * 2 
     return elCanvasContainerWidth - marginInline
 }
 

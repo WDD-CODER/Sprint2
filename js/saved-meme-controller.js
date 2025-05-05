@@ -1,9 +1,5 @@
 'use strict';
 
-window.onerror = (msg, src, line, col, err) => {
-    console.error('💥 Global error:', { msg, src, line, col, err });
-};
-
 
 function onInitSavedMemeGallery() {
     renderSavedMemeGallery()

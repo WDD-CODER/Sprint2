@@ -10,7 +10,6 @@ button {
 }
 
 
-/* The hovered button itself (button 3) */
 button:focus {
     outline: 1px dashed var(--color-blue-1);
 }
@@ -19,22 +18,18 @@ button:hover {
     background-color: var(--color-white--2);
 }
 
-/* The button immediately after the hovered one (button 4) */
 button:hover + button {
     background-color: var(--color-blue--1);
 }
 
-/* The button two places after the hovered one (button 5) */
 button:hover + button + button {
     background-color: var(--color-white-2);
 }
 
-/* The button immediately before the hovered one (button 2) */
 button:has(+ button:hover) {
     background-color: var(--color-blue--1);
 }
 
-/* The button two places before the hovered one (button 1) */
 button:has(+ button + button:hover) {
     background-color: var(--color-white-2);
 }

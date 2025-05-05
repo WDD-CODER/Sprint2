@@ -1,9 +1,7 @@
 .meme-editor {
     display: grid;
-    /* grid-auto-flow: column; */
-    /* grid-template-rows:1fr 1fr; */
     padding: .3em;
-
+    gap: 20px;
 
 }
 
@@ -17,17 +15,14 @@
 
 }
 
-
 .edit-options {
     display: grid;
-    /* grid-column: 2; */
 
     justify-items: center;
     align-items: center;
-    width: 250px;
-    /* height: 300px; */
+    
+    gap: 5px;
     padding: 1em;
-    gap: 1em;
 
 
     border-radius: var(--border-radios-base);
@@ -35,13 +30,19 @@
     background-color: var(--color-blue--3);
 }
 
-/* .edit-options .text-color {
-    opacity: 0;
-    width: 0;
-    padding: 0;
-    margin: 0;
-    color: w;
-} */
+.line-options,
+.text-options,
+.inputs,
+.set-line-buttons,
+.links {
+    display: flex;
+    gap: 0.5em;         
+}
+
+.set-line-buttons,.links {
+    gap: 1em
+}
+
 
 .new-color-input {
     width: 20px;
@@ -56,7 +57,4 @@ a {
 
 input.line-text {
     text-align: center;
-    width: 210px;
-    /* height: inherit; */
-
 }

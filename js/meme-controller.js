@@ -3,10 +3,6 @@ var gElCanvas
 var gCtx
 var gPos = {}
 
-window.onerror = (msg, src, line, col, err) => {
-    console.error('💥 Global error:', { msg, src, line, col, err });
-};
-
 //  Lists 
 function onIniMemeEdit() {
     gElCanvas = document.querySelector('.meme-canvas');
@@ -16,7 +12,7 @@ function onIniMemeEdit() {
 function renderGMeme() {
     const curMeme = getGMeme();
     const curMemeGImg = getImgById(curMeme.selectedImgId);
-    reSizeCanvas() // Resize first; this clears canvas internally
+    reSizeCanvas() 
     clearCanvas()
     renderImgOnCanvas(curMemeGImg.img)
     renderLine()
@@ -79,12 +75,9 @@ function renderLineColorInputValue() {
 
 function onClickLineInCanvas(ev) {
     var lineIdx = getLineIdxByPosition(ev)
-    // gMemeEditModeActive()
     if (lineIdx === null) return
     setGMemeSelectedLineIdxTo(lineIdx)
     renderGMeme()
-    // Make sure Once lying Check user goes to text input. Didn't find a way to do it
-    //  not with requestAnimationFrame or set timeout
     requestAnimationFrame(() => moveToTextInput())
 }
 
@@ -120,6 +113,7 @@ function onAddLine(ev) {
 }
 
 function drawText(str, textSize, color, textPositionX, textPositionY, textAlign, fontFamily) {
+    console.log("🚀 ~ drawText ~ textPositionX:", textPositionX)
     fontFamily = fontFamily || 'Arial'
     gCtx.textAlign = textAlign || 'start';
     gCtx.textBaseline = 'top'
@@ -129,6 +123,7 @@ function drawText(str, textSize, color, textPositionX, textPositionY, textAlign,
 }
 
 function drawRoundRect(startPointX, startPointY, lineWidth, lineHeight, color = '#000000') {
+    console.log("🚀 ~ drawRoundRect ~ lineWidth:", lineWidth)
     gCtx.beginPath()
     gCtx.roundRect(startPointX, startPointY, lineWidth, lineHeight, lineHeight / 2)
     gCtx.strokeStyle = color
@@ -147,7 +142,6 @@ function drawUnderline(strokeStartPointX, strokeStartPointY, strokeEndPointX, co
 
 // Read
 function moveToTextInput() {
-    console.log("🚀 ~ moveToTextInput ~ !getGMemeLinesNum():", !getGMemeLinesNum())
     if (!getGMemeLinesNum()) return
     gMemeEditModeActive()
     getTextInputValue()

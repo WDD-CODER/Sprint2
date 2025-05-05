@@ -15,9 +15,12 @@
         <article class="logo">Meme Me!!!</article>
         <nav class="navigation">
             <ul class="navigation-list flex ">
-                <li onclick="wiggleElement(this)"><a class="navigation-tag" href="#" onclick="onChooseContainer(this)" data-tab="gallery">Gallery</a></li>
-                <li onclick="wiggleElement(this)"><a class="navigation-tag" href="#" onclick="onChooseContainer(this)" data-tab="meme">Editor</a></li>
-                <li onclick="wiggleElement(this)"><a class="navigation-tag" href="#" onclick="onChooseContainer(this)" data-tab="saved-meme-gallery">Saved Memes</a></li>
+                <li onclick="wiggleElement(this)"><a class="navigation-tag" href="#" onclick="onChooseContainer(this)"
+                        data-tab="gallery">Gallery</a></li>
+                <li onclick="wiggleElement(this)"><a class="navigation-tag" href="#" onclick="onChooseContainer(this)"
+                        data-tab="meme">Editor</a></li>
+                <li onclick="wiggleElement(this)"><a class="navigation-tag" href="#" onclick="onChooseContainer(this)"
+                        data-tab="saved-meme-gallery">Saved Memes</a></li>
             </ul>
         </nav>
     </header>
@@ -100,17 +103,12 @@
                             <input type="color" class="text-color" id="text-color" onchange="onsetTextColor(this)">
                         </select>
                     </div>
-                        <div class="set-line-buttons align-self">
-                            <button class="move up" onclick="onSetLinePosition(this)"><span
-                                    class="fa-solid  fa-arrows-up-to-line" aria-hidden="true"></span></button>
-                            <button class="move down" onclick="onSetLinePosition(this)"><span
-                                    class="fa-solid  fa-arrows-down-to-line" aria-hidden="true"></span>
-                        </div></button>
-                        <!-- <label class="new-color-input" for="text-color" onchange="onsetTextColor(this)" ></label> -->
-                    <!-- <div class="icons-input">
-                        <input type="text" list="font-family" placeholder="Choose fond family">
-                        <input type="color" class="text-color" onchange="onsetTextColor(this,event)">
-                    </div> -->
+                    <div class="set-line-buttons align-self">
+                        <button class="move up" onclick="onSetLinePosition(this)"><span
+                                class="fa-solid  fa-arrows-up-to-line" aria-hidden="true"></span></button>
+                        <button class="move down" onclick="onSetLinePosition(this)"><span
+                                class="fa-solid  fa-arrows-down-to-line" aria-hidden="true"></span>
+                    </div></button>
                     <div class="links">
                         <button>
                             <a href="#" download="your-pic.jpg" onclick="onDownloadImg(this)">
@@ -119,29 +117,22 @@
                         <button class="save-Pic" onclick="onSaveMeme()">
                             <span class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></span>
                         </button>
-                        <button class="" type="submit">
-                            <span class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></span>
-                            <span class="fa-solid fa-arrow-right" aria-hidden="true"></span>
-                            <span class="fa-brands fa-facebook-square" aria-hidden="true"></span>
-                        </button>
 
+
+                        <form class="upload-to-facebook" method="POST" enctype="multipart/form-data">
+                            <button onclick="onShareImg(event)" class="" type="submit">
+                                <span class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></span>
+                                <span class="fa-solid fa-arrow-right" aria-hidden="true"></span>
+                                <span class="fa-brands fa-facebook-square" aria-hidden="true"></span>
+                            </button>
+                        </form>
                     </div>
-                    <form class="upload-to-facebook" method="POST" enctype="multipart/form-data"
-                        onsubmit="onShareImg(event)">
-                    </form>
+
+
             </div>
         </section>
         </section>
-
         <section class="saved-meme-gallery container hidden">
-            <!-- <section class="Search-bar-buttons flex align-items space-around">
-                <form class="text-submit-search" onsubmit="onAddLine(event)">
-                    <input class="line-text-search" type="" placeholder="Start writing something"
-                        onclick="renderBorderLine111()" oninput="onTextInput111(this)">
-                </form>
-                <div class="canvas-container-search"><canvas width="100" height="100" class="Search-canvas"></canvas>
-                </div>
-            </section> -->
             <h2 class="container-header justify-self">Saved Meme Gallery</h2>
             <section class="meme gallery-pics justify-self">
             </section>
@@ -153,8 +144,8 @@
     <script src="js/services/storege-service.js"></script>
     <script src="js/services/canvas-service.js"></script>
     <script src="js/services/links-service.js"></script>
-    <script src="js/services/saved-meme-service.js"></script>
     <script src="js/services/meme-service.js"></script>
+    <script src="js/services/share-service.js"></script>
     <script src="js/gallery-controller.js"></script>
     <script src="js/saved-meme-controller.js"></script>
     <script src="js/meme-controller.js"></script>

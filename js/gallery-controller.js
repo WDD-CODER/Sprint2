@@ -2,9 +2,6 @@
 var gFilterBy
 
 // Lists
-window.onerror = (msg, src, line, col, err) => {
-    console.error('💥 Global error:', { msg, src, line, col, err });
-};
 
 function onInitGallery() {
     gElCanvas = document.querySelector('.Search-canvas');
@@ -43,7 +40,6 @@ function showContainer(containerClassName) {
     })
 
     if ([...elContainer].some(el => el.classList.contains('saved-meme-gallery'))) {
-        // elSearchBarContainer.classList.remove('hidden')
         onInitSavedMemeGallery()
     }
     else if ([...elContainer].some(el => el.classList.contains('meme'))) onIniMemeEdit()
@@ -77,7 +73,6 @@ function wiggleElement(el) {
     el.classList.remove('wiggle');
     setTimeout(() => {
         el.classList.add('wiggle')
-
     }, 50);
 }
 
