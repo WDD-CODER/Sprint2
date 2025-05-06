@@ -1,7 +1,6 @@
 .gallery-pics {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    /* height: 90%; */
     width: 100%;
 
     transition: 1s;

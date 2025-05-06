@@ -14,7 +14,7 @@
 }
 
 .navigation-list li:hover a{
-color: var(--color-blue-base);
+color: var(--color-blue--3);
 }
 
 .navigation-list li:active a{

@@ -41,13 +41,21 @@ const gImgs = loadGImgsFromStorage(IMG_STORAGE_KEY) || [
     { id: 21, url: 'assets/img/pics/patrick.jpg', keywords: ['man', 'funny'] },
     { id: 22, url: 'assets/img/pics/X-Everywhere.jpg', keywords: ['funny', 'cute'] }
 ];
-console.log("🚀 ~ gImgs:", gImgs)
+
+const gEmojis = createGEmojis(7) 
+
 var gSavedMems = loadFromStorage(MEME_STORAGE_KEY) || []
 var gMeme
 var gKeywordSearchCountMap = { 'funny': 12, 'cat': 16, 'baby': 2, 'dog': 2, 'man': 2, 'cute': 2, 'cool': 2, 'strict': 2 }
-
+var CurGEmoji
 // Lists
 
+function getGEmojis() {
+    return gEmojis
+}
+function getCurGEmoji() {
+    return CurGEmoji
+}
 
 function getLineIdxByPosition(ev) {
     if (!gMeme) return
@@ -103,7 +111,6 @@ function getLineIdxByPosition(ev) {
     return curLineIdx !== -1 ? curLineIdx : null
 }
 
-
 function getImgById(id) {
     const curImgIdx = gImgs.findIndex(img => img.id === id)
     return gImgs[curImgIdx];
@@ -132,45 +139,51 @@ function getMemeById(memeId) {
     return res
 }
 
-function getGTextPosition(){
+function getGTextPosition() {
     const gTextPosition = {
-        x :G_START_POSITION_X,
-        y :G_START_POSITION_Y
+        x: G_START_POSITION_X,
+        y: G_START_POSITION_Y
     }
     return gTextPosition
 }
 
 
 // Create
-function createRandomTextLines(numOfLines) {
-    gMeme.lines = []
-    for (let i = 0; i < numOfLines; i++) {
-        createNewLine()
+function createGEmojis(num){
+    const gEmojis = []
+    for (let i = 1; i <= num; i++) {
+        let emoji =  { id: i, url: `assets/img/emojis/${i}.png` }
+        gEmojis.push(emoji)
     }
-    gMeme.lines.forEach(line => line.txt = getRandomText())
+    return gEmojis
 }
 
-function setImgObject(el, onReady) {
-    _createMemeImg(el, onReady)
-}
-
-function _createMemeImg(el, onReady) {    
-    var MemeImg = {}
+function _createMemeImg(el, onReady) {
+    var memeImg = {}
     const img = new Image()
     img.onload = () => {
-        MemeImg = {
+        memeImg = {
             id: +el.id,
             url: el.src,
             keywords: [],
             img: img
         }
-        var curIdx = gImgs.findIndex(img => img.id === MemeImg.id)
+        var curIdx = gImgs.findIndex(img => img.id === memeImg.id)
         gImgs[curIdx].img = img
         _createNewGMeme(el.id)
         renderImgOnCanvas(img)
         if (onReady) onReady()
     }
     img.src = el.src
+}
+
+function createEmojiImgObject() {
+    if (!gEmojis) return
+    gEmojis.forEach((emoji, idx) => {
+        const img = new Image()
+        img.src = emoji.url
+        gEmojis[idx].img = img
+    })
 }
 
 function _createNewGMeme(ImgId) {
@@ -182,7 +195,7 @@ function _createNewGMeme(ImgId) {
             {
                 txt: '',
                 size: 16,
-                color: '#f5f5f5',
+                color: '#000000',
                 textPositionX: G_START_POSITION_X,
                 textPositionY: G_START_POSITION_Y,
                 lineHeight: 30,
@@ -190,6 +203,16 @@ function _createNewGMeme(ImgId) {
         ]
     }
     moveToTextInput()
+}
+function createNewMemeEmoji(ev) {
+    const curEmoji = getCurGEmoji()
+    const emojiRandomId = getRandomId()
+    const GMeme = getGMeme()
+    if (!GMeme.emojis) GMeme.emojis = []
+    const pos = getEvPos(ev)
+    const emojiObject = { id: emojiRandomId, img: curEmoji.img, posX: pos.x, posY: pos.y }
+    getGMeme().emojis.push(emojiObject)
+    drawEmojiImg(emojiRandomId)
 }
 
 function createNewLine() {
@@ -207,6 +230,13 @@ function createNewLine() {
     gMeme.lines.push(newLine);
     gMeme.selectedLineIdx = gMeme.lines.length - 1;
 }
+function createRandomTextLines(numOfLines) {
+    gMeme.lines = []
+    for (let i = 0; i < numOfLines; i++) {
+        createNewLine()
+    }
+    gMeme.lines.forEach(line => line.txt = getRandomText())
+}
 
 // Reade
 
@@ -219,6 +249,7 @@ function loadGImgsFromStorage(key) {
     })
     return savedImgs
 }
+
 function getAccurateBorderLinePosition(line) {
     const curLine = line || gMeme.lines[gMeme.selectedLineIdx]
     const elCanvasContainerWidth = document.querySelector('.canvas-container.meme').offsetWidth
@@ -253,12 +284,23 @@ function getAccurateUnderLinePosition(line) {
 
 function getMaxLineWidth() {
     const elCanvasContainerWidth = document.querySelector('.canvas-container.meme').offsetWidth
-    console.log("🚀 ~ getMaxLineWidth ~ elCanvasContainerWidth:", elCanvasContainerWidth)
-    const marginInline = G_START_POSITION_X * 2 
+    const marginInline = G_START_POSITION_X * 2
     return elCanvasContainerWidth - marginInline
 }
 
 // Update
+
+function setImgObject(el, onReady) {
+    _createMemeImg(el, onReady)
+}
+
+function setCurGEmoji(el) {
+    if (!el) return CurGEmoji = undefined
+    let emoji = gEmojis.find(emoji => emoji.id === +el.id)
+    CurGEmoji = emoji
+    return CurGEmoji
+}
+
 function setGMeme(meme) {
     var res = gMeme = meme
     return res
@@ -288,6 +330,16 @@ function saveImgToLocalStorage(gImg) {
     else {
         console.log('saveImgToLocalStorage');
         gImgs.push(gImg)
+        saveToStorage(IMG_STORAGE_KEY, gImgs)
+    }
+}
+
+function saveEmojiToLocalStorage(gEmoji) {
+    const curId = gEmoji.id
+    const alreadyExists = gEmojis.findIndex(gEmoji => gEmoji.id === curId)
+    if (alreadyExists !== -1) return
+    else {
+        gEmojis.push(gEmoji)
         saveToStorage(IMG_STORAGE_KEY, gImgs)
     }
 }

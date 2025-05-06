@@ -32,15 +32,12 @@
     /* Base Colors */
     --color-black-base: #111111;
 
-
-    /* Specific compounds color */
-
     /* Generale component styling */
     --border-radios-base: 1em;
     --btn-font-family: cursive;
 
     /* Break Pointes  */
-    --L: 1000px;
+    /* --L: 1000px;
     --M: 900px;
-    --S: 600px;
+    --S: 600px; */
 }

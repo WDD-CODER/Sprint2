@@ -30,7 +30,9 @@ img, canvas {
     display: block;
     max-width: 100%;
 }
-
+.emoji-img {
+border: none;
+}
 ul, li { 
     list-style: none;
     padding: 0;

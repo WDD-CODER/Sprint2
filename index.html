@@ -25,7 +25,7 @@
         </nav>
     </header>
     <main class="main-content">
-        <section class="Search-bar gallery container flex align-items ">
+        <section class="Search-bar gallery container flex align-items">
             <section class="Search-bar-buttons-container">
                 <input type="text" list="keyWords-list" class="keyWords-input" placeholder="Choose filter options"
                     onchange="onFilterImgs(this)">
@@ -51,23 +51,25 @@
             <div class="canvas-container-search"><canvas width="100" height="100" class="Search-canvas"></canvas>
             </div>
         </section>
-        <section class="gallery container">
+        <section class="gallery container ">
             <h2 class="container-header justify-self">Main Picture Gallery</h2>
             <section class="gallery-pics">
             </section>
         </section>
-
         <section class="meme container hidden">
             <h2 class="container-header justify-self">Meme Edit Window</h2>
             <div class="meme-editor justify-content align-items">
                 <div class="canvas-container meme">
-                    <canvas class="meme-canvas" onmousedown="onClickLineInCanvas(event)"
-                        ontouchstart="onClickLineInCanvas(event)"></canvas>
+                    <canvas class="meme-canvas" ontouchstart="onClickCanvas(event)" onmousedown="onClickCanvas(event)">
+                    </canvas>
                 </div>
                 <section class="edit-options">
                     <section class="text-submit" onsubmit="onAddLine(event)">
-                        <input class="line-text meme" type="text" placeholder="Start writing something"
-                            onclick="getTextInputValue()" oninput="onTextInput(this)" onblur="gMemeEditModeNotActive()">
+                        <form>
+                            <input class="line-text meme" type="text" placeholder="Start writing something"
+                                onclick="getTextInputValue()" oninput="onTextInput(this)"
+                                onblur="gMemeEditModeNotActive()">
+                        </form>
                     </section>
                     <div class="line-options">
                         <button class="line-selected increase" onclick="onSetSelectedLine(this)"><span
@@ -104,11 +106,23 @@
                         </select>
                     </div>
                     <div class="set-line-buttons align-self">
-                        <button class="move up" onclick="onSetLinePosition(this)"><span
-                                class="fa-solid  fa-arrows-up-to-line" aria-hidden="true"></span></button>
+                        <button class="move up" onclick="onSetLinePosition(this)">
+                            <span class="fa-solid  fa-arrows-up-to-line" aria-hidden="true"></span>
+                        </button>
                         <button class="move down" onclick="onSetLinePosition(this)"><span
                                 class="fa-solid  fa-arrows-down-to-line" aria-hidden="true"></span>
-                    </div></button>
+                        </button>
+                    </div>
+                    <div class="emojis-container">
+                        <button class="scroll left" onclick="onScrollEmojiContainer(this)">
+                            <span class="fa-solid fa-arrow-circle-left" aria-hidden="true"></span>
+                        </button>
+                        <section class="emojis-scrollbar">
+                        </section>
+                        <button class="scroll right" onclick="onScrollEmojiContainer(this)">
+                            <span class="fa-solid fa-arrow-circle-right" aria-hidden="true"></span>
+                        </button>
+                    </div>
                     <div class="links">
                         <button>
                             <a href="#" download="your-pic.jpg" onclick="onDownloadImg(this)">
@@ -117,8 +131,6 @@
                         <button class="save-Pic" onclick="onSaveMeme()">
                             <span class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></span>
                         </button>
-
-
                         <form class="upload-to-facebook" method="POST" enctype="multipart/form-data">
                             <button onclick="onShareImg(event)" class="" type="submit">
                                 <span class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></span>
@@ -127,8 +139,6 @@
                             </button>
                         </form>
                     </div>
-
-
             </div>
         </section>
         </section>
@@ -137,7 +147,6 @@
             <section class="meme gallery-pics justify-self">
             </section>
         </section>
-
     </main>
     <footer class="coffe-rights flex justify-content align-items flag-stripe">Made By DanDan</footer>
     <script src="js/services/util-service.js"></script>

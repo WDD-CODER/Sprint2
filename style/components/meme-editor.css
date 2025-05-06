@@ -5,7 +5,6 @@
 
 }
 
-
 .canvas-container {
     width: fit-content;
     height: fit-content;
@@ -19,11 +18,13 @@
     display: grid;
 
     justify-items: center;
+    justify-self: center;
     align-items: center;
-    
+
     gap: 5px;
     padding: 1em;
 
+    max-width:300px ;
 
     border-radius: var(--border-radios-base);
     border: 1px var(--color-gray-base) dotted;
@@ -36,10 +37,11 @@
 .set-line-buttons,
 .links {
     display: flex;
-    gap: 0.5em;         
+    gap: 0.5em;
 }
 
-.set-line-buttons,.links {
+.set-line-buttons,
+.links {
     gap: 1em
 }
 
@@ -57,4 +59,21 @@ a {
 
 input.line-text {
     text-align: center;
+}
+
+.emojis-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.emojis-scrollbar {
+    display: flex;
+
+    width: 60%;
+    
+    overflow: hidden;
+
+    border-radius: var(--border-radios-base);
+border: 1px solid var(--color-black-base);
+    background: var(--color-gray--2);
 }

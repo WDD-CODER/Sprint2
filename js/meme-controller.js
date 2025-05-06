@@ -7,17 +7,20 @@ var gPos = {}
 function onIniMemeEdit() {
     gElCanvas = document.querySelector('.meme-canvas');
     gCtx = gElCanvas.getContext('2d')
+    renderEmojis()
 }
 
 function renderGMeme() {
     const curMeme = getGMeme();
     const curMemeGImg = getImgById(curMeme.selectedImgId);
-    reSizeCanvas() 
+    reSizeCanvas()
     clearCanvas()
     renderImgOnCanvas(curMemeGImg.img)
     renderLine()
     renderLineColorInputValue()
     renderFontFamilySelectionValue()
+    renderEmojis()
+    drawEmojiImg()
 }
 
 function reSizeCanvasContainer(width, height) {
@@ -50,6 +53,15 @@ function renderLine() {
     })
 }
 
+function renderEmojisToCanvas() {
+    const selectedLineIdx = getGMeme().selectedLineIdx;
+    getGMeme().lines.forEach((line, idx) => {
+        drawText(line.txt, line.size, line.color, line.textPositionX, line.textPositionY, line.textAlign, line.fontFamily)
+        RenderUnderLine(line)
+        if (idx === selectedLineIdx) renderBorderLine(line)
+    })
+}
+
 function renderBorderLine(line) {
     if (!getGMeme().isActive) return
     const newLine = getAccurateBorderLinePosition(line)
@@ -60,6 +72,17 @@ function RenderUnderLine(line) {
     if (!line.underLine) return;
     const pos = getAccurateUnderLinePosition(line);
     drawUnderline(pos.strokeStartPointX, pos.strokeStartPointY, pos.strokeEndPointX);
+}
+
+function renderEmojis() {
+    var gEmojis = getGEmojis()
+    document.querySelector('.emojis-scrollbar').innerHTML = ''
+    gEmojis.forEach(emoji => {
+        document.querySelector('.emojis-scrollbar').innerHTML += `
+                         <img class="emoji-img" onclick="onSelectedEmojiImg(this)" id="${emoji.id}" src="${emoji.url}" alt="emoji">
+        `;
+    })
+
 }
 
 function renderFontFamilySelectionValue() {
@@ -73,7 +96,12 @@ function renderLineColorInputValue() {
     document.querySelector('.text-color').value = gMemeLines[gMeme.selectedLineIdx].color
 }
 
-function onClickLineInCanvas(ev) {
+function onClickCanvas(ev) {
+    if (getCurGEmoji() !== undefined) createNewMemeEmoji(ev)
+    else onClickLineInCanvas
+}
+
+function onClickLineInCanvas() {
     var lineIdx = getLineIdxByPosition(ev)
     if (lineIdx === null) return
     setGMemeSelectedLineIdxTo(lineIdx)
@@ -82,6 +110,10 @@ function onClickLineInCanvas(ev) {
 }
 
 // Create
+
+function onSelectedEmojiImg(el) {
+    return setCurGEmoji(el)
+}
 
 function onSaveMeme() {
     if (!confirm('Are you sure you want to save the picture?')) return
@@ -113,7 +145,6 @@ function onAddLine(ev) {
 }
 
 function drawText(str, textSize, color, textPositionX, textPositionY, textAlign, fontFamily) {
-    console.log("🚀 ~ drawText ~ textPositionX:", textPositionX)
     fontFamily = fontFamily || 'Arial'
     gCtx.textAlign = textAlign || 'start';
     gCtx.textBaseline = 'top'
@@ -123,7 +154,6 @@ function drawText(str, textSize, color, textPositionX, textPositionY, textAlign,
 }
 
 function drawRoundRect(startPointX, startPointY, lineWidth, lineHeight, color = '#000000') {
-    console.log("🚀 ~ drawRoundRect ~ lineWidth:", lineWidth)
     gCtx.beginPath()
     gCtx.roundRect(startPointX, startPointY, lineWidth, lineHeight, lineHeight / 2)
     gCtx.strokeStyle = color
@@ -138,6 +168,20 @@ function drawUnderline(strokeStartPointX, strokeStartPointY, strokeEndPointX, co
     gCtx.lineTo(strokeStartPointX + strokeEndPointX, strokeStartPointY);
     gCtx.stroke();
 
+}
+
+function drawEmojiImg() {
+    if (!getGMeme().emojis) return
+    const memeEmojis = getGMeme().emojis
+    memeEmojis.forEach(emoji => {
+        console.log(" emoji:", emoji)
+        const img = emoji.img
+        const width = img.naturalWidth / 15
+        const height = img.naturalHeight / 15
+        gCtx.drawImage(img, emoji.posX - width / 2, emoji.posY - height / 2, width, height)
+    })
+
+    setCurGEmoji('')
 }
 
 // Read
@@ -168,6 +212,13 @@ function getUpdatedTextPositionX(value) {
 
 
 // Update
+
+function onScrollEmojiContainer(el) {
+    const elEmojis = document.querySelector('.emojis-scrollbar')
+    if (el.classList.contains("right")) elEmojis.scrollLeft += 100
+    else elEmojis.scrollLeft += -100
+}
+
 function onSetUnderline() {
     moveToTextInput()
     setGMemeUnderline()

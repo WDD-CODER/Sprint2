@@ -7,6 +7,8 @@ function onInitGallery() {
     gElCanvas = document.querySelector('.Search-canvas');
     gCtx = gElCanvas.getContext('2d')
     renderGallery()
+    createEmojiImgObject()
+
 }
 
 function renderGallery(filteredImages) {
@@ -69,7 +71,6 @@ function onGenerateRandomMeme() {
 // Update
 
 function wiggleElement(el) {
-    console.log("🚀 ~ wiggleElement ~ el:", el)
     el.classList.remove('wiggle');
     setTimeout(() => {
         el.classList.add('wiggle')
