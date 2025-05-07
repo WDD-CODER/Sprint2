@@ -44,6 +44,8 @@ const gImgs = loadGImgsFromStorage(IMG_STORAGE_KEY) || [
 
 const gEmojis = createGEmojis(7)
 
+
+//I don't understand why there's the tree dots underneath below from storage. I just can't understand
 var gSavedMems = loadFromStorage(MEME_STORAGE_KEY) || []
 var gMeme
 var gKeywordSearchCountMap = { 'funny': 12, 'cat': 16, 'baby': 2, 'dog': 2, 'man': 2, 'cute': 2, 'cool': 2, 'strict': 2 }
@@ -407,7 +409,7 @@ function clearGMeme() {
 
 // Helpers
 
-function ClearSavedMems() {
+function clearSavedMems() {
     gSavedMems = []
     localStorage.clear()
 }

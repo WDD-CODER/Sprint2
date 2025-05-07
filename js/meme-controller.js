@@ -97,11 +97,13 @@ function renderLineColorInputValue() {
 }
 
 function onClickCanvas(ev) {
-    if (getCurGEmoji() !== undefined) createNewMemeEmoji(ev)
-    else onClickLineInCanvas
+    if (getCurGEmoji() !== undefined) {
+        createNewMemeEmoji(ev)
+    }
+    else onClickLineInCanvas(ev)
 }
 
-function onClickLineInCanvas() {
+function onClickLineInCanvas(ev) {
     var lineIdx = getLineIdxByPosition(ev)
     if (lineIdx === null) return
     setGMemeSelectedLineIdxTo(lineIdx)
@@ -276,9 +278,8 @@ function onsetTextColor(el) {
 // Delete
 
 function onClearSavedMems() {
-    ClearSavedMems()
+    clearSavedMems()
     showContainer('gallery')
-    console.log("🚀 ~ onClearSavedMems ~ getGSavedMems():", getGSavedMems())
 }
 
 function clearCanvas() {
