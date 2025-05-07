@@ -407,6 +407,11 @@ function clearGMeme() {
 
 // Helpers
 
+function ClearSavedMems() {
+    gSavedMems = []
+    localStorage.clear()
+}
+
 function IncreaseOrDecreaseByFactor(factor, el) {
     if (el.classList.contains('decrease')) return -factor
     else return factor

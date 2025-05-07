@@ -274,6 +274,13 @@ function onsetTextColor(el) {
 }
 
 // Delete
+
+function onClearSavedMems() {
+    ClearSavedMems()
+    showContainer('gallery')
+    console.log("🚀 ~ onClearSavedMems ~ getGSavedMems():", getGSavedMems())
+}
+
 function clearCanvas() {
     gCtx.fillStyle = "white"
     gCtx.fillRect(0, 0, gElCanvas.width, gElCanvas.height)

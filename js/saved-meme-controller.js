@@ -7,6 +7,7 @@ function onInitSavedMemeGallery() {
 
 function renderSavedMemeGallery() {
     document.querySelector('.meme.gallery-pics').innerHTML = ''
+    if (!getGSavedMems()) return
     getGSavedMems().forEach(meme => {
         document.querySelector('.meme.gallery-pics').innerHTML += `
                          <figure>

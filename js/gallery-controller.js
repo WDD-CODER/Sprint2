@@ -33,19 +33,18 @@ function onFilterImgs(el) {
 }
 
 function showContainer(containerClassName) {
-    const elContainer = document.querySelectorAll(`.${containerClassName}.container`)
+    const allElContainers = document.querySelectorAll(`.container`)
+    const curElContainer = document.querySelector(`.${containerClassName}.container`)
     const elSearchBarContainer = document.querySelector('.Search-bar');
-    elContainer.forEach(container => container.classList.remove('hidden'))
-    document.querySelectorAll('.container').forEach((el) => {
-        if (!el.classList.contains(containerClassName))
-            el.classList.add('hidden')
+    // Takes off all the hidden and adds hidden to who needed
+    // allElContainers.forEach(container => container.classList.remove('hidden'))
+    allElContainers.forEach((elContainer) => {
+        if (!elContainer.classList.contains(containerClassName)) elContainer.classList.add('hidden')
+        else elContainer.classList.remove('hidden')
     })
-
-    if ([...elContainer].some(el => el.classList.contains('saved-meme-gallery'))) {
-        onInitSavedMemeGallery()
-    }
-    else if ([...elContainer].some(el => el.classList.contains('meme'))) onIniMemeEdit()
-    else if ([...elContainer].some(el => el.classList.contains('gallery'))) onInitGallery()
+    if (curElContainer.classList.contains('saved-meme-gallery')) onInitSavedMemeGallery()
+    else if (curElContainer.classList.contains('meme')) onIniMemeEdit()
+    else if (curElContainer.classList.contains('gallery')) onInitGallery()
 }
 
 // Create
