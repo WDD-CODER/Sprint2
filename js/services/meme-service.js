@@ -18,7 +18,7 @@ const gRandomTexts = [
 ];
 
 const gImgs = loadGImgsFromStorage(IMG_STORAGE_KEY) || [
-    { id: 1, url: 'assets/img/pics/1.jpg', keywords: ['lady', 'fun'] },
+    { id: 1, url: '/assets/img/pics/1.jpg', keywords: ['lady', 'fun'] },
     { id: 2, url: 'assets/img/pics/2.jpg', keywords: ['baby', 'cute'] },
     { id: 3, url: 'assets/img/pics/3.jpg', keywords: ['dog', 'cute'] },
     { id: 4, url: 'assets/img/pics/4.jpg', keywords: ['baby', 'dog'] },
