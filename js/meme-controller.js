@@ -63,9 +63,10 @@ function renderEmojisToCanvas() {
 }
 
 function renderBorderLine(line) {
-    if (!getGMeme().isActive) return
+    const gMeme = getGMeme()
+    if (!gMeme.isActive || !gMeme.lines.length) return
     const newLine = getAccurateBorderLinePosition(line)
-    drawRoundRect(newLine.linePositionX, newLine.linePositionY, newLine.lineWidth, newLine.lineHeight)
+    drawRoundRect(newLine.linePositionX, newLine.linePositionY, newLine.lineWidth, newLine.lineHeight, newLine.textColor,)
 }
 
 function RenderUnderLine(line) {
@@ -86,6 +87,7 @@ function renderEmojis() {
 }
 
 function renderFontFamilySelectionValue() {
+    if (!getGMeme().lines.length) return
     let FontFamily = getGMeme().lines[gMeme.selectedLineIdx].fontFamily
     return FontFamily = document.querySelector('.font-family').value;
 }
@@ -97,11 +99,14 @@ function renderLineColorInputValue() {
 }
 
 function onClickCanvas(ev) {
-    if (getCurGEmoji() !== undefined) createNewMemeEmoji(ev)
-    else onClickLineInCanvas
+
+    if (getCurGEmoji() !== undefined) {
+        createNewMemeEmoji(ev)
+    }
+    else onClickLineInCanvas(ev)
 }
 
-function onClickLineInCanvas() {
+function onClickLineInCanvas(ev) {
     var lineIdx = getLineIdxByPosition(ev)
     if (lineIdx === null) return
     setGMemeSelectedLineIdxTo(lineIdx)
@@ -249,8 +254,9 @@ function onSetTextWidth() {
 }
 
 function onSetSelectedLine(el, lineIdx) {
+
     if (getGMeme().lines.length <= 1) return
-    setGMemeSelectedLine(el, lineIdx)
+    setGMemeSelectedLine(el)
     moveToTextInput()
     renderGMeme()
 }
@@ -276,9 +282,8 @@ function onsetTextColor(el) {
 // Delete
 
 function onClearSavedMems() {
-    ClearSavedMems()
+    clearSavedMems()
     showContainer('gallery')
-    console.log("🚀 ~ onClearSavedMems ~ getGSavedMems():", getGSavedMems())
 }
 
 function clearCanvas() {

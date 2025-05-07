@@ -16,7 +16,9 @@
         font-size: .8em;
     }
             
-        
+    .gallery-pics figure:hover {
+        scale: 1;
+    }       
 }
 
 /* Medium */

@@ -1,14 +1,25 @@
-button {
-    font-family:var(--btn-font-family);
-    
-    padding: .2em;
 
+
+
+
+button:not(.edit-options button) {
     border-radius:var(--border-radios-base);
     border-color: var(--color-gray--1);
     background-color: var(--color-blue-base);
+
     transition: 300ms;
 }
 
+
+.edit-options button{
+    font-family:var(--btn-font-family);
+    
+    padding: .4em;
+
+    border-radius:5px;
+    border-color: var(--color-gray--1);
+    background-color: var(--color-blue-base);
+}
 
 button:focus {
     outline: 1px dashed var(--color-blue-1);

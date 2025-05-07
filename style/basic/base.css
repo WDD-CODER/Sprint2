@@ -22,6 +22,10 @@ body {
 
 
 button {
+    padding: .2em;
+
+
+    font-family:inherit;
     text-align: center;
     background-color: transparent;
 }
