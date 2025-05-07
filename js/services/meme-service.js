@@ -18,31 +18,31 @@ const gRandomTexts = [
 ];
 
 const gImgs = loadGImgsFromStorage(IMG_STORAGE_KEY) || [
-    { id: 1, url: '/assets/img/pics/1.jpg', keywords: ['lady', 'fun'] },
-    { id: 2, url: 'assets/img/pics/2.jpg', keywords: ['baby', 'cute'] },
-    { id: 3, url: 'assets/img/pics/3.jpg', keywords: ['dog', 'cute'] },
-    { id: 4, url: 'assets/img/pics/4.jpg', keywords: ['baby', 'dog'] },
-    { id: 5, url: 'assets/img/pics/5.jpg', keywords: ['baby', 'cool'] },
-    { id: 6, url: 'assets/img/pics/6.jpg', keywords: ['man', 'fun'] },
-    { id: 7, url: 'assets/img/pics/7.jpg', keywords: ['cat', 'cute'] },
-    { id: 8, url: 'assets/img/pics/8.jpg', keywords: ['baby', 'funny'] },
-    { id: 9, url: 'assets/img/pics/9.jpg', keywords: ['man', 'strict'] },
-    { id: 10, url: 'assets/img/pics/10.jpg', keywords: ['man', 'funny'] },
-    { id: 11, url: 'assets/img/pics/Ancient-Aliens.jpg', keywords: ['actor', 'funny'] },
-    { id: 12, url: 'assets/img/pics/drevil.jpg', keywords: ['drEvil', 'man'] },
-    { id: 13, url: 'assets/img/pics/img2.jpg', keywords: ['kids', 'fun'] },
-    { id: 14, url: 'assets/img/pics/img6.jpg', keywords: ['dog', 'funny'] },
-    { id: 15, url: 'assets/img/pics/img11.jpg', keywords: ['obama', 'funny'] },
-    { id: 16, url: 'assets/img/pics/img12.jpg', keywords: ['man', 'funny'] },
-    { id: 17, url: 'assets/img/pics/leo.jpg', keywords: ['actor', 'fun'] },
-    { id: 18, url: 'assets/img/pics/meme1.jpg', keywords: ['actor', 'cool'] },
-    { id: 19, url: 'assets/img/pics/One-Does-Not-Simply.jpg', keywords: ['man', 'cool'] },
-    { id: 20, url: 'assets/img/pics/Oprah-You-Get-A.jpg', keywords: ['lady', 'funny'] },
-    { id: 21, url: 'assets/img/pics/patrick.jpg', keywords: ['man', 'funny'] },
-    { id: 22, url: 'assets/img/pics/X-Everywhere.jpg', keywords: ['funny', 'cute'] }
+    { id: 1, url: './assets/img/pics/1.jpg', keywords: ['lady', 'fun'] },
+    { id: 2, url: './assets/img/pics/2.jpg', keywords: ['baby', 'cute'] },
+    { id: 3, url: './assets/img/pics/3.jpg', keywords: ['dog', 'cute'] },
+    { id: 4, url: './assets/img/pics/4.jpg', keywords: ['baby', 'dog'] },
+    { id: 5, url: './assets/img/pics/5.jpg', keywords: ['baby', 'cool'] },
+    { id: 6, url: './assets/img/pics/6.jpg', keywords: ['man', 'fun'] },
+    { id: 7, url: './assets/img/pics/7.jpg', keywords: ['cat', 'cute'] },
+    { id: 8, url: './assets/img/pics/8.jpg', keywords: ['baby', 'funny'] },
+    { id: 9, url: './assets/img/pics/9.jpg', keywords: ['man', 'strict'] },
+    { id: 10, url: './assets/img/pics/10.jpg', keywords: ['man', 'funny'] },
+    { id: 11, url: './assets/img/pics/Ancient-Aliens.jpg', keywords: ['actor', 'funny'] },
+    { id: 12, url: './assets/img/pics/drevil.jpg', keywords: ['drEvil', 'man'] },
+    { id: 13, url: './assets/img/pics/img2.jpg', keywords: ['kids', 'fun'] },
+    { id: 14, url: './assets/img/pics/img6.jpg', keywords: ['dog', 'funny'] },
+    { id: 15, url: './assets/img/pics/img11.jpg', keywords: ['obama', 'funny'] },
+    { id: 16, url: './assets/img/pics/img12.jpg', keywords: ['man', 'funny'] },
+    { id: 17, url: './assets/img/pics/leo.jpg', keywords: ['actor', 'fun'] },
+    { id: 18, url: './assets/img/pics/meme1.jpg', keywords: ['actor', 'cool'] },
+    { id: 19, url: './assets/img/pics/One-Does-Not-Simply.jpg', keywords: ['man', 'cool'] },
+    { id: 20, url: './assets/img/pics/Oprah-You-Get-A.jpg', keywords: ['lady', 'funny'] },
+    { id: 21, url: './assets/img/pics/patrick.jpg', keywords: ['man', 'funny'] },
+    { id: 22, url: './assets/img/pics/X-Everywhere.jpg', keywords: ['funny', 'cute'] }
 ];
 
-const gEmojis = createGEmojis(7) 
+const gEmojis = createGEmojis(7)
 
 var gSavedMems = loadFromStorage(MEME_STORAGE_KEY) || []
 var gMeme
@@ -149,10 +149,10 @@ function getGTextPosition() {
 
 
 // Create
-function createGEmojis(num){
+function createGEmojis(num) {
     const gEmojis = []
     for (let i = 1; i <= num; i++) {
-        let emoji =  { id: i, url: `assets/img/emojis/${i}.png` }
+        let emoji = { id: i, url: `./assets/img/emojis/${i}.png` }
         gEmojis.push(emoji)
     }
     return gEmojis
