@@ -8,7 +8,6 @@ function onInitGallery() {
     gCtx = gElCanvas.getContext('2d')
     renderGallery()
     createEmojiImgObject()
-localStorage.clear()
 }
 
 function renderGallery(filteredImages) {

@@ -36,7 +36,7 @@ function reSizeCanvas() {
 }
 
 function renderImgOnCanvas(img) {
-    const maxWidth = 400; // or container max width
+    const maxWidth = 350; // or container max width
     gElCanvas.width = Math.min(maxWidth, img.naturalWidth);
     gElCanvas.height = (img.naturalHeight / img.naturalWidth) * gElCanvas.width
     gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height)
