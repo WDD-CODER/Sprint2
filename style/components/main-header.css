@@ -1,34 +1,47 @@
-
-.main-header{
+.main-header {
     grid-row: 1;
     grid-column: 1 / -1;
     padding: .5em 40px;
 }
 
-.navigation-list{
+.navigation-list {
     gap: clamp(10px, 10vw, 20px)
 }
-.navigation-list a{
+
+.navigation-list a {
     font-weight: bold;
-    color: var(--color-blue-2);
+    color: var(--color-primary-2);
 }
 
-.navigation-list li:hover a{
-color: var(--color-blue--3);
+.navigation-list li:hover a {
+    color: var(--color-primary--3);
 }
 
-.navigation-list li:active a{
+.navigation-list li:active a {
     color: var(--color-white-base);
 }
 
 
 @keyframes wiggle {
-    0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(30deg); }
-    50% { transform: rotate(-10deg); }
-    75% { transform: rotate(6deg); }
-  }
-  
-  .wiggle {
+
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(30deg);
+    }
+
+    50% {
+        transform: rotate(-10deg);
+    }
+
+    75% {
+        transform: rotate(6deg);
+    }
+}
+
+.wiggle {
     animation: wiggle 360ms ease-out
-  }
+}

@@ -15,11 +15,11 @@
         <article class="logo">Meme Me!!!</article>
         <nav class="navigation">
             <ul class="navigation-list flex ">
-                <li onclick="wiggleElement(this)"><a class="navigation-tag" href="#" onclick="onChooseContainer(this)"
+                <li onclick="onWiggleElement(this)"><a class="navigation-tag" href="#" onclick="onChooseContainer(this)"
                         data-tab="gallery">Gallery</a></li>
-                <li onclick="wiggleElement(this)"><a class="navigation-tag" href="#" onclick="onChooseContainer(this)"
+                <li onclick="onWiggleElement(this)"><a class="navigation-tag" href="#" onclick="onChooseContainer(this)"
                         data-tab="meme">Editor</a></li>
-                <li onclick="wiggleElement(this)"><a class="navigation-tag" href="#" onclick="onChooseContainer(this)"
+                <li onclick="onWiggleElement(this)"><a class="navigation-tag" href="#" onclick="onChooseContainer(this)"
                         data-tab="saved-meme-gallery">Saved Memes</a></li>
             </ul>
         </nav>
@@ -31,7 +31,7 @@
                     onchange="onFilterImgs(this)">
                 <div class="search-buttons">
                     <button class="clear-filter" onclick="onClearFilter()">Clear</button>
-                    <button class="random-mame" onclick="onGenerateRandomMeme()">I'm Flexible</button>
+                    <button class="random-meme" onclick="onGenerateRandomMeme()">I'm Flexible</button>
                 </div>
                 <datalist id="keyWords-list">
                     <option value="funny">funny</option>
@@ -48,8 +48,6 @@
                     <option value="strict">strict</option>
                 </datalist>
             </section>
-            <div class="canvas-container-search"><canvas width="100" height="100" class="Search-canvas"></canvas>
-            </div>
         </section>
         <section class="gallery container ">
             <h2 class="container-header justify-self">Main Picture Gallery</h2>
@@ -64,12 +62,11 @@
                     </canvas>
                 </div>
                 <section class="edit-options">
-                    <section class="text-submit" onsubmit="onAddLine(event)">
-                        <form>
+                    <section class="text-submit">
+                        <form  onsubmit="onAddLine(event);  editMemeNotActive()" >
                             <input class="line-text meme" type="text" placeholder="Start writing something"
-                                onclick="getTextInputValue()" oninput="onTextInput(this)"
-                                onblur="gMemeEditModeNotActive()">
-                        </form>
+                                onclick="getTextInputValue()" oninput="onTextInput(this) ">
+                        </form >
                     </section>
                     <div class="line-options">
                         <button class="line-selected increase" onclick="onSetSelectedLine(this)"><span
@@ -82,9 +79,9 @@
                                 aria-hidden="true"></span></button>
                     </div>
                     <div class="text-options">
-                        <button type="button" class="font-size increase" onclick="onsetFontSize(this)"><span
+                        <button type="button" class="font-size increase" onclick="onSetFontSize(this)"><span
                                 class="fa-solid fa-magnifying-glass-plus" aria-hidden="true"></span></button>
-                        <button type="button" class="font-size decrease" onclick="onsetFontSize(this)"><span
+                        <button type="button" class="font-size decrease" onclick="onSetFontSize(this)"><span
                                 class="fa-solid fa-magnifying-glass-minus" aria-hidden="true"></span></button>
                         <button class="align-line left" onclick="onSetTextAlignment(this)" value="left"><span
                                 class="fa-solid fa-indent" aria-hidden="true"></span></button>
@@ -102,8 +99,8 @@
                             <option value="Times New Roman">Times New Roman</option>
                             <option value="Impact">Impact</option>
                             <option value="Comic Sans MS">Comic Sans MS</option>
-                            <input type="color" class="text-color" id="text-color" onchange="onsetTextColor(this)">
                         </select>
+                        <input type="color" class="text-color" id="text-color" onchange="onsetTextColor(this)">
                     </div>
                     <div class="set-line-buttons align-self">
                         <button class="move up" onclick="onSetLinePosition(this)">
@@ -128,7 +125,7 @@
                             <a href="#" download="your-pic.jpg" onclick="onDownloadImg(this)">
                                 <span class="fa-solid fa-solid fa-download" aria-hidden="true"></span></a>
                         </button>
-                        <button class="save-Pic" onclick="onSaveMeme()">
+                        <button class="save-Pic" onclick="onSaveMeme(event)">
                             <span class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></span>
                         </button>
                         <form class="upload-to-facebook" method="POST" enctype="multipart/form-data">
@@ -149,11 +146,10 @@
             </section>
         </section>
     </main>
-    <footer class="coffe-rights flex justify-content align-items flag-stripe">Made By DanDan</footer>
-    <script src="js/services/storege-service.js"></script>
+    <footer class="coffee-rights flex justify-content align-items flag-stripe">Made By DanDan</footer>
+    <script src="js/services/storage-service.js"></script>
     <script src="js/services/util-service.js"></script>
     <script src="js/services/canvas-service.js"></script>
-    <script src="js/services/links-service.js"></script>
     <script src="js/services/meme-service.js"></script>
     <script src="js/services/share-service.js"></script>
     <script src="js/gallery-controller.js"></script>

@@ -15,7 +15,7 @@ const gRandomTexts = [
     "404: Motivation not found.",
     "Just one more episode… at 3am.",
     "I came. I saw. I made it awkward."
-];
+]
 
 const gImgs = loadGImgsFromStorage(IMG_STORAGE_KEY) || [
     { id: 1, url: './assets/img/pics/1.jpg', keywords: ['lady', 'fun'] },
@@ -42,18 +42,19 @@ const gImgs = loadGImgsFromStorage(IMG_STORAGE_KEY) || [
     { id: 22, url: './assets/img/pics/X-Everywhere.jpg', keywords: ['funny', 'cute'] }
 ];
 
-const gEmojis = createGEmojis(7)
+const gEmojis = createEmojis(7)
 
 
 //I don't understand why there's the tree dots underneath below from storage. I just can't understand
-var gSavedMems = loadFromStorage(MEME_STORAGE_KEY) || []
+var gSavedMems = loadFromLocalStorage(MEME_STORAGE_KEY) || []
 var gMeme
 var gKeywordSearchCountMap = { 'funny': 12, 'cat': 16, 'baby': 2, 'dog': 2, 'man': 2, 'cute': 2, 'cool': 2, 'strict': 2 }
-var CurGEmoji
+var gEmoji
+var gStartPos
 // Lists
 
 function loadGImgsFromStorage(key) {
-    const savedImgs = loadFromStorage(key)
+    const savedImgs = loadFromLocalStorage(key)
     if (savedImgs) savedImgs.forEach(gImg => {
         const img = new Image();
         img.src = gImg.url;
@@ -65,28 +66,29 @@ function loadGImgsFromStorage(key) {
 
 
 // Create
-function createGEmojis(num) {
-    const gEmojis = []
+// למה לא להכניס פה את היצירה של התמונה ולקבוע אותה 
+function createEmojis(num) {
+    const emojis = []
     for (let i = 1; i <= num; i++) {
         let emoji = { id: i, url: `./assets/img/emojis/${i}.png` }
-        gEmojis.push(emoji)
+        emojis.push(emoji)
     }
-    return gEmojis
+    return emojis
 }
 
-function _createMemeImg(el, onReady) {
-    var memeImg = {}
+function _createImg(el, onReady) {
+    var curImg = {}
     const img = new Image()
     img.onload = () => {
-        memeImg = {
+        curImg = {
             id: +el.id,
             url: el.src,
             keywords: [],
             img: img
         }
-        var curIdx = gImgs.findIndex(img => img.id === memeImg.id)
+        var curIdx = gImgs.findIndex(img => img.id === curImg.id)
         gImgs[curIdx].img = img
-        _createNewGMeme(el.id)
+        _createGMeme(el.id)
         renderImgOnCanvas(img)
         if (onReady) onReady()
     }
@@ -102,62 +104,65 @@ function createEmojiImgObject() {
     })
 }
 
-function _createNewGMeme(ImgId) {
+function _createGMeme(ImgId) {
     gMeme = {
         selectedImgId: +ImgId,
         selectedLineIdx: 0,
         isActive: false,
         lines: [
             {
-                txt: '',
+                text: '',
                 size: 20,
                 color: '#f5f5f5',
-                textPositionX: G_START_POSITION_X,
-                textPositionY: G_START_POSITION_Y,
+                positionX: G_START_POSITION_X,
+                positionY: G_START_POSITION_Y,
                 lineHeight: 30,
             }
         ]
     }
     moveToTextInput()
 }
-function createNewMemeEmoji(ev) {
-    const curEmoji = getCurGEmoji()
-    const emojiRandomId = getRandomId()
-    const GMeme = getGMeme()
-    if (!GMeme.emojis) GMeme.emojis = []
+
+function createMemeEmoji(ev) {
+    console.log('gMeme', gMeme)
+
+    const emoji = getGEmoji()
+    const randomId = getRandomId()
+    if (!gMeme.emojis) gMeme.emojis = []
     const pos = getEvPos(ev)
-    const emojiObject = { id: emojiRandomId, img: curEmoji.img, posX: pos.x, posY: pos.y }
+    const emojiObject = { id: randomId, img: emoji.img, positionX: pos.x, positionY: pos.y }
     getGMeme().emojis.push(emojiObject)
-    drawEmojiImg(emojiRandomId)
+    drawEmoji(randomId)
 }
 
-function createNewLine() {
-    const lastLine = GetLastLine();
-    const baseY = lastLine ? lastLine.textPositionY + lastLine.lineHeight : G_START_POSITION_Y;
+function createLine() {
+    const lastLine = getLastLine();
+    const baseY = lastLine ? lastLine.positionY + lastLine.lineHeight : G_START_POSITION_Y;
     const newLine = {
-        txt: '',
+        text: '',
         size: 16,
         color: '#f5f5f5',
-        textPositionX: G_START_POSITION_X,
-        textPositionY: baseY,
+        positionX: G_START_POSITION_X,
+        positionY: baseY,
         lineHeight: 30
     };
 
     gMeme.lines.push(newLine);
     gMeme.selectedLineIdx = gMeme.lines.length - 1;
 }
+
 function createRandomTextLines(numOfLines) {
     gMeme.lines = []
     for (let i = 0; i < numOfLines; i++) {
-        createNewLine()
+        createLine()
     }
-    gMeme.lines.forEach(line => line.txt = getRandomText())
+    gMeme.lines.forEach(line => line.text = getRandomText())
 }
 
 // Reade
 
 
-function getAccurateBorderLinePosition(line) {
+function getBorderLinePosition(line) {
     const curLine = line || gMeme.lines[gMeme.selectedLineIdx]
     const elCanvasContainerWidth = document.querySelector('.canvas-container.meme').offsetWidth
     const centerOfCanvas = elCanvasContainerWidth / 2
@@ -171,23 +176,23 @@ function getAccurateBorderLinePosition(line) {
     const lineHeight = textSize + 4
     const textAlign = curLine.textAlign || ''
 
-    let linePositionX = curLine.textPositionX - 5
-    let linePositionY = curLine.textPositionY - 2.5
+    let positionX = curLine.positionX - 5
+    let positionY = curLine.positionY - 2.5
 
-    if (textAlign === 'center') linePositionX = centerOfCanvas - lineWidth / 2
+    if (textAlign === 'center') positionX = centerOfCanvas - lineWidth / 2
     else if (textAlign === "right") {
-        linePositionX = curLine.textPositionX + 5 - lineWidth
+        positionX = curLine.positionX + 5 - lineWidth
     }
-    const accurateLinePositions = { linePositionX, linePositionY, lineWidth, lineHeight, textSize, textColor }
+    const accurateLinePositions = { positionX, positionY, lineWidth, lineHeight, textSize, textColor }
     return accurateLinePositions
 }
-function getAccurateUnderLinePosition(line) {
-    const { linePositionX, linePositionY, lineWidth, lineHeight, textSize } = getAccurateBorderLinePosition(line)
-    let strokeStartPointX = linePositionX
-    let strokeStartPointY = linePositionY + textSize + 4
-    let strokeEndPointX = lineWidth
-    var UnderLinePosition = { strokeStartPointX, strokeStartPointY, strokeEndPointX }
-    return UnderLinePosition
+function getUnderlinePosition(line) {
+    const { positionX, positionY, lineWidth, textSize } = getBorderLinePosition(line)
+    let strokePositionX = positionX
+    let strokePositionY = positionY + textSize + 4
+    let strokeWidth = lineWidth
+    var UnderlinePosition = { strokePositionX, strokePositionY, strokeWidth }
+    return UnderlinePosition
 }
 
 function getMaxLineWidth() {
@@ -195,67 +200,99 @@ function getMaxLineWidth() {
     const marginInline = G_START_POSITION_X * 2
     return elCanvasContainerWidth - marginInline
 }
-function getGEmojis() {
-    return gEmojis
-}
-function getCurGEmoji() {
-    return CurGEmoji
-}
 
-function getLineIdxByPosition(ev) {
+function getClickedOnItem(ev) {
     if (!gMeme) return
     const pos = getEvPos(ev)
     const elCanvasContainerWidth = document.querySelector('.canvas-container.meme').offsetWidth
     const centerOfCanvas = elCanvasContainerWidth / 2
-    const curLineIdx = gMeme.lines.findIndex(line => {
-        let { textPositionX, textPositionY, lineHeight, textWidth } = line
-        // In case the line was added without any text, Gives the line One time use width so it could be chosen.
-        if (!textWidth) textWidth = getCanvasContainerWidth()
-        if (line.textAlign) {
-            var isClicked
-            if (line.textAlign === "center") {
-                isClicked =
-                    pos.x >= centerOfCanvas - 10 - textWidth / 2 &&
-                    pos.x <= centerOfCanvas + 10 + textWidth / 2
-                    &&
-                    pos.y >= textPositionY - 3 &&
-                    pos.y <= textPositionY + lineHeight + 3
-            }
-            else if (line.textAlign === "right") {
-                isClicked =
-                    pos.x >= textPositionX - textWidth - 10 &&
-                    pos.x <= textPositionX + 10
-                    &&
-                    pos.y >= textPositionY - 3 &&
-                    pos.y <= textPositionY + lineHeight + 3
-            }
-            else {
+    const emojiSize = 50
+    var pictItem = {}
+    var isClicked
+    if (gMeme.emojis !== undefined) {
+        pictItem.idx = gMeme.emojis.findIndex(emoji => {
+            let { positionX, positionY } = emoji
+            isClicked =
+                pos.x >= positionX - emojiSize / 2 &&
+                pos.x <= positionX + emojiSize / 2
+                &&
+                pos.y >= positionY - emojiSize / 2 &&
+                pos.y <= positionY + emojiSize / 2
+            return isClicked
+        })
+
+        if (pictItem.idx !== -1) {
+            pictItem.type = 'emoji'
+            pictItem.isClicked = true
+        }
+    }
+
+    if (pictItem.idx === -1 || pictItem.idx === undefined) {
+        pictItem.idx = gMeme.lines.findIndex(line => {
+            let { positionX, positionY, lineHeight, textWidth } = line
+            // In case the line was added without any text, Gives the line One time use width so it could be chosen.
+            if (!textWidth) textWidth = getCanvasContainerWidth()
+            if (line.textAlign) {
+                if (line.textAlign === "center") {
+                    isClicked =
+                        pos.x >= centerOfCanvas - 10 - textWidth / 2 &&
+                        pos.x <= centerOfCanvas + 10 + textWidth / 2
+                        &&
+                        pos.y >= positionY - 3 &&
+                        pos.y <= positionY + lineHeight + 3
+                }
+                else if (line.textAlign === "right") {
+                    isClicked =
+                        pos.x >= positionX - textWidth - 10 &&
+                        pos.x <= positionX + 10
+                        &&
+                        pos.y >= positionY - 3 &&
+                        pos.y <= positionY + lineHeight + 3
+                }
+                else {
+                    //text align to the left
+                    isClicked =
+                        pos.x >= positionX - 10 &&
+                        pos.x <= positionX + textWidth + 20
+                        &&
+                        pos.y >= positionY - 3 &&
+                        pos.y <= positionY + lineHeight + 3
+                }
+
+            } else {
                 //text align to the left
                 isClicked =
-                    pos.x >= textPositionX - 10 &&
-                    pos.x <= textPositionX + textWidth + 20
+                    pos.x >= positionX - 10 &&
+                    pos.x <= positionX + textWidth + 20
                     &&
-                    pos.y >= textPositionY - 3 &&
-                    pos.y <= textPositionY + lineHeight + 3
+                    pos.y >= positionY - 3 &&
+                    pos.y <= positionY + lineHeight + 3
             }
             return isClicked
+        })
+
+        if (pictItem.idx !== -1) {
+            pictItem.type = 'line'
+            pictItem.isClicked = true
         }
 
-        else {
-            //text align to the left
-            isClicked =
-                pos.x >= textPositionX - 10 &&
-                pos.x <= textPositionX + textWidth + 20
-                &&
-                pos.y >= textPositionY - 3 &&
-                pos.y <= textPositionY + lineHeight + 3
-            return isClicked
-        }
-
-    })
-    return curLineIdx !== -1 ? curLineIdx : null
+        else pictItem = null
+    }
+    return pictItem
 }
 
+function getTextInputValue() {
+    const lineIdx = getSelectedLineIdx()
+    const textInput = document.querySelector('.line-text.meme')
+    textInput.value = getGMeme().lines[lineIdx].text
+}
+
+function getGEmojis() {
+    return gEmojis
+}
+function getGEmoji() {
+    return gEmoji
+}
 function getImgById(id) {
     const curImgIdx = gImgs.findIndex(img => img.id === id)
     return gImgs[curImgIdx];
@@ -263,12 +300,15 @@ function getImgById(id) {
 function getGSavedMems() {
     return gSavedMems
 }
-function GetLastLine() {
+function getLastLine() {
     return gMeme.lines[gMeme.lines.length - 1]
 }
 
 function getSelectedLineIdx() {
     return gMeme.selectedLineIdx
+}
+function setSelectedLine(lineIdx) {
+    return gMeme.selectedLineIdx = lineIdx
 }
 
 function getGImgs() {
@@ -280,8 +320,7 @@ function getGMeme() {
 }
 
 function getMemeById(memeId) {
-    var res = gSavedMems.find(meme => meme.id === memeId)
-    return res
+    return gSavedMems.find(meme => meme.id === memeId)
 }
 
 function getGTextPosition() {
@@ -297,31 +336,32 @@ function getGTextPosition() {
 // Update
 
 function setImgObject(el, onReady) {
-    _createMemeImg(el, onReady)
+    _createImg(el, onReady)
 }
 
 function setCurGEmoji(el) {
-    if (!el) return CurGEmoji = undefined
-    let emoji = gEmojis.find(emoji => emoji.id === +el.id)
-    CurGEmoji = emoji
-    return CurGEmoji
+    if (!el) {
+        gEmoji = undefined
+        return
+    }
+    const emoji = gEmojis.find(emoji => emoji.id === +el.id)
+    gEmoji = emoji
+    return gEmoji
 }
 
 function setGMeme(meme) {
-    var res = gMeme = meme
-    return res
+    return gMeme = meme
 }
 
 function saveMemeToLocalStorage(meme) {
-    const curId = meme.id
-    const alreadyExists = gSavedMems.findIndex(meme => meme.id === curId)
+    const alreadyExists = gSavedMems.findIndex(savedMeme => savedMeme.id === meme.id)
     if (alreadyExists !== -1) {
         gSavedMems[alreadyExists] = meme
-        saveToStorage(MEME_STORAGE_KEY, gSavedMems)
+        saveToLocalStorage(MEME_STORAGE_KEY, gSavedMems)
     }
     else {
         gSavedMems.push(meme)
-        saveToStorage(MEME_STORAGE_KEY, gSavedMems)
+        saveToLocalStorage(MEME_STORAGE_KEY, gSavedMems)
     }
 }
 
@@ -331,12 +371,12 @@ function saveImgToLocalStorage(gImg) {
     const alreadyExists = gImgs.findIndex(img => img.id === curId)
     if (alreadyExists !== -1) {
         gImgs[alreadyExists].img = gImg.img
-        saveToStorage(IMG_STORAGE_KEY, gImgs)
+        saveToLocalStorage(IMG_STORAGE_KEY, gImgs)
     }
     else {
         console.log('saveImgToLocalStorage');
         gImgs.push(gImg)
-        saveToStorage(IMG_STORAGE_KEY, gImgs)
+        saveToLocalStorage(IMG_STORAGE_KEY, gImgs)
     }
 }
 
@@ -346,34 +386,40 @@ function saveEmojiToLocalStorage(gEmoji) {
     if (alreadyExists !== -1) return
     else {
         gEmojis.push(gEmoji)
-        saveToStorage(IMG_STORAGE_KEY, gImgs)
+        saveToLocalStorage(IMG_STORAGE_KEY, gImgs)
     }
 }
 
 function SetTextAlignment(el) {
-    const CurLine = gMeme.lines[gMeme.selectedLineIdx]
-    CurLine.textAlign = el.value
-    CurLine.textPositionX = getUpdatedTextPositionX(el.value)
+    const line = gMeme.lines[gMeme.selectedLineIdx]
+    line.textAlign = el.value
+    line.positionX = getCurTextPosition(el.value)
 }
 
 function setGMemeSelectedLine(el) {
     let change = IncreaseOrDecreaseByFactor(1, el)
     if (change < 0 && gMeme.selectedLineIdx <= 0) return
     if (change > 0 && gMeme.selectedLineIdx >= gMeme.lines.length - 1) return
-    gMeme.selectedLineIdx += change
-}
-function setGMemeSelectedLineIdxTo(lineIdx) {
-
-    return gMeme.selectedLineIdx = lineIdx
+    return gMeme.selectedLineIdx += change
 }
 
-function setLineTxt(txt) {
-    return gMeme.lines[gMeme.selectedLineIdx].txt = txt
+function setSelectedObject(obj) {
+    if (obj.type === 'line') return gMeme.selectedLineIdx = obj.idx
+    else return gMeme.selectedEmojiIdx = obj.idx
 }
 
+// function setSelectedObject(obj) {
+//     if (obj.type === 'line') return gMeme.selectedLineIdx = obj.idx
+//     else return gMeme.selectedEmojiIdx = obj.idx
+// }
+
+
+function setLineText(str) {
+    return gMeme.lines[gMeme.selectedLineIdx].text = str
+}
 function setGMemeUnderline() {
-    gMeme.lines[gMeme.selectedLineIdx].underLine = !gMeme.lines[gMeme.selectedLineIdx].underLine;
-    return gMeme.lines[gMeme.selectedLineIdx].underLine;
+    gMeme.lines[gMeme.selectedLineIdx].underline = !gMeme.lines[gMeme.selectedLineIdx].underline;
+    return gMeme.lines[gMeme.selectedLineIdx].underline;
 }
 
 function setFontFamily(value) {
@@ -396,26 +442,32 @@ function saveTextColor(color) {
 }
 
 function setLinePosition(change) {
-    return gMeme.lines[gMeme.selectedLineIdx].textPositionY += change
+    return gMeme.lines[gMeme.selectedLineIdx].positionY += change
 }
 
 // Delete
 
-function DeleteLineFromGMeme() {
-
+function deleteLineFromGMeme() {
     gMeme.lines.splice(gMeme.selectedLineIdx, 1)
     if (gMeme.selectedLineIdx <= 0) return
     gMeme.selectedLineIdx--
-    // gMeme.isActive = false
+
+    gMeme.isActive = false
+    console.log('Remember you just put this back on');
 }
 
 function clearGMeme() {
-    return gMeme = ''
+    return gMeme = {}
 }
 
 
 
 // Helpers
+
+function onDownloadImg(elLink) {
+    const imgContent = gElCanvas.toDataURL('image/jpeg')
+    elLink.href = imgContent
+}
 
 function clearSavedMems() {
     gSavedMems = []

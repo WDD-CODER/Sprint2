@@ -24,11 +24,11 @@
     gap: 5px;
     padding: 1em;
 
-    max-width:300px ;
+    max-width: 300px;
 
     border-radius: var(--border-radios-base);
     border: 1px var(--color-gray-base) dotted;
-    background-color: var(--color-blue--3);
+    background-color: var(--color-primary--3);
 }
 
 .line-options,
@@ -70,10 +70,10 @@ input.line-text {
     display: flex;
 
     width: 60%;
-    
+
     overflow: hidden;
 
     border-radius: var(--border-radios-base);
-border: 1px solid var(--color-black-base);
+    border: 1px solid var(--color-black-base);
     background: var(--color-gray--2);
 }

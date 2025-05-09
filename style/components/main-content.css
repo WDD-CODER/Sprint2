@@ -2,13 +2,13 @@
     display: grid;
     grid-column: 2;
     grid-template-columns: 1fr 1fr;
-    
+
     border: 1px var(--color-base-gray) dotted;
     border-radius: var(--border-radios-base);
     background-color: var(--color-white--1);
 
 }
 
-.container-header{
+.container-header {
     padding: 2vh;
 }

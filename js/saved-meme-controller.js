@@ -13,16 +13,14 @@ function renderSavedMemeGallery() {
                          <figure>
                          <figcaption class="img-name"></figcaption>
                          <img onclick="onEditMeme(this)" id="${meme.id}" src="${meme.imgUrl}" alt="img">
-                         </figure>
-        `;
+                         </figure>`
     })
 }
 
 function onEditMeme(el) {
-    var res = getMemeById(el.id)
-    setGMeme(res)
+    setGMeme(getMemeById(el.id))
     showContainer('meme')
-    onIniMemeEdit()
+    onInitMemeEditor()
     renderGMeme()
 }
 

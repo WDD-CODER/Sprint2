@@ -3,13 +3,14 @@
 *::after {
     box-sizing: border-box;
 }
+
 .debug * {
     outline: 1px solid orange;
 }
 
 html {
     font-family: cursive;
-    
+
     color: var(--color-black-base);
 }
 
@@ -25,7 +26,7 @@ button {
     padding: .2em;
 
 
-    font-family:inherit;
+    font-family: inherit;
     text-align: center;
     background-color: transparent;
 }
@@ -42,9 +43,10 @@ img {
     height: 50px;
 }
 
-input,select {
+input,
+select {
     height: 2em;
-    
+
     text-align: center;
 
     border-radius: .5em;
@@ -59,24 +61,28 @@ a {
     grid-column: 1/-1;
 }
 
-h2{
-    color: var(--color-blue-1);
+h2 {
+    color: var(--color-primary-1);
 }
 
-::placeholder{
-    color: var(--color-blue--1);
+::placeholder {
+    color: var(--color-primary--1);
 }
 
-figure{
-        max-width: 350px;
+figure {
+    max-width: 350px;
     transition: 300ms;
 }
 
-.flag-stripe{
+.flag-stripe {
     height: 11vh;
-    
-    background-color: var(--color-blue-base);
+
+    background-color: var(--color-primary-base);
 
     border-top: 1px var(--color-base-gray) solid;
     border-bottom: 1px var(--color-base-gray) solid;
+}
+
+footer {
+    grid-column: 1/ -1;
 }

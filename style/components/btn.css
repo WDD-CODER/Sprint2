@@ -1,44 +1,40 @@
-
-
-
-
 button:not(.edit-options button) {
-    border-radius:var(--border-radios-base);
+    border-radius: var(--border-radios-base);
     border-color: var(--color-gray--1);
-    background-color: var(--color-blue-base);
+    background-color: var(--color-primary-base);
 
     transition: 300ms;
 }
 
 
-.edit-options button{
-    font-family:var(--btn-font-family);
-    
+.edit-options button {
+    font-family: var(--btn-font-family);
+
     padding: .4em;
 
-    border-radius:5px;
+    border-radius: 5px;
     border-color: var(--color-gray--1);
-    background-color: var(--color-blue-base);
+    background-color: var(--color-primary-base);
 }
 
 button:focus {
-    outline: 1px dashed var(--color-blue-1);
+    outline: 1px dashed var(--color-primary-1);
 }
 
 button:hover {
     background-color: var(--color-white--2);
 }
 
-button:hover + button {
-    background-color: var(--color-blue--1);
+button:hover+button {
+    background-color: var(--color-primary--1);
 }
 
-button:hover + button + button {
+button:hover+button+button {
     background-color: var(--color-white-2);
 }
 
 button:has(+ button:hover) {
-    background-color: var(--color-blue--1);
+    background-color: var(--color-primary--1);
 }
 
 button:has(+ button + button:hover) {
