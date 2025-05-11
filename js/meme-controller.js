@@ -37,7 +37,8 @@ function renderLine() {
     const selectedLineIdx = getGMeme().selectedLineIdx;
     getGMeme().lines.forEach((line, idx) => {
         // לעשות דיסטרקצר פה!!!
-        drawText(line.text, line.size, line.color, line.positionX, line.positionY, line.textAlign, line.fontFamily)
+        const { text, size, color, positionX, positionY, textAlign = 'start', fontFamily = 'Arial' } = line
+        drawText(text, size, color, positionX, positionY, textAlign, fontFamily)
         renderUnderline(line)
         if (idx === selectedLineIdx) renderBorderLine(line)
     })
@@ -46,6 +47,7 @@ function renderLine() {
 function renderBorderLine(line) {
     const meme = getGMeme()
     if (!meme.isActive || !meme.lines.length) return
+
     const newLine = getBorderLinePosition(line)
     drawRoundRect(newLine.positionX, newLine.positionY, newLine.lineWidth, newLine.lineHeight, newLine.textColor)
 }
@@ -92,6 +94,10 @@ function onClickObjectInCanvas(ev) {
     requestAnimationFrame(() => moveToTextInput())
 }
 
+function onDragItem() {
+    return setDragItem(true)
+}
+
 // Create
 
 function onClickEmoji(el) {
@@ -128,13 +134,12 @@ function onAddLine(ev) {
     renderGMeme()
 }
 
-function drawText(str, textSize, color, positionX, positionY, textAlign, fontFamily) {
-    fontFamily = fontFamily || 'Arial'
-    gCtx.textAlign = textAlign || 'start';
+function drawText(text, textSize, color, positionX, positionY, textAlign, fontFamily) {
+    gCtx.textAlign = textAlign
     gCtx.textBaseline = 'top'
     gCtx.font = `${textSize}px ${fontFamily}`
-    gCtx.fillStyle = color || '#000000'
-    gCtx.fillText(str, positionX, positionY)
+    gCtx.fillStyle = color
+    gCtx.fillText(text, positionX, positionY)
 }
 
 function drawRoundRect(startPointX, startPointY, lineWidth, lineHeight, color = '#000000') {
@@ -187,6 +192,41 @@ function getCurTextPosition(value) {
 
 
 // Update
+function onDown(ev) {
+    console.log('onDown')
+    // Get the ev pos from mouse or touch
+    const pos = getEvPos(ev)
+    console.log('pos', pos)
+    if (!isCircleClicked(pos)) return
+
+    setCircleDrag(true)
+    //Save the pos we start from
+    gStartPos = pos
+    document.body.style.cursor = 'grabbing'
+}
+
+function onMove(ev) {
+    const { isDrag } = getCircle()
+    if (!isDrag) return
+    console.log('onMove')
+
+    const pos = getEvPos(ev)
+    // Calc the delta, the diff we moved
+    const dx = pos.x - gStartPos.x
+    const dy = pos.y - gStartPos.y
+    moveCircle(dx, dy)
+    // Save the last pos, we remember where we`ve been and move accordingly
+    gStartPos = pos
+    // The canvas is render again after every move
+    renderCanvas()
+}
+
+function onMouseUp() {
+    console.log('onUp')
+    setDragItem(false)
+    document.body.style.cursor = 'grab'
+
+}
 function resizeCanvasContainer(width, height) {
     const elContainer = document.querySelector('.canvas-container')
     elContainer.style.width = width + 'px'
@@ -272,9 +312,10 @@ function clearCanvas() {
 }
 
 function onDeleteLine() {
-    if (!getGMemeLinesNum()) return
-    deleteLineFromGMeme()
-    moveToTextInput()
+    if (!gClickedObject) return
+    deleteFromGMeme(gClickedObject)
+    // deleteLineFromGMeme()
+    // moveToTextInput()
     renderGMeme()
 }
 

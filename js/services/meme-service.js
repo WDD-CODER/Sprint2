@@ -50,6 +50,7 @@ var gSavedMems = loadFromLocalStorage(MEME_STORAGE_KEY) || []
 var gMeme
 var gKeywordSearchCountMap = { 'funny': 12, 'cat': 16, 'baby': 2, 'dog': 2, 'man': 2, 'cute': 2, 'cool': 2, 'strict': 2 }
 var gEmoji
+var gClickedObject
 var gStartPos
 // Lists
 
@@ -163,6 +164,7 @@ function createRandomTextLines(numOfLines) {
 
 
 function getBorderLinePosition(line) {
+
     const curLine = line || gMeme.lines[gMeme.selectedLineIdx]
     const elCanvasContainerWidth = document.querySelector('.canvas-container.meme').offsetWidth
     const centerOfCanvas = elCanvasContainerWidth / 2
@@ -224,6 +226,7 @@ function getClickedOnItem(ev) {
         if (pictItem.idx !== -1) {
             pictItem.type = 'emoji'
             pictItem.isClicked = true
+
         }
     }
 
@@ -278,12 +281,15 @@ function getClickedOnItem(ev) {
 
         else pictItem = null
     }
+    setObjectIsClicked(pictItem)
+    console.log("🚀 ~ getClickedOnItem ~ pictItem:", pictItem)
     return pictItem
 }
 
 function getTextInputValue() {
-    const lineIdx = getSelectedLineIdx()
     const textInput = document.querySelector('.line-text.meme')
+    if (!gMeme.lines.length) return textInput.value = ''
+    const lineIdx = getSelectedLineIdx()
     textInput.value = getGMeme().lines[lineIdx].text
 }
 
@@ -334,6 +340,40 @@ function getGTextPosition() {
 
 
 // Update
+function isCircleClicked(clickedPos) {
+    const { pos } = gCircle
+    // Calc the distance between two dots
+    const distance = Math.sqrt((pos.x - clickedPos.x) ** 2 + (pos.y - clickedPos.y) ** 2)
+    // console.log('distance', distance)
+    //If its smaller then the radius of the circle we are inside
+    return distance <= gCircle.size
+  }
+  
+function setDragItem(value) {
+    if (gClickedObject.type === 'line')gMeme.lines[gClickedObject.idx].setIsDrag = value
+    else gMeme.emojis[gClickedObject.idx].setIsDrag = value
+}
+
+function moveItem(dx, dy) {
+    const item = {}
+    if (gClickedObject.type === 'line') item = gMeme.lines[gClickedObject.idx]
+    else item = gMeme.emojis[gClickedObject.idx]
+    item.positionX += dx
+    item.positionY += dy
+    console.log("🚀 ~ moveItem ~ item:", item)
+    
+}
+
+function setObjectIsClicked(obj) {
+    if (!obj) return gClickedObject = null
+    if (obj.type === 'line') {
+        gMeme.selectedLineIdx = obj.idx
+        return gClickedObject = obj
+    }
+    else
+        gMeme.selectedEmojiIdx = obj.idx
+    return gClickedObject = obj
+}
 
 function setImgObject(el, onReady) {
     _createImg(el, onReady)
@@ -447,13 +487,38 @@ function setLinePosition(change) {
 
 // Delete
 
-function deleteLineFromGMeme() {
-    gMeme.lines.splice(gMeme.selectedLineIdx, 1)
-    if (gMeme.selectedLineIdx <= 0) return
-    gMeme.selectedLineIdx--
+// function deleteLineFromGMeme() {
+//     gMeme.lines.splice(gMeme.selectedLineIdx, 1)
+//     if (gMeme.selectedLineIdx <= 0) return
+//     gMeme.selectedLineIdx--
+//     gMeme.isActive = false
+// }
 
-    gMeme.isActive = false
-    console.log('Remember you just put this back on');
+function deleteFromGMeme(obj) {
+    const textInput = document.querySelector('.line-text.meme')
+    const objType = gClickedObject.type
+    if (objType === 'emoji') {
+        gMeme.emojis.splice(obj.idx, 1)
+        gMeme.isActive = false
+        if (gMeme.selectedEmojiIdx <= 0) return
+        gMeme.selectedEmojiIdx--
+        gClickedObject = null
+    }
+
+    else {
+        gMeme.lines.splice(obj.idx, 1)
+        gMeme.isActive = false
+        if (gMeme.selectedLineIdx <= 0) return
+        gMeme.selectedLineIdx--
+        gClickedObject = null
+    }
+
+    if (!gMeme.lines[gMeme.selectedLineIdx].text) {
+        return textInput.value = ''
+    }
+
+    else textInput.value = gMeme.lines[gMeme.selectedLineIdx].text
+
 }
 
 function clearGMeme() {
